@@ -1,0 +1,8 @@
+dist
+node_modules
+.husky
+vite.config.ts
+.lintstagedrc
+public
+.gitkeep
+package-lock.json
