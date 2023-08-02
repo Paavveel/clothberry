@@ -25,7 +25,11 @@
       "@layout/*": ["layout/*"],
       "@screens/*": ["screens/*"],
       "@api/*": ["api/*"],
-      "@assets/*": ["assets/*"]
+      "@helpers/*": ["helpers/*"],
+      "@hooks/*": ["hooks/*"],
+      "@pages/*": ["pages/*"],
+      "@store/*": ["store/*"],
+      "@types/*": ["types/*"]
     }
   },
   "include": ["src", ".eslintrc.cjs"],

@@ -32,6 +32,11 @@ export default defineConfig({
       { find: '@screens', replacement: fileURLToPath(new URL('./src/screens/', import.meta.url)) },
       { find: '@api', replacement: fileURLToPath(new URL('./src/api/', import.meta.url)) },
       { find: '@assets', replacement: fileURLToPath(new URL('./src/assets/', import.meta.url)) },
+      { find: '@helpers', replacement: fileURLToPath(new URL('./src/helpers/', import.meta.url)) },
+      { find: '@hooks', replacement: fileURLToPath(new URL('./src/hooks/', import.meta.url)) },
+      { find: '@pages', replacement: fileURLToPath(new URL('./src/pages/', import.meta.url)) },
+      { find: '@store', replacement: fileURLToPath(new URL('./src/store/', import.meta.url)) },
+      { find: '@types', replacement: fileURLToPath(new URL('./src/types/', import.meta.url)) },
     ],
   },
 });
