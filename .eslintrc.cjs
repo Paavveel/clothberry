@@ -9,6 +9,8 @@ module.exports = {
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'plugin:prettier/recommended',
+    'prettier',
   ],
   overrides: [
     {
@@ -29,8 +31,9 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'react'],
+  plugins: ['@typescript-eslint', 'react', 'prettier'],
   rules: {
+    'prettier/prettier': 'error',
     'react/react-in-jsx-scope': 0,
     'react/function-component-definition': [
       2,
@@ -46,6 +49,11 @@ module.exports = {
     'no-console': 1,
   },
   settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+      },
+    },
     extensions: ['.ts'],
   },
   ignorePatterns: ['vite.config.ts'],

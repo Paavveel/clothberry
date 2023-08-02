@@ -6,7 +6,6 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -14,11 +13,22 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": "src",
+    "paths": {
+      "@styles/*": ["styles/*"],
+      "@constants/*": ["constants/*"],
+      "@components/*": ["components/*"],
+      "@core/*": ["core/*"],
+      "@layout/*": ["layout/*"],
+      "@screens/*": ["screens/*"],
+      "@api/*": ["api/*"],
+      "@assets/*": ["assets/*"]
+    }
   },
   "include": ["src", ".eslintrc.cjs"],
   "references": [{ "path": "./tsconfig.node.json" }]
