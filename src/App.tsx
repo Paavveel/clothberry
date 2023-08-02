@@ -1,3 +1,3 @@
-const App = () => null;
+const App = () => <div>Hello to the Clothberry</div>;
 
 export default App;

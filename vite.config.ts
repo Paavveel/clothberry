@@ -15,6 +15,12 @@ export default defineConfig({
   css: {
     devSourcemap: true,
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "src/setupTests",
+    mockReset: true,
+  },
   resolve: {
     alias: [
       { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
