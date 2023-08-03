@@ -10,16 +10,19 @@
     "test": "vitest",
     "eslint": "npx eslint --ext .ts,.tsx ./",
     "eslint-fix": "npx eslint --ext .ts,.tsx --fix ./",
+    "stylelint": "npx stylelint \"src/{**/*,*}.css\"",
+    "stylelint-fix": "npx stylelint \"src/{**/*,*}.css\" --fix",
     "prettier": "npx prettier --check --cache ./",
-    "prettier-fix": "npx prettier --write ./"
+    "prettier-fix": "npx prettier --write ./",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.8.1",
+    "@testing-library/jest-dom": "5.11.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "8.0.1",
-    "react-router-dom": "6.14.2",
-    "@testing-library/jest-dom": "5.11.4"
+    "react-router-dom": "6.14.2"
   },
   "devDependencies": {
     "@testing-library/dom": "9.2.0",
@@ -37,18 +40,23 @@
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.1.0",
     "eslint-config-prettier": "8.9.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-import-resolver-alias": "1.1.2",
+    "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-prettier": "5.0.0",
     "eslint-plugin-react": "7.33.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.3",
+    "husky": "8.0.3",
     "jsdom": "21.1.0",
-    "prettier": "^3.0.0",
+    "lint-staged": "13.2.3",
+    "prettier": "3.0.0",
+    "stylelint": "15.10.2",
+    "stylelint-config-standard": "34.0.0",
     "typescript": "5.0.2",
     "vite": "4.4.5",
-    "vitest": "0.30.1",
     "vite-plugin-eslint": "1.8.1",
-    "vite-tsconfig-paths": "4.2.0"
+    "vite-plugin-stylelint": "4.3.0",
+    "vite-tsconfig-paths": "4.2.0",
+    "vitest": "0.30.1"
   }
 }
