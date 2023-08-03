@@ -1,0 +1,8 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "selector-class-pattern": null,
+    "property-no-vendor-prefix": null
+  },
+  "ignoreFiles": ["**/*.ts", "**/*.tsx", ".**/*.cjs", "**/*.html", "**/*.md"]
+}
