@@ -1,13 +1,36 @@
+import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 import { URL, fileURLToPath } from 'url';
-import { defineConfig } from 'vitest/config';
 import eslint from 'vite-plugin-eslint';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import stylelint from 'vite-plugin-stylelint';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vitest/config';
+
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), eslint(),  stylelint()],
+  plugins: [react(), tsconfigPaths(), eslint(), stylelint()],
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          buffer: true,
+        }),
+        NodeModulesPolyfillPlugin(),
+      ],
+    },
+  },
+  build: {
+    rollupOptions: {
+      plugins: [rollupNodePolyFill()],
+    },
+  },
   server: {
     port: 3000,
     host: true,
@@ -17,12 +40,13 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: "jsdom",
-    setupFiles: "src/setupTests",
+    environment: 'jsdom',
+    setupFiles: 'src/setupTests',
     mockReset: true,
   },
   resolve: {
     alias: [
+      { find: 'stream', replacement: 'rollup-plugin-node-polyfills/polyfills/stream' },
       { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
       { find: '@components', replacement: fileURLToPath(new URL('./src/components/', import.meta.url)) },
       { find: '@constants', replacement: fileURLToPath(new URL('./src/constants/', import.meta.url)) },
