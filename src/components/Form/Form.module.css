@@ -1,0 +1,31 @@
+.form-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10rem 0;
+}
+
+.title {
+  font-weight: 400;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 44.3rem;
+  text-align: center;
+}
+
+@media (width <= 480px) {
+  .form {
+    font-size: 11px;
+    width: 30rem;
+  }
+
+  .form button {
+    width: 290px;
+    font-size: 11px;
+  }
+}
