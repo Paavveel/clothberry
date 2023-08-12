@@ -1,0 +1,36 @@
+@import url("@styles/variables/variables.css");
+
+.input_wrapper {
+  position: relative;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+
+  --p-top: 1rem;
+}
+
+.field {
+  outline: 0;
+  border: none;
+  border-bottom: 1px solid var(--color-gray-primary);
+  padding: var(--p-top);
+  margin-bottom: 2.6rem;
+  width: 100%;
+}
+
+.field::placeholder {
+  color: var(--color-gray-primary);
+}
+
+.input_wrapper small {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.8rem;
+
+  /* transform: translateY(var(--p-top)); */
+}
+
+.visually-hidden {
+  position: fixed;
+  transform: scale(0);
+}
