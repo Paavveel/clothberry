@@ -1,0 +1,116 @@
+.button {
+  outline: none;
+  position: relative;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  user-select: none;
+  touch-action: manipulation;
+  line-height: 18px;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.button:disabled > * {
+  pointer-events: none;
+}
+
+.button > span {
+  display: inline-block;
+}
+
+/* size button */
+.button-large {
+  width: 370px;
+  height: 56px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.48px;
+  line-height: 113.9%;
+}
+
+.button-default {
+  width: 260px;
+  height: 48px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.33px;
+  line-height: 113.9%;
+}
+
+.button-small {
+  width: 170px;
+  height: 45px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.42px;
+  line-height: 113.9%;
+}
+
+/* bg color */
+.button-primary {
+  background: #2d2d2d !important;
+  color: #fff !important;
+}
+
+.button-primary:hover {
+  background: #4f4f4f !important;
+}
+
+.button-secondary {
+  background: #fff !important;
+  color: #2d2d2d !important;
+  border: 1px solid #cecece !important;
+}
+
+.button-secondary:hover {
+  background: #dee1e4 !important;
+}
+
+/* loading */
+.button-secondary.button-loading {
+  background: #fff !important;
+  box-shadow: inset 1px 1px 40px #cdc8c8;
+}
+
+.button-primary.button-loading {
+  background: #393838 !important;
+}
+
+.loading {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  animation: an1 1s ease infinite;
+}
+
+@keyframes an1 {
+  0% {
+    transform: rotate(0turn);
+  }
+
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.button-primary .loading {
+  border-top-color: #fff;
+}
+
+.button-secondary .loading {
+  border-top-color: #000;
+}
