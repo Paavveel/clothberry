@@ -18,7 +18,7 @@ const options = [
   { value: 'NL', label: 'Netherlands' },
 ];
 
-interface IFormValues {
+interface FormRegister extends Record<string, unknown> {
   email: string;
   password: string;
   confirmPassword: string;
@@ -45,12 +45,13 @@ export const RegisterPage: FC = () => {
     watch,
     reset,
     control,
-  } = useForm<IFormValues>({
+  } = useForm<FormRegister>({
     mode: 'onChange',
   });
 
-  const submit: SubmitHandler<IFormValues> = (data) => {
+  const submit: SubmitHandler<FormRegister> = (data) => {
     setIsLoading(true);
+    // eslint-disable-next-line no-console
     console.log(data);
     setTimeout(() => {
       setIsLoading(false);
@@ -60,23 +61,23 @@ export const RegisterPage: FC = () => {
 
   return (
     <Form title='Регистрация' onSubmit={handleSubmit(submit)}>
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='Email'
         label='email'
         register={register}
-        errors={errors}
+        error={errors.email}
         options={{
           required: '⚠ Email is required field!',
           validate: (value: string) => emailValidator(value, 'Please enter valid email!'),
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='password'
         placeholder='Password'
         label='password'
         register={register}
-        errors={errors}
+        error={errors.password}
         options={{
           required: '⚠ Password is required field!',
           minLength: {
@@ -86,12 +87,12 @@ export const RegisterPage: FC = () => {
           validate: (value: string) => validatePassword(value),
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='password'
         placeholder='Confirm Password'
         label='confirmPassword'
         register={register}
-        errors={errors}
+        error={errors.confirmPassword}
         options={{
           required: '⚠ Confirm password is required field!',
           validate: (value: string) => {
@@ -99,44 +100,44 @@ export const RegisterPage: FC = () => {
           },
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='First Name'
         label='firstName'
         register={register}
-        errors={errors}
+        error={errors.firstName}
         options={{
           required: '⚠ Name is required field!',
           validate: (value: string) => validateName(value),
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='Last Name'
         label='lastName'
         register={register}
-        errors={errors}
+        error={errors.lastName}
         options={{
           required: '⚠ Last Name is required field!',
           validate: (value: string) => validateName(value),
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='Middle Name'
         label='middleName'
         register={register}
-        errors={errors}
+        error={errors.middleName}
         options={{
           validate: (value: string) => validateName(value),
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='date'
         placeholder='Date of birth'
         label='dateOfBirth'
         register={register}
-        errors={errors}
+        error={errors.dateOfBirth}
         options={{
           required: '⚠ Date of birth is required field!',
           validate: (value: string) => {
@@ -158,12 +159,12 @@ export const RegisterPage: FC = () => {
           },
         }}
       />
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='Street'
         label='street'
         register={register}
-        errors={errors}
+        error={errors.street}
         options={{
           required: '⚠ Street is required field!',
           validate: (value: string) => {
@@ -175,12 +176,12 @@ export const RegisterPage: FC = () => {
         }}
       />
 
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='City'
         label='city'
         register={register}
-        errors={errors}
+        error={errors.city}
         options={{
           required: '⚠ City is required field!',
           validate: (value: string) => {
@@ -195,12 +196,12 @@ export const RegisterPage: FC = () => {
         }}
       />
 
-      <Input
+      <Input<FormRegister>
         type='text'
         placeholder='Postal Code'
         label='postalCode'
         register={register}
-        errors={errors}
+        error={errors.postalCode}
         options={{
           required: '⚠ Postal Code is required field!',
           validate: (value: string) => validatePostCode(value),
@@ -214,7 +215,6 @@ export const RegisterPage: FC = () => {
         }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
-            {/* .validate-error__select */}
             <Select
               className={classNames(styles.country, {
                 'validate-error__select': error,
