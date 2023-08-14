@@ -62,11 +62,12 @@ export const RegisterPage: FC = () => {
   return (
     <Form title='Регистрация' onSubmit={handleSubmit(submit)}>
       <Input<FormRegister>
-        type='text'
+        type='email'
         placeholder='Email'
         label='email'
         register={register}
         error={errors.email}
+        inputMode='email'
         options={{
           required: '⚠ Email is required field!',
           validate: (value: string) => emailValidator(value, 'Please enter valid email!'),
@@ -230,12 +231,12 @@ export const RegisterPage: FC = () => {
       />
 
       {isLoading ? (
-        <Button type='submit' className={styles.button} size='large' primary loading>
-          Зарегистрироваться
+        <Button type='submit' className={styles.button} primary loading>
+          Sign Up
         </Button>
       ) : (
-        <Button type='submit' className={styles.button} size='large' secondary>
-          Зарегистрироваться
+        <Button type='submit' className={styles.button} primary>
+          Sign Up
         </Button>
       )}
     </Form>

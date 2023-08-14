@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap");
-@import url("./normalize.css");
+@import url("../vendors/normalize.css");
 
 *,
 *::before,
@@ -46,29 +46,23 @@ body {
 .validate-error__text {
   display: inline-block;
   padding-top: 2px;
-  color: red;
+  color: var(--color-red);
   text-align: left;
   font-size: 11px;
 }
 
 .validate-error__field__input {
-  border-bottom-color: red;
+  border-bottom-color: var(--color-red);
 }
 
 .validate-error__select {
-  border: 1px solid red;
+  border: 1px solid var(--color-red);
   border-radius: inherit;
   border-radius: 6px;
 }
 
 @media (hover: none) {
   * {
-    cursor: default !important;
-  }
-}
-
-@media (width <= 767px) {
-  * {
-    cursor: default !important;
+    cursor: default;
   }
 }

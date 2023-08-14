@@ -1,11 +1,13 @@
 .button {
   margin: 0 auto;
   margin-top: 50px;
-}
-
-.button:hover {
-  background-color: red;
-  border: none;
+  width: 370px;
+  height: 56px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.48px;
+  line-height: 113.9%;
 }
 
 .link-wrapper {
@@ -31,4 +33,12 @@
 
 .country {
   text-align: left;
+}
+
+@media (width <= 480px) {
+  .button {
+    width: 260px;
+    height: 48px;
+    letter-spacing: 0.33px;
+  }
 }
