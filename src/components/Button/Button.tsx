@@ -11,7 +11,6 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   loading?: boolean;
-  size?: 'large' | 'default' | 'small';
   primary?: boolean;
   secondary?: boolean;
 }
@@ -22,7 +21,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   type,
   className,
   loading,
-  size,
   primary,
   secondary,
 }) => {
@@ -33,24 +31,18 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       type={type}
       onClick={onClick}
       className={cn(styles.button, className, {
-        [styles[`${componentCls}-large`]]: size === 'large',
-        [styles[`${componentCls}-default`]]: size === 'default',
-        [styles[`${componentCls}-small`]]: size === 'small',
         [styles[`${componentCls}-primary`]]: primary,
         [styles[`${componentCls}-secondary`]]: secondary,
-        [styles[`${componentCls}-loading`]]: loading,
       })}
       disabled={loading}
     >
       {loading && <div className={styles.loading} />}
-      {loading && size !== 'small' && children}
-      {!loading && children}
+      {children}
     </button>
   );
 };
 
 Button.defaultProps = {
-  size: 'default',
   primary: undefined,
   secondary: undefined,
   className: '',
