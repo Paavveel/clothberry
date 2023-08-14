@@ -11,7 +11,7 @@ export const Form: FC<PropsWithChildren<DefaultProps>> = ({ children, onSubmit, 
   return (
     <div className={styles['form-wrapper']}>
       {!!title.length && <h2 className={styles.title}>{title}</h2>}
-      <form className={styles.form} onSubmit={onSubmit}>
+      <form className={styles.form} onSubmit={onSubmit} noValidate>
         {children}
       </form>
     </div>
