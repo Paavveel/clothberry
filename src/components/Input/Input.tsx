@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 import styles from './Input.module.css';
 
+type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+
 type InputProps<TFormValues extends FieldValues> = {
   placeholder: string;
   type: string;
@@ -12,6 +14,7 @@ type InputProps<TFormValues extends FieldValues> = {
   register: UseFormRegister<TFormValues>;
   options: RegisterOptions;
   error: FieldError | undefined;
+  inputMode?: InputMode;
 };
 
 export const Input = <TFormValues extends Record<string, unknown>>({
@@ -22,6 +25,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   register,
   error,
   options,
+  inputMode,
 }: InputProps<TFormValues>) => {
   return (
     <div className={styles.input_wrapper}>
@@ -31,9 +35,12 @@ export const Input = <TFormValues extends Record<string, unknown>>({
       <input
         id={label}
         type={type}
+        inputMode={inputMode}
         className={classNames(styles.field, {
           'validate-error__field__input': error,
         })}
+        defaultValue={type === 'date' ? placeholder : ''}
+        autoComplete='off'
         placeholder={placeholder}
         {...register(label, { required, ...options })}
       />
@@ -44,4 +51,5 @@ export const Input = <TFormValues extends Record<string, unknown>>({
 
 Input.defaultProps = {
   required: false,
+  inputMode: 'text',
 };
