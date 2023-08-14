@@ -24,15 +24,14 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   primary,
   secondary,
 }) => {
-  const componentCls = 'button';
   console.log(loading);
   return (
     <button
       type={type}
       onClick={onClick}
       className={cn(styles.button, className, {
-        [styles[`${componentCls}-primary`]]: primary,
-        [styles[`${componentCls}-secondary`]]: secondary,
+        [styles['button-primary']]: primary,
+        [styles['button-secondary']]: secondary,
       })}
       disabled={loading}
     >

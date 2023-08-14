@@ -41,6 +41,11 @@
   outline: solid var(--color-blue);
 }
 
+.button:disabled {
+  transform: translateY(0);
+  cursor: default;
+}
+
 .button:disabled.button-primary {
   background: var(--color-gray-400);
   opacity: 0.5;
