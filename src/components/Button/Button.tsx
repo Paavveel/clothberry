@@ -24,7 +24,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   primary,
   secondary,
 }) => {
-  console.log(loading);
   return (
     <button
       type={type}

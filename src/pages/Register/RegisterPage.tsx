@@ -1,17 +1,23 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
 
 import { Button } from '@components/Button/Button';
+import { Checkbox } from '@components/Checkbox/Checkbox';
 import { Form } from '@components/Form/Form';
 import { Input } from '@components/Input/Input';
 import { emailValidator, validateName, validatePassword, validatePostCode } from '@helpers/Validators';
 
 import styles from './RegisterPage.module.css';
 
-const options = [
+interface IOption {
+  value: string;
+  label: string;
+}
+const options: IOption[] = [
   { value: 'DE', label: 'Germany' },
   { value: 'AT', label: 'Austria' },
   { value: 'US', label: 'United States' },
@@ -26,44 +32,70 @@ interface FormRegister extends Record<string, unknown> {
   lastName: string;
   middleName: string;
   dateOfBirth: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
+  ShippingStreet: string;
+  ShippingCity: string;
+  ShippingPostalCode: string;
+  ShippingCountry: string;
+  BillingStreet: string;
+  BillingCity: string;
+  BillingPostalCode: string;
+  BillingCountry: string;
 }
 
-const getValue = (value: string) => {
+const getValueFromCountry = (value: string) => {
   return value ? options.find((option) => option.value === value) : '';
 };
 
 export const RegisterPage: FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [defaultBillingShipping, setDefaultBillingShipping] = useState(false);
+  const [defaultShipping, setDefaultShipping] = useState(false);
+  const [defaultBilling, setDefaultBilling] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
+    watch,
     control,
   } = useForm<FormRegister>({
     mode: 'onChange',
   });
 
+  const watchShippingCountry = watch('ShippingCountry') as unknown as IOption;
+  const watchBillingPostalCode = watch('BillingCountry') as unknown as IOption;
+
+  const handleDefaultBillingShipping = () => {
+    if (defaultShipping) {
+      setDefaultShipping(false);
+    }
+    setDefaultBillingShipping((prev) => !prev);
+  };
+
+  const handleDefaultShipping = () => {
+    if (defaultBillingShipping) {
+      setDefaultBillingShipping(false);
+    }
+    setDefaultShipping((prev) => !prev);
+  };
+
+  const handleDefaultBilling = () => {
+    if (defaultBillingShipping) {
+      setDefaultBillingShipping(false);
+    }
+    setDefaultBilling((prev) => !prev);
+  };
+
   const submit: SubmitHandler<FormRegister> = (data) => {
-    setIsLoading(true);
     // eslint-disable-next-line no-console
     console.log(data);
-    setTimeout(() => {
-      setIsLoading(false);
-      reset();
-    }, 5000);
+    reset();
   };
 
   return (
     <Form title='Регистрация' onSubmit={handleSubmit(submit)}>
       <Input<FormRegister>
         type='email'
-        placeholder='Email'
+        placeholder='Email *'
         label='email'
         register={register}
         error={errors.email}
@@ -75,7 +107,7 @@ export const RegisterPage: FC = () => {
       />
       <Input<FormRegister>
         type='password'
-        placeholder='Password'
+        placeholder='Password *'
         label='password'
         register={register}
         error={errors.password}
@@ -90,7 +122,7 @@ export const RegisterPage: FC = () => {
       />
       <Input<FormRegister>
         type='password'
-        placeholder='Confirm Password'
+        placeholder='Confirm Password *'
         label='confirmPassword'
         register={register}
         error={errors.confirmPassword}
@@ -103,7 +135,7 @@ export const RegisterPage: FC = () => {
       />
       <Input<FormRegister>
         type='text'
-        placeholder='First Name'
+        placeholder='First Name *'
         label='firstName'
         register={register}
         error={errors.firstName}
@@ -114,7 +146,7 @@ export const RegisterPage: FC = () => {
       />
       <Input<FormRegister>
         type='text'
-        placeholder='Last Name'
+        placeholder='Last Name *'
         label='lastName'
         register={register}
         error={errors.lastName}
@@ -160,12 +192,13 @@ export const RegisterPage: FC = () => {
           },
         }}
       />
+      <h3 className={styles.subheading}>Shipping address</h3>
       <Input<FormRegister>
         type='text'
-        placeholder='Street'
-        label='street'
+        placeholder='Street *'
+        label='ShippingStreet'
         register={register}
-        error={errors.street}
+        error={errors.ShippingStreet}
         options={{
           required: '⚠ Street is required field!',
           validate: (value: string) => {
@@ -179,10 +212,10 @@ export const RegisterPage: FC = () => {
 
       <Input<FormRegister>
         type='text'
-        placeholder='City'
-        label='city'
+        placeholder='City *'
+        label='ShippingCity'
         register={register}
-        error={errors.city}
+        error={errors.ShippingCity}
         options={{
           required: '⚠ City is required field!',
           validate: (value: string) => {
@@ -199,18 +232,18 @@ export const RegisterPage: FC = () => {
 
       <Input<FormRegister>
         type='text'
-        placeholder='Postal Code'
-        label='postalCode'
+        placeholder='Postal Code *'
+        label='ShippingPostalCode'
         register={register}
-        error={errors.postalCode}
+        error={errors.ShippingPostalCode}
         options={{
           required: '⚠ Postal Code is required field!',
-          validate: (value: string) => validatePostCode(value),
+          validate: (value: string) => validatePostCode(value, watchShippingCountry),
         }}
       />
       <Controller
         control={control}
-        name='country'
+        name='ShippingCountry'
         rules={{
           required: '⚠ Country is required!',
         }}
@@ -221,24 +254,125 @@ export const RegisterPage: FC = () => {
                 'validate-error__select': error,
               })}
               options={options}
-              placeholder='Country'
-              value={getValue(value)}
-              onChange={(newValue) => onChange(newValue)}
+              placeholder='Country *'
+              value={getValueFromCountry(value)}
+              // onChange={(newValue) => onChange((newValue as IOption).value)}
+              onChange={(newValue) => onChange(newValue as IOption)}
             />
             {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
           </>
         )}
       />
 
-      {isLoading ? (
-        <Button type='submit' className={styles.button} primary loading>
-          Sign Up
-        </Button>
-      ) : (
-        <Button type='submit' className={styles.button} primary>
-          Sign Up
-        </Button>
+      <Checkbox
+        title='Set as default address for billing and shipping'
+        htmlFor='default_billing_shipping_address'
+        onChange={handleDefaultBillingShipping}
+        value={defaultBillingShipping}
+      />
+      {!defaultBillingShipping && (
+        <Checkbox
+          title='Set as default shipping address'
+          htmlFor='default_shipping_address'
+          onChange={handleDefaultShipping}
+          value={defaultShipping}
+        />
       )}
+
+      {!defaultBillingShipping && (
+        <>
+          <h3 className={`${styles.subheading} ${styles.subheading_billing}`}>Billing address</h3>
+          <Input<FormRegister>
+            type='text'
+            placeholder='Street *'
+            label='BillingStreet'
+            register={register}
+            error={errors.BillingStreet}
+            options={{
+              required: '⚠ Street is required field!',
+              validate: (value: string) => {
+                if (value.length < 1) {
+                  return 'Must contain at least one character';
+                }
+                return undefined;
+              },
+            }}
+          />
+
+          <Input<FormRegister>
+            type='text'
+            placeholder='City *'
+            label='BillingCity'
+            register={register}
+            error={errors.BillingCity}
+            options={{
+              required: '⚠ City is required field!',
+              validate: (value: string) => {
+                if (value.length < 1) {
+                  return 'Must contain at least one character';
+                }
+                if (/[^\p{L}\s]/u.test(value)) {
+                  return 'City should not contain special characters or numbers';
+                }
+                return undefined;
+              },
+            }}
+          />
+
+          <Input<FormRegister>
+            type='text'
+            placeholder='Postal Code *'
+            label='BillingPostalCode'
+            register={register}
+            error={errors.BillingPostalCode}
+            options={{
+              required: '⚠ Postal Code is required field!',
+              validate: (value: string) => validatePostCode(value, watchBillingPostalCode),
+            }}
+          />
+          <Controller
+            control={control}
+            name='BillingCountry'
+            rules={{
+              required: '⚠ Country is required!',
+            }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <>
+                <Select
+                  className={classNames(styles.country, {
+                    'validate-error__select': error,
+                  })}
+                  options={options}
+                  placeholder='Country *'
+                  value={getValueFromCountry(value)}
+                  onChange={(newValue) => onChange(newValue as IOption)}
+                />
+                {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
+              </>
+            )}
+          />
+        </>
+      )}
+
+      {!defaultBillingShipping && (
+        <Checkbox
+          title='Set as default billing address'
+          htmlFor='default_billing_address'
+          onChange={handleDefaultBilling}
+          value={defaultBilling}
+        />
+      )}
+
+      <Button type='submit' className={styles.button} primary>
+        Sign Up
+      </Button>
+
+      <p>
+        Already have an account?{' '}
+        <Link to='/login' className={styles.login}>
+          Login
+        </Link>
+      </p>
     </Form>
   );
 };

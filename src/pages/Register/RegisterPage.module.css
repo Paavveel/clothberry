@@ -35,6 +35,44 @@
   text-align: left;
 }
 
+.login {
+  font-weight: 600;
+  transition: 0.3s;
+  position: relative;
+}
+
+.login::before {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--color-black);
+  transition: width 0.5s;
+}
+
+.login:hover::before {
+  width: 100%;
+}
+
+.login:hover {
+  color: #5e5c5c;
+}
+
+.login:active {
+  color: var(--color-black);
+}
+
+.subheading {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.subheading_billing {
+  margin-top: 1.2rem;
+}
+
 @media (width <= 480px) {
   .button {
     width: 260px;
