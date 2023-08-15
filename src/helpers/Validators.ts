@@ -6,19 +6,19 @@ const emailValidator = (value: string, message: string) => {
 
 const validatePassword = (value: string) => {
   if (value.length < 8) {
-    return 'Password must have at least 8 characters';
+    return '⚠ Password must have at least 8 characters';
   }
 
   if (!/[A-Z]/.test(value)) {
-    return 'Password must contain at least 1 uppercase letter';
+    return '⚠ Password must contain at least 1 uppercase letter';
   }
 
   if (!/[a-z]/.test(value)) {
-    return 'Password must contain at least 1 lowercase letter';
+    return '⚠ Password must contain at least 1 lowercase letter';
   }
 
   if (!/\d/.test(value)) {
-    return 'Password must contain at least 1 digit';
+    return '⚠ Password must contain at least 1 digit';
   }
 
   return undefined;
@@ -26,11 +26,11 @@ const validatePassword = (value: string) => {
 
 const validateName = (value: string) => {
   if (/\d/.test(value)) {
-    return 'Name should not contain numbers';
+    return '⚠ Name should not contain numbers';
   }
 
   if (/[^a-zA-ZА-Яа-яЁё]/.test(value)) {
-    return 'Name should not contain special characters';
+    return '⚠ Name should not contain special characters';
   }
 
   return undefined;
@@ -48,25 +48,25 @@ const validatePostCode = (newValue: string, country: IOption) => {
     case 'AT':
       postalCode = /^(?:(?:[2-8]\d|9[0-7]|0?[28]|0?9(?=09))(?:\d{2}))$/;
       if (!postalCode.test(newValue)) {
-        return `Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${label}`;
       }
       break;
     case 'DE':
       postalCode = /^\d{5}$/;
       if (!postalCode.test(newValue)) {
-        return `Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${label}`;
       }
       break;
     case 'US':
       postalCode = /^\d{5}(?:-\d{4})?$/;
       if (!postalCode.test(newValue)) {
-        return `Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${label}`;
       }
       break;
     case 'NL':
       postalCode = /^(?:NL-)?(?:[1-9]\d{3} ?(?:[A-EGHJ-NPRTVWXZ][A-EGHJ-NPRSTVWXZ]|S[BCEGHJ-NPRTVWXZ]))$/i;
       if (!postalCode.test(newValue)) {
-        return `Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${label}`;
       }
       break;
 

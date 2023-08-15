@@ -6,7 +6,26 @@
   font-style: normal;
   font-weight: 400;
 
-  --p-top: 1rem;
+  --p-top: 1.2rem;
+}
+
+.password_wrapper {
+  position: relative;
+}
+
+.password_wrapper input {
+  padding-right: 50px;
+}
+
+.password {
+  position: absolute;
+  top: calc(var(--p-top) + 0.7rem);
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 .field {
@@ -34,11 +53,15 @@
   position: absolute;
   left: 0.8rem;
   bottom: 0.8rem;
-
-  /* transform: translateY(var(--p-top)); */
 }
 
 .visually-hidden {
   position: fixed;
   transform: scale(0);
+}
+
+@media (width <= 480px) {
+  .input_wrapper small {
+    bottom: 0;
+  }
 }

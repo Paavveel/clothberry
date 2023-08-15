@@ -79,4 +79,12 @@
     height: 48px;
     letter-spacing: 0.33px;
   }
+
+  .country {
+    margin: 1rem 0;
+  }
+
+  .subheading {
+    margin-top: 10px;
+  }
 }

@@ -92,7 +92,7 @@ export const RegisterPage: FC = () => {
   };
 
   return (
-    <Form title='Регистрация' onSubmit={handleSubmit(submit)}>
+    <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
       <Input<FormRegister>
         type='email'
         placeholder='Email *'
@@ -111,11 +111,12 @@ export const RegisterPage: FC = () => {
         label='password'
         register={register}
         error={errors.password}
+        showPasswordToggler
         options={{
           required: '⚠ Password is required field!',
           minLength: {
             value: 8,
-            message: 'Password must have at least 8 characters',
+            message: '⚠ Password must have at least 8 characters',
           },
           validate: (value: string) => validatePassword(value),
         }}
@@ -126,10 +127,11 @@ export const RegisterPage: FC = () => {
         label='confirmPassword'
         register={register}
         error={errors.confirmPassword}
+        showPasswordToggler
         options={{
           required: '⚠ Confirm password is required field!',
           validate: (value: string) => {
-            return watch('password') !== value ? 'Your passwords do no match' : undefined;
+            return watch('password') !== value ? '⚠ Your passwords do no match' : undefined;
           },
         }}
       />
@@ -179,13 +181,13 @@ export const RegisterPage: FC = () => {
             const minAge = 13; // Минимальный допустимый возраст (в годах)
 
             if (Number.isNaN(selectedDate.getTime())) {
-              return 'Invalid date format';
+              return '⚠ Invalid date format';
             }
 
             const ageDifference = today.getFullYear() - selectedDate.getFullYear();
 
             if (ageDifference < minAge) {
-              return `You must be at least ${minAge} years old`;
+              return `⚠ You must be at least ${minAge} years old`;
             }
 
             return undefined;
@@ -203,7 +205,7 @@ export const RegisterPage: FC = () => {
           required: '⚠ Street is required field!',
           validate: (value: string) => {
             if (value.length < 1) {
-              return 'Must contain at least one character';
+              return '⚠ Must contain at least one character';
             }
             return undefined;
           },
@@ -292,7 +294,7 @@ export const RegisterPage: FC = () => {
               required: '⚠ Street is required field!',
               validate: (value: string) => {
                 if (value.length < 1) {
-                  return 'Must contain at least one character';
+                  return '⚠ Must contain at least one character';
                 }
                 return undefined;
               },
@@ -309,10 +311,10 @@ export const RegisterPage: FC = () => {
               required: '⚠ City is required field!',
               validate: (value: string) => {
                 if (value.length < 1) {
-                  return 'Must contain at least one character';
+                  return '⚠ Must contain at least one character';
                 }
                 if (/[^\p{L}\s]/u.test(value)) {
-                  return 'City should not contain special characters or numbers';
+                  return '⚠ City should not contain special characters or numbers';
                 }
                 return undefined;
               },

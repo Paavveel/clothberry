@@ -1,6 +1,10 @@
+import React, { useState } from 'react';
 import { FieldError, FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
 import classNames from 'classnames';
+
+import closeEye from '@assets/img/close-eye.svg';
+import openEye from '@assets/img/open-eye.svg';
 
 import styles from './Input.module.css';
 
@@ -15,6 +19,7 @@ type InputProps<TFormValues extends FieldValues> = {
   options: RegisterOptions;
   error: FieldError | undefined;
   inputMode?: InputMode;
+  showPasswordToggler?: boolean;
 };
 
 export const Input = <TFormValues extends Record<string, unknown>>({
@@ -26,24 +31,69 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   error,
   options,
   inputMode,
+  showPasswordToggler,
 }: InputProps<TFormValues>) => {
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isHiddenIcon, setIsHiddenIcon] = useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleShowPassword = () => {
+    setIsShowPassword((show) => !show);
+  };
   return (
     <div className={styles.input_wrapper}>
       <label htmlFor={label} className={styles['visually-hidden']}>
         {placeholder}
       </label>
-      <input
-        id={label}
-        type={type}
-        inputMode={inputMode}
-        className={classNames(styles.field, {
-          'validate-error__field__input': error,
-        })}
-        defaultValue={type === 'date' ? placeholder : ''}
-        autoComplete='off'
-        placeholder={placeholder}
-        {...register(label, { required, ...options })}
-      />
+      {type === 'password' && showPasswordToggler ? (
+        <div className={styles.password_wrapper}>
+          {isShowPassword && !isHiddenIcon && (
+            <button aria-label='show password' className={styles.password} onClick={handleShowPassword} type='button'>
+              <img src={openEye} width='24px' height='24px' alt='show password' />
+            </button>
+          )}
+          {!isShowPassword && !isHiddenIcon && (
+            <button aria-label='hide password' className={styles.password} onClick={handleShowPassword} type='button'>
+              <img src={closeEye} width='24px' height='24px' alt='show password' />
+            </button>
+          )}
+
+          <input
+            id={label}
+            type={isShowPassword ? 'text' : type}
+            inputMode={inputMode}
+            className={classNames(styles.field, {
+              'validate-error__field__input': error,
+            })}
+            autoComplete='off'
+            placeholder={placeholder}
+            {...register(label, {
+              required,
+              ...options,
+              onChange(event: React.ChangeEvent<HTMLInputElement>) {
+                if (type === 'password' && showPasswordToggler && event.target.value.trim().length > 0) {
+                  setIsHiddenIcon(false);
+                } else {
+                  setIsHiddenIcon(true);
+                }
+              },
+            })}
+          />
+        </div>
+      ) : (
+        <input
+          id={label}
+          type={type}
+          inputMode={inputMode}
+          className={classNames(styles.field, {
+            'validate-error__field__input': error,
+          })}
+          autoComplete='off'
+          placeholder={placeholder}
+          {...register(label, { required, ...options })}
+        />
+      )}
+
       {error && <small className='validate-error__text'>{error.message}</small>}
     </div>
   );
@@ -52,4 +102,5 @@ export const Input = <TFormValues extends Record<string, unknown>>({
 Input.defaultProps = {
   required: false,
   inputMode: 'text',
+  showPasswordToggler: false,
 };
