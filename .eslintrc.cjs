@@ -47,6 +47,8 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-absolute-path': 0,
     'no-console': 1,
+    'react/jsx-props-no-spreading': 0,
+    'react/button-has-type': 0,
   },
   settings: {
     'import/resolver': {

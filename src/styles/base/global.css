@@ -1,5 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap");
+@import url("../vendors/normalize.css");
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+ul {
+  padding: 0.5rem;
+}
+
+html {
+  font-size: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--color-gray-primary);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--color-black);
+  border-radius: 20px;
+}
+
+body {
+  font-family:
+    Montserrat,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-size: 1.6rem;
+}
+
+.app.container {
+  max-width: 1175px;
+  margin: 0 auto;
+}
+
+.validate-error__text {
+  display: inline-block;
+  padding-top: 0.2rem;
+  color: var(--color-red);
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.validate-error__field__input {
+  border-bottom-color: var(--color-red);
+}
+
+.validate-error__select {
+  border: 0.1rem solid var(--color-red);
+  border-radius: inherit;
+  border-radius: 0.6rem;
+}
+
+@media (hover: none) {
+  * {
+    cursor: default;
+  }
 }

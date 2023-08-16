@@ -1,0 +1,114 @@
+.button {
+  --color-white: #fff;
+  --color-black: #000;
+  --color-blue: #2684ff;
+  --color-gray-100: #dee1e4;
+  --color-gray-200: #d6d6d6;
+  --color-gray-300: #cecece;
+  --color-gray-400: #4f4f4f;
+  --color-gray-500: #2d2d2d;
+
+  outline: none;
+  position: relative;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  user-select: none;
+  touch-action: manipulation;
+  line-height: 1.8rem;
+  color: var(--color-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.button.button:active.button-primary:not(:disabled) {
+  transition: none;
+  outline: none;
+  background-color: var(--color-gray-500);
+}
+
+.button.button:active.button-secondary:not(:disabled) {
+  transition: none;
+  outline: none;
+  background-color: var(--color-white);
+}
+
+.button:focus {
+  outline: solid var(--color-blue);
+}
+
+.button:focus-visible {
+  outline: solid var(--color-blue);
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button:disabled.button-primary {
+  background-color: var(--color-gray-400);
+  opacity: 0.5;
+}
+
+.button:disabled.button-secondary {
+  background-color: var(--color-gray-200);
+  opacity: 0.5;
+}
+
+.button > span {
+  display: inline-block;
+}
+
+/* bg color */
+.button-primary {
+  background-color: var(--color-gray-500);
+  color: var(--color-white);
+}
+
+.button-primary:hover:not(:disabled) {
+  background-color: var(--color-gray-400);
+}
+
+.button-secondary {
+  background-color: var(--color-white);
+  color: var(--color-gray-500);
+  border: 0.1rem solid var(--color-gray-300);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background-color: var(--color-gray-100);
+}
+
+.loading {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 0.3rem solid transparent;
+  animation: loader 1s ease infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0turn);
+  }
+
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.button-primary .loading {
+  border-top-color: var(--color-white);
+}
+
+.button-secondary .loading {
+  border-top-color: var(--color-black);
+}
