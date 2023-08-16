@@ -36,7 +36,6 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isHiddenIcon, setIsHiddenIcon] = useState(true);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleShowPassword = () => {
     setIsShowPassword((show) => !show);
   };

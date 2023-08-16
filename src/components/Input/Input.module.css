@@ -2,7 +2,7 @@
 
 .input_wrapper {
   position: relative;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-style: normal;
   font-weight: 400;
 
@@ -14,13 +14,13 @@
 }
 
 .password_wrapper input {
-  padding-right: 50px;
+  padding-right: 5rem;
 }
 
 .password {
   position: absolute;
   top: calc(var(--p-top) + 0.7rem);
-  right: 10px;
+  right: 1rem;
   transform: translateY(-50%);
   cursor: pointer;
   background-color: transparent;
@@ -31,7 +31,7 @@
 .field {
   outline: 0;
   border: none;
-  border-bottom: 1px solid var(--color-gray-primary);
+  border-bottom: 0.1rem solid var(--color-gray-primary);
   padding: var(--p-top);
   margin-bottom: 2.6rem;
   width: 100%;

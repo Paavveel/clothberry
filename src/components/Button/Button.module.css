@@ -20,12 +20,12 @@
   transition: background-color 0.3s;
   user-select: none;
   touch-action: manipulation;
-  line-height: 18px;
+  line-height: 1.8rem;
   color: var(--color-black);
   display: flex;
   justify-content: center;
   align-items: center;
-  column-gap: 5px;
+  column-gap: 0.5rem;
 }
 
 .button.button:active.button-primary:not(:disabled) {
@@ -79,7 +79,7 @@
 .button-secondary {
   background-color: var(--color-white);
   color: var(--color-gray-500);
-  border: 1px solid var(--color-gray-300);
+  border: 0.1rem solid var(--color-gray-300);
 }
 
 .button-secondary:hover:not(:disabled) {
@@ -88,10 +88,10 @@
 
 .loading {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  border: 3px solid transparent;
+  border: 0.3rem solid transparent;
   animation: loader 1s ease infinite;
 }
 

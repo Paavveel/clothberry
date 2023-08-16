@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 10rem 0;
+  margin: 7rem 0;
 }
 
 .title {
@@ -20,8 +20,8 @@
 
 @media (width <= 480px) {
   .form {
-    font-size: 11px;
-    width: 30rem;
-    padding: 15px;
+    font-size: 1.1rem;
+    width: 28rem;
+    padding: 1.5rem;
   }
 }

@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
+import { AppRoutes } from 'config/routes';
 
-import { Button } from '@components/Button/Button';
-import { Checkbox } from '@components/Checkbox/Checkbox';
-import { Form } from '@components/Form/Form';
-import { Input } from '@components/Input/Input';
 import { emailValidator, validateName, validatePassword, validatePostCode } from '@helpers/Validators';
 
-import styles from './RegisterPage.module.css';
+import { Button, Checkbox, Form, Input } from '../../components';
+import styles from './SignUpPage.module.css';
 
 interface IOption {
   value: string;
@@ -46,7 +44,7 @@ const getValueFromCountry = (value: string) => {
   return value ? options.find((option) => option.value === value) : '';
 };
 
-export const RegisterPage: FC = () => {
+export const SignUpPage: FC = () => {
   const [defaultBillingShipping, setDefaultBillingShipping] = useState(false);
   const [defaultShipping, setDefaultShipping] = useState(false);
   const [defaultBilling, setDefaultBilling] = useState(false);
@@ -85,9 +83,7 @@ export const RegisterPage: FC = () => {
     setDefaultBilling((prev) => !prev);
   };
 
-  const submit: SubmitHandler<FormRegister> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
+  const submit: SubmitHandler<FormRegister> = () => {
     reset();
   };
 
@@ -167,33 +163,38 @@ export const RegisterPage: FC = () => {
           validate: (value: string) => validateName(value),
         }}
       />
-      <Input<FormRegister>
-        type='date'
-        placeholder='Date of birth'
-        label='dateOfBirth'
-        register={register}
-        error={errors.dateOfBirth}
-        options={{
-          required: '⚠ Date of birth is required field!',
-          validate: (value: string) => {
-            const today = new Date();
-            const selectedDate: Date = new Date(value);
-            const minAge = 13; // Минимальный допустимый возраст (в годах)
 
-            if (Number.isNaN(selectedDate.getTime())) {
-              return '⚠ Invalid date format';
-            }
+      <div className={styles['date-wrapper']}>
+        <span>Date of Birth:</span>
+        <Input<FormRegister>
+          type='date'
+          placeholder='Date of birth'
+          label='dateOfBirth'
+          register={register}
+          error={errors.dateOfBirth}
+          options={{
+            required: '⚠ Date of birth is required field!',
+            validate: (value: string) => {
+              const today: Date = new Date();
+              const selectedDate: Date = new Date(value);
+              const minAge = 13;
 
-            const ageDifference = today.getFullYear() - selectedDate.getFullYear();
+              if (Number.isNaN(selectedDate.getTime())) {
+                return '⚠ Invalid date format';
+              }
 
-            if (ageDifference < minAge) {
-              return `⚠ You must be at least ${minAge} years old`;
-            }
+              const ageDifference = today.getFullYear() - selectedDate.getFullYear();
 
-            return undefined;
-          },
-        }}
-      />
+              if (ageDifference < minAge) {
+                return `⚠ You must be at least ${minAge} years old`;
+              }
+
+              return undefined;
+            },
+          }}
+        />
+      </div>
+
       <h3 className={styles.subheading}>Shipping address</h3>
       <Input<FormRegister>
         type='text'
@@ -371,7 +372,7 @@ export const RegisterPage: FC = () => {
 
       <p>
         Already have an account?{' '}
-        <Link to='/login' className={styles.login}>
+        <Link to={AppRoutes.SIGNIN} className={styles.login}>
           Login
         </Link>
       </p>

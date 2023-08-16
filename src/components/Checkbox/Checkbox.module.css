@@ -3,7 +3,7 @@
   align-items: center;
   user-select: none;
   padding: 0.6em 0;
-  gap: 20px;
+  gap: 2rem;
   justify-content: start;
   text-align: left;
 }
@@ -15,18 +15,18 @@
 .mcui-checkbox input[type="checkbox"],
 .mcui-radio input[type="checkbox"] {
   position: absolute !important;
-  height: 1px;
-  width: 1px;
+  height: 0.1rem;
+  width: 0.1rem;
   overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
+  clip: rect(0.1rem, 0.1rem, 0.1rem, 0.1rem);
 }
 
 .mcui-checkbox input[type="checkbox"] + div,
 .mcui-radio input[type="checkbox"] + div {
-  border: 2px solid #8d9aa9;
+  border: 0.2rem solid #8d9aa9;
   height: 1.5em;
   width: 1.5em;
-  border-radius: 2px;
+  border-radius: 0.2rem;
   position: relative;
 }
 
@@ -39,8 +39,8 @@
 .mcui-checkbox input[type="checkbox"]:active + div,
 .mcui-radio input[type="checkbox"]:focus + div,
 .mcui-radio input[type="checkbox"]:active + div {
-  outline: 2px dashed #8d9aa9;
-  outline-offset: 2px;
+  outline: 0.2rem dashed #8d9aa9;
+  outline-offset: 0.2rem;
 }
 
 .mcui-checkbox input[type="checkbox"]:checked + div,
@@ -60,7 +60,7 @@
 .mcui-check polyline {
   fill: none;
   transform-origin: 50% 50%;
-  stroke-width: 5px;
+  stroke-width: 0.5rem;
   stroke-dasharray: 22.7714;
   stroke: currentcolor;
 }
@@ -80,13 +80,13 @@
 .mcui-checkbox input[type="checkbox"]:indeterminate + div::after,
 .mcui-radio input[type="checkbox"]:indeterminate + div::after {
   content: "";
-  height: 4px;
+  height: 0.4rem;
   width: 60%;
   left: 20%;
-  top: calc(50% - 2px);
+  top: calc(50% - 0.2rem);
   position: absolute;
   background: #8d9aa9;
-  border-radius: 1px;
+  border-radius: 0.1rem;
 }
 
 .mcui-checkbox input[type="checkbox"]:disabled ~ div,
@@ -98,6 +98,7 @@
 .mcui-checkbox input[type="checkbox"]:enabled ~ div,
 .mcui-radio input[type="checkbox"]:enabled ~ div {
   cursor: default;
+  flex-shrink: 0;
 }
 
 @supports (display: grid) {
