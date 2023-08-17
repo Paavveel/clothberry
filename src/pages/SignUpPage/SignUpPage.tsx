@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
@@ -8,55 +7,23 @@ import classNames from 'classnames';
 import { AppRoutes } from 'config/routes';
 
 import { api } from '@api/client';
-import { BaseAddress } from '@commercetools/platform-sdk';
 import { emailValidator, validateName, validatePassword, validatePostCode } from '@helpers/Validators';
 import { login } from '@store/features/auth/authApi';
-import { signup } from '@store/features/signup/signupApi';
+import { signup } from '@store/features/auth/signupApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { Button, Checkbox, Form, Input } from '../../components';
 import styles from './SignUpPage.module.css';
+import { buildNewCustomer } from './buildNewCustomer';
+import type { OptionCountry, TCustomer } from './types';
+import { FormRegister } from './types/interface';
 
-type TCustomer = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  middleName?: string;
-  defaultBillingAddress?: number;
-  defaultShippingAddress?: number;
-  addresses?: BaseAddress[];
-};
-
-interface IOption {
-  value: string;
-  label: string;
-}
-const options: IOption[] = [
+const options: OptionCountry[] = [
   { value: 'DE', label: 'Germany' },
   { value: 'AT', label: 'Austria' },
   { value: 'US', label: 'United States' },
   { value: 'NL', label: 'Netherlands' },
 ];
-
-interface FormRegister extends Record<string, unknown> {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  dateOfBirth: string;
-  ShippingStreet: string;
-  ShippingCity: string;
-  ShippingPostalCode: string;
-  ShippingCountry: string;
-  BillingStreet: string;
-  BillingCity: string;
-  BillingPostalCode: string;
-  BillingCountry: string;
-}
 
 const getValueFromCountry = (value: string) => {
   return value ? options.find((option) => option.value === value) : '';
@@ -66,6 +33,7 @@ export const SignUpPage: FC = () => {
   const [defaultBillingShipping, setDefaultBillingShipping] = useState(false);
   const [defaultShipping, setDefaultShipping] = useState(false);
   const [defaultBilling, setDefaultBilling] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -75,12 +43,14 @@ export const SignUpPage: FC = () => {
   } = useForm<FormRegister>({
     mode: 'onChange',
   });
+
   const state = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
-  const watchShippingCountry = watch('ShippingCountry') as unknown as IOption;
-  const watchBillingPostalCode = watch('BillingCountry') as unknown as IOption;
+  const watchShippingCountry = watch('ShippingCountry') as unknown as OptionCountry;
+  const watchBillingPostalCode = watch('BillingCountry') as unknown as OptionCountry;
 
   const handleDefaultBillingShipping = () => {
     if (defaultShipping) {
@@ -106,82 +76,27 @@ export const SignUpPage: FC = () => {
     setDefaultBilling(!defaultBilling);
   };
 
-  const submit: SubmitHandler<FormRegister> = async ({
-    email,
-    firstName,
-    lastName,
-    middleName,
-    BillingCity,
-    BillingCountry,
-    BillingPostalCode,
-    BillingStreet,
-    ShippingCity,
-    ShippingCountry,
-    ShippingPostalCode,
-    ShippingStreet,
-    dateOfBirth,
-    password,
-  }) => {
+  const submit: SubmitHandler<FormRegister> = async (data) => {
     const customer: TCustomer = {
-      email,
-      password,
-      firstName,
-      lastName,
-      dateOfBirth,
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      dateOfBirth: data.dateOfBirth,
     };
 
-    const addresses: BaseAddress[] = [
-      {
-        country: (ShippingCountry as unknown as IOption).value,
-        postalCode: ShippingPostalCode,
-        city: ShippingCity,
-        streetName: ShippingStreet,
-      },
-    ];
-
-    if (middleName.length) {
-      customer.middleName = middleName;
-    }
-    if (
-      BillingCity.length &&
-      (BillingCountry as unknown as IOption).value &&
-      BillingPostalCode.length &&
-      BillingStreet.length
-    ) {
-      addresses.push({
-        country: (BillingCountry as unknown as IOption).value,
-        postalCode: BillingPostalCode,
-        city: BillingCity,
-        streetName: BillingStreet,
-      });
-    }
-    console.log(defaultBillingShipping);
-    if (defaultBillingShipping) {
-      customer.defaultBillingAddress = 0;
-      customer.defaultShippingAddress = 0;
-    }
-    if (defaultShipping) {
-      customer.defaultShippingAddress = 0;
-    }
-    if (defaultBilling) {
-      customer.defaultBillingAddress = 1;
-    }
-    if (defaultBilling && defaultShipping) {
-      customer.defaultBillingAddress = 1;
-      customer.defaultShippingAddress = 0;
-    }
-
-    customer.addresses = addresses;
+    buildNewCustomer(data, customer, defaultBillingShipping, defaultShipping, defaultBilling);
 
     try {
       await dispatch(signup(customer)).unwrap();
-      api.changeToPasswordFlow({ username: email, password });
-      await dispatch(login({ username: email, password })).unwrap();
+      api.changeToPasswordFlow({ username: data.email, password: data.password });
+      await dispatch(login({ username: data.email, password: data.password })).unwrap();
       navigate(AppRoutes.ROOT, { replace: true });
     } catch (error) {}
   };
 
   if (!state.isLoggedIn) <Navigate to={AppRoutes.ROOT} replace />;
+
   return (
     <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
       <Input<FormRegister>
@@ -354,8 +269,7 @@ export const SignUpPage: FC = () => {
               options={options}
               placeholder='Country *'
               value={getValueFromCountry(value)}
-              // onChange={(newValue) => onChange((newValue as IOption).value)}
-              onChange={(newValue) => onChange(newValue as IOption)}
+              onChange={(newValue) => onChange(newValue as OptionCountry)}
             />
             {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
           </>
@@ -443,7 +357,7 @@ export const SignUpPage: FC = () => {
                   options={options}
                   placeholder='Country *'
                   value={getValueFromCountry(value)}
-                  onChange={(newValue) => onChange(newValue as IOption)}
+                  onChange={(newValue) => onChange(newValue as OptionCountry)}
                 />
                 {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
               </>
@@ -471,6 +385,12 @@ export const SignUpPage: FC = () => {
           Login
         </Link>
       </p>
+
+      {state.errorMessage && (
+        <p className={styles.response__error}>
+          <span>❌</span> {state.errorMessage}
+        </p>
+      )}
     </Form>
   );
 };

@@ -3,8 +3,8 @@ import { Customer } from '@commercetools/platform-sdk';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
-import { signup } from '../signup/signupApi';
 import { login } from './authApi';
+import { signup } from './signupApi';
 
 export interface AuthState {
   isLoggedIn: boolean;
