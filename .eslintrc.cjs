@@ -49,6 +49,8 @@ module.exports = {
     'no-console': 1,
     'react/jsx-props-no-spreading': 0,
     'react/button-has-type': 0,
+    'no-param-reassign': [2, { props: false }],
+    'no-empty': [2, { allowEmptyCatch: true }],
   },
   settings: {
     'import/resolver': {
