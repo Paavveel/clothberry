@@ -3,6 +3,7 @@ import { Customer } from '@commercetools/platform-sdk';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
+import { signup } from '../signup/signupApi';
 import { login } from './authApi';
 
 export interface AuthState {
@@ -44,6 +45,20 @@ export const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.errorMessage = action.payload;
+        }
+      })
+      .addCase(signup.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = '';
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.isLoggedIn = true;
+        state.loading = false;
+      })
+      .addCase(signup.rejected, (state, action) => {
         state.loading = false;
         if (action.payload) {
           state.errorMessage = action.payload;
