@@ -1,0 +1,20 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.header__item {
+  list-style-type: none;
+}
+
+.header__item:not(:last-child) {
+  margin-right: 44px;
+}
