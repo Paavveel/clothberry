@@ -39,6 +39,10 @@
   color: var(--color-black);
 }
 
+.login-error {
+  color: var(--color-red);
+}
+
 @media (width <= 480px) {
   .button {
     width: 26rem;
