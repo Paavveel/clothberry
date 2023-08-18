@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
@@ -9,6 +9,7 @@ import { AppRoutes } from 'config/routes';
 import { api } from '@api/client';
 import { emailValidator, validateName, validatePassword, validatePostCode } from '@helpers/Validators';
 import { login } from '@store/features/auth/authApi';
+import { clearError } from '@store/features/auth/authSlice';
 import { signup } from '@store/features/auth/signupApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -47,6 +48,12 @@ export const SignUpPage: FC = () => {
   const state = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
   const navigate = useNavigate();
 
   const watchShippingCountry = watch('ShippingCountry') as unknown as OptionCountry;
@@ -59,21 +66,21 @@ export const SignUpPage: FC = () => {
     if (defaultBilling) {
       setDefaultShipping(false);
     }
-    setDefaultBillingShipping(!defaultBillingShipping);
+    setDefaultBillingShipping((prev) => !prev);
   };
 
   const handleDefaultShipping = () => {
     if (defaultBillingShipping) {
       setDefaultBillingShipping(false);
     }
-    setDefaultShipping(!defaultShipping);
+    setDefaultShipping((prev) => !prev);
   };
 
   const handleDefaultBilling = () => {
     if (defaultBillingShipping) {
       setDefaultBillingShipping(false);
     }
-    setDefaultBilling(!defaultBilling);
+    setDefaultBilling((prev) => !prev);
   };
 
   const submit: SubmitHandler<FormRegister> = async (data) => {
@@ -95,7 +102,7 @@ export const SignUpPage: FC = () => {
     } catch (error) {}
   };
 
-  if (!state.isLoggedIn) <Navigate to={AppRoutes.ROOT} replace />;
+  if (state.isLoggedIn) <Navigate to={AppRoutes.ROOT} replace />;
 
   return (
     <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
@@ -243,17 +250,6 @@ export const SignUpPage: FC = () => {
         }}
       />
 
-      <Input<FormRegister>
-        type='text'
-        placeholder='Postal Code *'
-        label='ShippingPostalCode'
-        register={register}
-        error={errors.ShippingPostalCode}
-        options={{
-          required: '⚠ Postal Code is required field!',
-          validate: (value: string) => validatePostCode(value, watchShippingCountry),
-        }}
-      />
       <Controller
         control={control}
         name='ShippingCountry'
@@ -274,6 +270,18 @@ export const SignUpPage: FC = () => {
             {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
           </>
         )}
+      />
+
+      <Input<FormRegister>
+        type='text'
+        placeholder='Postal Code *'
+        label='ShippingPostalCode'
+        register={register}
+        error={errors.ShippingPostalCode}
+        options={{
+          required: '⚠ Postal Code is required field!',
+          validate: (value: string) => validatePostCode(value, watchShippingCountry),
+        }}
       />
 
       <Checkbox
@@ -331,17 +339,6 @@ export const SignUpPage: FC = () => {
             }}
           />
 
-          <Input<FormRegister>
-            type='text'
-            placeholder='Postal Code *'
-            label='BillingPostalCode'
-            register={register}
-            error={errors.BillingPostalCode}
-            options={{
-              required: '⚠ Postal Code is required field!',
-              validate: (value: string) => validatePostCode(value, watchBillingPostalCode),
-            }}
-          />
           <Controller
             control={control}
             name='BillingCountry'
@@ -362,6 +359,18 @@ export const SignUpPage: FC = () => {
                 {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
               </>
             )}
+          />
+
+          <Input<FormRegister>
+            type='text'
+            placeholder='Postal Code *'
+            label='BillingPostalCode'
+            register={register}
+            error={errors.BillingPostalCode}
+            options={{
+              required: '⚠ Postal Code is required field!',
+              validate: (value: string) => validatePostCode(value, watchBillingPostalCode),
+            }}
           />
         </>
       )}

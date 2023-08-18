@@ -1,6 +1,6 @@
 import { BaseAddress } from '@commercetools/platform-sdk';
 
-import { CustomersAddressArrayIndex, FormRegister, OptionCountry, TCustomer } from './types';
+import { FormRegister, OptionCountry, TCustomer } from './types';
 
 function checkDefaultAddress(
   newCustomer: TCustomer,
@@ -9,18 +9,18 @@ function checkDefaultAddress(
   defaultBilling: boolean
 ): void {
   if (defaultBillingShipping) {
-    newCustomer.defaultBillingAddress = Number(CustomersAddressArrayIndex.FIRST);
-    newCustomer.defaultShippingAddress = Number(CustomersAddressArrayIndex.FIRST);
+    newCustomer.defaultBillingAddress = 0;
+    newCustomer.defaultShippingAddress = 0;
   }
   if (defaultShipping) {
-    newCustomer.defaultShippingAddress = Number(CustomersAddressArrayIndex.FIRST);
+    newCustomer.defaultShippingAddress = 0;
   }
   if (defaultBilling) {
-    newCustomer.defaultBillingAddress = Number(CustomersAddressArrayIndex.SECOND);
+    newCustomer.defaultBillingAddress = 1;
   }
   if (defaultBilling && defaultShipping) {
-    newCustomer.defaultBillingAddress = Number(CustomersAddressArrayIndex.SECOND);
-    newCustomer.defaultShippingAddress = Number(CustomersAddressArrayIndex.FIRST);
+    newCustomer.defaultBillingAddress = 1;
+    newCustomer.defaultShippingAddress = 0;
   }
 }
 

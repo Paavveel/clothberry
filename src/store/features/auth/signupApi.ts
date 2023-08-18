@@ -4,39 +4,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const signup = createAsyncThunk<Customer, CustomerDraft, { rejectValue: string }>(
   'register/signup',
-  async (
-    {
-      email,
-      password,
-      firstName,
-      lastName,
-      middleName,
-      dateOfBirth,
-      addresses,
-      defaultBillingAddress,
-      shippingAddresses,
-      defaultShippingAddress,
-      billingAddresses,
-    },
-    { rejectWithValue }
-  ) => {
+  async (currentCustomerDraft, { rejectWithValue }) => {
     try {
       const response = await api.request
         .customers()
         .post({
-          body: {
-            email,
-            password,
-            firstName,
-            lastName,
-            middleName,
-            dateOfBirth,
-            addresses,
-            defaultBillingAddress,
-            shippingAddresses,
-            defaultShippingAddress,
-            billingAddresses,
-          },
+          body: currentCustomerDraft,
         })
         .execute();
       return response.body.customer;
