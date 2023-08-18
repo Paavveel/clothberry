@@ -21,6 +21,10 @@ const validatePassword = (value: string) => {
     return '⚠ Password must contain at least 1 digit';
   }
 
+  if (!/^\S*$/.test(value)) {
+    return '⚠ Password must not contain leading or trailing whitespace';
+  }
+
   return undefined;
 };
 

@@ -3,9 +3,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { AppRoutes } from 'config/routes';
 
 import { Layout } from '@layout/Layout';
+import { SignInPage } from '@pages/SignInPage';
 import { SignUpPage } from '@pages/SignUpPage';
 
-const { ROOT, SIGNUP } = AppRoutes;
+const { ROOT, SIGNUP, SIGNIN } = AppRoutes;
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: SIGNUP,
         element: <SignUpPage />,
+      },
+      {
+        path: SIGNIN,
+        element: <SignInPage />,
       },
     ],
   },
