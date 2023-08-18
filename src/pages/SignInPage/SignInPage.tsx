@@ -86,7 +86,11 @@ export const SignInPage: FC = () => {
         </Link>
       </p>
 
-      {errorMessage && <p className={styles['login-error']}>{errorMessage}</p>}
+      {errorMessage && (
+        <p className={styles.response__error}>
+          <span>❌</span> {errorMessage}
+        </p>
+      )}
     </Form>
   );
 };
