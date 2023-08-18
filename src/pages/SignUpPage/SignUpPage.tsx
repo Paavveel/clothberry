@@ -102,7 +102,7 @@ export const SignUpPage: FC = () => {
     } catch (error) {}
   };
 
-  if (state.isLoggedIn) <Navigate to={AppRoutes.ROOT} replace />;
+  if (state.isLoggedIn) return <Navigate to={AppRoutes.ROOT} replace />;
 
   return (
     <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
