@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ClientBuilder, HttpMiddlewareOptions, UserAuthOptions } from '@commercetools/sdk-client-v2';
 
+import { AppTokenCache } from './token';
+
 const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
 const authHost = import.meta.env.VITE_CTP_AUTH_URL;
 const apiHost = import.meta.env.VITE_CTP_API_URL;
@@ -18,9 +20,11 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 class CreateApi {
   private client = new ClientBuilder();
 
+  public currentToken = new AppTokenCache();
+
   public anonymousID = uuidv4();
 
-  public request = this.getAnonymousFlowApi();
+  public request = this.currentToken.tokenStore.token ? this.getExistingFlowApi() : this.getAnonymousFlowApi();
 
   private getAnonymousFlowApi() {
     const client = this.client
@@ -55,7 +59,19 @@ class CreateApi {
         },
         scopes: scopes.split(' '),
         fetch,
+        tokenCache: this.currentToken,
       })
+      .withHttpMiddleware(httpMiddlewareOptions)
+      .build();
+
+    return createApiBuilderFromCtpClient(client).withProjectKey({
+      projectKey,
+    });
+  }
+
+  private getExistingFlowApi() {
+    const client = this.client
+      .withExistingTokenFlow(`Bearer ${this.currentToken.tokenStore.token}`, { force: true })
       .withHttpMiddleware(httpMiddlewareOptions)
       .build();
 

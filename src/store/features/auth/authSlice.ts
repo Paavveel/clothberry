@@ -1,9 +1,10 @@
 import { api } from '@api/client';
 import { Customer } from '@commercetools/platform-sdk';
+import { removeTokenFromStorage } from '@helpers/TokenStorage';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
-import { login } from './authApi';
+import { checkLogin, login } from './authApi';
 import { signup } from './signupApi';
 
 export interface AuthState {
@@ -14,7 +15,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  isLoggedIn: false,
+  isLoggedIn: Boolean(api.currentToken.tokenStore.token),
   customer: null,
   loading: false,
   errorMessage: '',
@@ -25,6 +26,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      removeTokenFromStorage();
       api.changeToAnonymousFlow();
       state.isLoggedIn = false;
       state.customer = null;
@@ -50,6 +52,7 @@ export const authSlice = createSlice({
           state.errorMessage = action.payload;
         }
       })
+
       .addCase(signup.pending, (state) => {
         state.loading = true;
         state.errorMessage = '';
@@ -59,6 +62,20 @@ export const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(signup.rejected, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.errorMessage = action.payload;
+        }
+      })
+
+      .addCase(checkLogin.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = '';
+      })
+      .addCase(checkLogin.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(checkLogin.rejected, (state, action) => {
         state.loading = false;
         if (action.payload) {
           state.errorMessage = action.payload;
