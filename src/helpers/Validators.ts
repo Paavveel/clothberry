@@ -42,31 +42,30 @@ interface IOption {
 }
 
 const validatePostCode = (newValue: string, country: IOption) => {
-  const { label, value } = country;
   let postalCode: RegExp | null = null;
-  switch (value) {
+  switch (country?.value) {
     case 'AT':
       postalCode = /^(?:(?:[2-8]\d|9[0-7]|0?[28]|0?9(?=09))(?:\d{2}))$/;
       if (!postalCode.test(newValue)) {
-        return `⚠ Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${country?.label}`;
       }
       break;
     case 'DE':
       postalCode = /^\d{5}$/;
       if (!postalCode.test(newValue)) {
-        return `⚠ Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${country?.label}`;
       }
       break;
     case 'US':
       postalCode = /^\d{5}(?:-\d{4})?$/;
       if (!postalCode.test(newValue)) {
-        return `⚠ Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${country?.label}`;
       }
       break;
     case 'NL':
       postalCode = /^(?:NL-)?(?:[1-9]\d{3} ?(?:[A-EGHJ-NPRTVWXZ][A-EGHJ-NPRSTVWXZ]|S[BCEGHJ-NPRTVWXZ]))$/i;
       if (!postalCode.test(newValue)) {
-        return `⚠ Invalid postal code for ${label}`;
+        return `⚠ Invalid postal code for ${country?.label}`;
       }
       break;
 
