@@ -30,13 +30,13 @@ export const Header: FC = () => {
           </div>
           <div className={styles['nav-btns']}>
             <Link to='*' className={styles.like}>
-              <img src='like.svg' alt='' />
+              <img src='fav.svg' alt='' />
             </Link>
             <Link to='*' className={styles.bag}>
-              <img src='bag.svg' alt='' />
+              <img src='basket.svg' alt='' />
             </Link>
             <Link to='/login' className={styles.profile}>
-              <img src='profile.svg' alt='' />
+              <img src='user.svg' alt='' />
             </Link>
           </div>
         </div>
