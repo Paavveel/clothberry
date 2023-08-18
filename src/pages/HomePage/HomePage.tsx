@@ -2,7 +2,7 @@ import classes from './HomePage.module.css';
 
 export const HomePage = () => {
   return (
-    <div className={classes.wrapper}>
+    <div className='app container'>
       <header className={classes.header}>
         <ul className={classes.header__items}>
           <li className={classes.header__item}>Новинки</li>
