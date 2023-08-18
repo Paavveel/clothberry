@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { AppRoutes } from 'config/routes';
 
 import { Layout } from '@layout/Layout';
+import { HomePage } from '@pages/HomePage';
 import { SignUpPage } from '@pages/SignUpPage';
 
 const { ROOT, SIGNUP } = AppRoutes;
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        element: <h1>Main</h1>,
+        element: <HomePage />,
         index: true,
       },
       {
