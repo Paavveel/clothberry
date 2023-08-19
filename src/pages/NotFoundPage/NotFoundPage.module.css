@@ -1,4 +1,49 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(206 185 173 / 100%);
+  min-height: 100vh;
+}
+
 .title {
-  color: teal;
+  margin: 10px 0;
   font-size: 30px;
+}
+
+.subtitle {
+  text-align: center;
+  max-width: 350px;
+  font-size: 16px;
+}
+
+.btn-home {
+  margin-top: 1rem;
+  display: block;
+  background-color: rgb(45 45 45 / 100%);
+  color: rgb(255 255 255 / 100%);
+  padding: 10px;
+  transition: 0.3s linear;
+}
+
+.btn-home:hover {
+  transform: scale(1.05);
+}
+
+.numbers {
+  display: block;
+  font-size: 50px;
+  font-weight: 700;
+  animation: rotate 1s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: scale(4) rotate(0);
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
 }
