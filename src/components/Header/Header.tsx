@@ -7,7 +7,7 @@ export const Header: FC = () => {
   return (
     <header>
       <nav className={styles.nav}>
-        <ul className={styles.left}>
+        <ul className={styles.menu}>
           <li>
             <a href='/'>Новинки</a>
           </li>
@@ -22,7 +22,7 @@ export const Header: FC = () => {
           </li>
         </ul>
         <Link to='/'>
-          <img src='logo.svg' alt='' />
+          <img src='logo.svg' alt='logo' />
         </Link>
         <div className={styles.right}>
           <div className={styles['search-wrapper']}>
@@ -30,13 +30,16 @@ export const Header: FC = () => {
           </div>
           <div className={styles['nav-btns']}>
             <Link to='*' className={styles.like}>
-              <img src='fav.svg' alt='' />
+              <img src='fav.svg' alt='favorite' />
             </Link>
             <Link to='*' className={styles.bag}>
-              <img src='basket.svg' alt='' />
+              <img src='basket.svg' alt='basket' />
             </Link>
-            <Link to='/login' className={styles.profile}>
-              <img src='user.svg' alt='' />
+            <Link to='/signin' className={styles.profile}>
+              <img src='user.svg' alt='signin' />
+            </Link>
+            <Link to='/signup' className={styles.profile}>
+              <img src='user.svg' alt='signup' />
             </Link>
           </div>
         </div>

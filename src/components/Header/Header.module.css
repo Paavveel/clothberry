@@ -9,7 +9,7 @@ header {
   flex-wrap: wrap;
 }
 
-.left {
+.menu {
   list-style: none;
   display: flex;
   column-gap: 44px;
