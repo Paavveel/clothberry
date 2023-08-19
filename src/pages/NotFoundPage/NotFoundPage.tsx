@@ -11,7 +11,7 @@ export const NotFoundPage = () => {
         The address was typed incorrectly, or the page no longer exists on the site.
       </span>
       <Link className={styles['btn-home']} to='/'>
-        Back to Home
+        Back
       </Link>
     </div>
   );

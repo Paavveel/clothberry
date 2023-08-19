@@ -3,11 +3,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgb(206 185 173 / 100%);
   min-height: 100vh;
+  background-color: var(--bg);
 }
 
 .title {
+  text-transform: capitalize;
   margin: 10px 0;
   font-size: 30px;
 }
@@ -21,9 +22,9 @@
 .btn-home {
   margin-top: 1rem;
   display: block;
-  background-color: rgb(45 45 45 / 100%);
-  color: rgb(255 255 255 / 100%);
-  padding: 10px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  padding: 5px 10px;
   transition: 0.3s linear;
 }
 
