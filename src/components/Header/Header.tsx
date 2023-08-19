@@ -25,6 +25,9 @@ export const Header: FC = () => {
             <a href='*'>Sale</a>
           </li>
         </ul>
+        <div className={styles.burger}>
+          <span className={styles['burger-line']}> </span>
+        </div>
       </nav>
       <div className={styles['logo-wrapper']}>
         <Link to='/' className={styles.logo}>
@@ -42,10 +45,10 @@ export const Header: FC = () => {
           <Link to='*' className={styles.bag}>
             <img src={basket} alt='basket' />
           </Link>
-          <Link to='/signin' className={styles.profile}>
+          <Link to='/signin' className={styles.signin}>
             <img src={user} alt='signin' />
           </Link>
-          <Link to='/signup' className={styles.profile}>
+          <Link to='/signup' className={styles.signup}>
             <img src={user} alt='signup' />
           </Link>
         </div>
