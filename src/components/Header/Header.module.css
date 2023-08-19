@@ -1,24 +1,37 @@
-header {
-  margin-top: 4rem;
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: calc(100% / 3);
 }
 
-.nav {
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  width: calc(100% / 3);
+}
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  padding: 20px 1rem;
 }
 
 .menu {
   list-style: none;
   display: flex;
-  column-gap: 44px;
-  padding-left: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .right {
   display: flex;
   column-gap: 75px;
+  width: calc(100% / 3);
 }
 
 .nav-btns {
@@ -35,11 +48,17 @@ header {
   transform: scale(1.1);
 }
 
+.logo {
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
 .search {
   outline: 0;
   border: none;
   border-bottom: 1px solid #dadada;
-  background-image: url("search.svg");
+  background-image: url("@assets/img/search.svg");
   background-repeat: no-repeat;
   padding-left: 2.5rem;
   padding-bottom: 5px;
