@@ -1,9 +1,9 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import basket from '@assets/img/basket.svg';
-import fav from '@assets/img/fav.svg';
-import user from '@assets/img/user.svg';
+import { ReactComponent as Basket } from '@assets/img/basket.svg';
+import { ReactComponent as Fav } from '@assets/img/fav.svg';
+import { ReactComponent as User } from '@assets/img/user.svg';
 
 import styles from './Header.module.css';
 
@@ -53,13 +53,13 @@ export const Header: FC = () => {
         </div>
         <div className={styles['nav-btns']}>
           <Link to='*' className={styles.like}>
-            <img src={fav} alt='favorite' width='24' height='24' />
+            <Fav />
           </Link>
           <Link to='*' className={styles.bag}>
-            <img src={basket} alt='basket' width='24' height='24' />
+            <Basket />
           </Link>
           <Link to='/signup' className={styles.signup}>
-            <img src={user} alt='signup' width='24' height='24' />
+            <User />
           </Link>
         </div>
       </div>
