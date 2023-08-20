@@ -46,19 +46,54 @@
   width: 100%;
   padding: 0;
   margin: 0;
+  transition: 0.3s;
+}
+
+.menu-active {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 71px;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  row-gap: 15px;
+  font-size: 2rem;
+  background-color: var(--color-white);
+  padding: 0 0 0 20px;
+  margin: 0;
+  transition: 0.3s;
+  list-style-type: none;
 }
 
 @media (width <= 767px) {
   .menu {
-    display: none;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 71px;
+    left: 0;
+    transform: translateX(-100%);
   }
 }
 
+.menu-link {
+  display: block;
+  width: 100%;
+}
+
 .burger {
+  position: relative;
   display: flex;
   width: 19px;
   height: 13px;
   cursor: pointer;
+  box-sizing: content-box;
+  padding: 5px;
+  border: none;
+  background-color: inherit;
+  outline: none;
 }
 
 .burger-line {
@@ -66,9 +101,31 @@
   width: 19px;
   height: 1.5px;
   background-color: #000;
+  transition: 0.3s;
   box-shadow:
     0 6px 0 0 black,
     0 12px 0 0 black;
+}
+
+.burger-line-active {
+  position: relative;
+  top: 6px;
+  display: block;
+  width: 19px;
+  height: 1.5px;
+  background-color: #000;
+  transform: rotate(45deg);
+  transition: 0.3s;
+}
+
+.burger-line-active::before {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 1.5px;
+  background-color: #000;
+  transform: rotate(-90deg);
+  transition: 0.3s;
 }
 
 @media (width > 767px) {
