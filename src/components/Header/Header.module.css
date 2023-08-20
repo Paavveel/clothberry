@@ -75,16 +75,16 @@
     left: 0;
     transform: translateX(-100%);
   }
+
+  .menu-link:hover {
+    transform: scale(1.05) translateX(14px) translateY(2px);
+    transition: 0.3s linear;
+  }
 }
 
 .menu-link {
   display: block;
   width: 100%;
-}
-
-.menu-link:hover {
-  transform: scale(1.05) translateX(14px) translateY(2px);
-  transition: 0.3s linear;
 }
 
 .burger {
