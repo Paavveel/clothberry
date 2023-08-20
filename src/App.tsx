@@ -5,15 +5,21 @@ import { AppRoutes } from 'config/routes';
 import { Layout } from '@layout/Layout';
 import { HomePage } from '@pages/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage';
+import { SignInPage } from '@pages/SignInPage';
 import { SignUpPage } from '@pages/SignUpPage';
+import { CheckAuth } from '@store/features/auth/CheckAuth';
 
-const { ROOT, SIGNUP } = AppRoutes;
+const { ROOT, SIGNUP, SIGNIN } = AppRoutes;
 
 const router = createBrowserRouter([
   {
     path: ROOT,
-    element: <Layout />,
     errorElement: <NotFoundPage />,
+    element: (
+      <CheckAuth>
+        <Layout />
+      </CheckAuth>
+    ),
     children: [
       {
         element: <HomePage />,
@@ -22,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: SIGNUP,
         element: <SignUpPage />,
+      },
+      {
+        path: SIGNIN,
+        element: <SignInPage />,
       },
     ],
   },

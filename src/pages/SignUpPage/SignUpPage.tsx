@@ -1,44 +1,30 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
 import { AppRoutes } from 'config/routes';
 
+import { api } from '@api/client';
 import { emailValidator, validateName, validatePassword, validatePostCode } from '@helpers/Validators';
+import { login } from '@store/features/auth/authApi';
+import { clearError } from '@store/features/auth/authSlice';
+import { signup } from '@store/features/auth/signupApi';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { Button, Checkbox, Form, Input } from '../../components';
 import styles from './SignUpPage.module.css';
+import { buildNewCustomer } from './buildNewCustomer';
+import type { OptionCountry, TCustomer } from './types';
+import { FormRegister } from './types/interface';
 
-interface IOption {
-  value: string;
-  label: string;
-}
-const options: IOption[] = [
+const options: OptionCountry[] = [
   { value: 'DE', label: 'Germany' },
   { value: 'AT', label: 'Austria' },
   { value: 'US', label: 'United States' },
   { value: 'NL', label: 'Netherlands' },
 ];
-
-interface FormRegister extends Record<string, unknown> {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  dateOfBirth: string;
-  ShippingStreet: string;
-  ShippingCity: string;
-  ShippingPostalCode: string;
-  ShippingCountry: string;
-  BillingStreet: string;
-  BillingCity: string;
-  BillingPostalCode: string;
-  BillingCountry: string;
-}
 
 const getValueFromCountry = (value: string) => {
   return value ? options.find((option) => option.value === value) : '';
@@ -48,22 +34,36 @@ export const SignUpPage: FC = () => {
   const [defaultBillingShipping, setDefaultBillingShipping] = useState(false);
   const [defaultShipping, setDefaultShipping] = useState(false);
   const [defaultBilling, setDefaultBilling] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     watch,
     control,
   } = useForm<FormRegister>({
     mode: 'onChange',
   });
 
-  const watchShippingCountry = watch('ShippingCountry') as unknown as IOption;
-  const watchBillingPostalCode = watch('BillingCountry') as unknown as IOption;
+  const state = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  const navigate = useNavigate();
+
+  const watchShippingCountry = watch('ShippingCountry') as unknown as OptionCountry;
+  const watchBillingPostalCode = watch('BillingCountry') as unknown as OptionCountry;
 
   const handleDefaultBillingShipping = () => {
     if (defaultShipping) {
+      setDefaultShipping(false);
+    }
+    if (defaultBilling) {
       setDefaultShipping(false);
     }
     setDefaultBillingShipping((prev) => !prev);
@@ -83,9 +83,26 @@ export const SignUpPage: FC = () => {
     setDefaultBilling((prev) => !prev);
   };
 
-  const submit: SubmitHandler<FormRegister> = () => {
-    reset();
+  const submit: SubmitHandler<FormRegister> = async (data) => {
+    const customer: TCustomer = {
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      dateOfBirth: data.dateOfBirth,
+    };
+
+    buildNewCustomer(data, customer, defaultBillingShipping, defaultShipping, defaultBilling);
+
+    try {
+      await dispatch(signup(customer)).unwrap();
+      api.changeToPasswordFlow({ username: data.email, password: data.password });
+      await dispatch(login({ username: data.email, password: data.password })).unwrap();
+      navigate(AppRoutes.ROOT, { replace: true });
+    } catch (error) {}
   };
+
+  if (state.isLoggedIn) return <Navigate to={AppRoutes.ROOT} replace />;
 
   return (
     <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
@@ -233,17 +250,6 @@ export const SignUpPage: FC = () => {
         }}
       />
 
-      <Input<FormRegister>
-        type='text'
-        placeholder='Postal Code *'
-        label='ShippingPostalCode'
-        register={register}
-        error={errors.ShippingPostalCode}
-        options={{
-          required: '⚠ Postal Code is required field!',
-          validate: (value: string) => validatePostCode(value, watchShippingCountry),
-        }}
-      />
       <Controller
         control={control}
         name='ShippingCountry'
@@ -259,12 +265,23 @@ export const SignUpPage: FC = () => {
               options={options}
               placeholder='Country *'
               value={getValueFromCountry(value)}
-              // onChange={(newValue) => onChange((newValue as IOption).value)}
-              onChange={(newValue) => onChange(newValue as IOption)}
+              onChange={(newValue) => onChange(newValue as OptionCountry)}
             />
             {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
           </>
         )}
+      />
+
+      <Input<FormRegister>
+        type='text'
+        placeholder='Postal Code *'
+        label='ShippingPostalCode'
+        register={register}
+        error={errors.ShippingPostalCode}
+        options={{
+          required: '⚠ Postal Code is required field!',
+          validate: (value: string) => validatePostCode(value, watchShippingCountry),
+        }}
       />
 
       <Checkbox
@@ -322,17 +339,6 @@ export const SignUpPage: FC = () => {
             }}
           />
 
-          <Input<FormRegister>
-            type='text'
-            placeholder='Postal Code *'
-            label='BillingPostalCode'
-            register={register}
-            error={errors.BillingPostalCode}
-            options={{
-              required: '⚠ Postal Code is required field!',
-              validate: (value: string) => validatePostCode(value, watchBillingPostalCode),
-            }}
-          />
           <Controller
             control={control}
             name='BillingCountry'
@@ -348,11 +354,23 @@ export const SignUpPage: FC = () => {
                   options={options}
                   placeholder='Country *'
                   value={getValueFromCountry(value)}
-                  onChange={(newValue) => onChange(newValue as IOption)}
+                  onChange={(newValue) => onChange(newValue as OptionCountry)}
                 />
                 {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
               </>
             )}
+          />
+
+          <Input<FormRegister>
+            type='text'
+            placeholder='Postal Code *'
+            label='BillingPostalCode'
+            register={register}
+            error={errors.BillingPostalCode}
+            options={{
+              required: '⚠ Postal Code is required field!',
+              validate: (value: string) => validatePostCode(value, watchBillingPostalCode),
+            }}
           />
         </>
       )}
@@ -366,7 +384,7 @@ export const SignUpPage: FC = () => {
         />
       )}
 
-      <Button type='submit' className={styles.button} primary>
+      <Button type='submit' className={styles.button} primary loading={state.loading}>
         Sign Up
       </Button>
 
@@ -376,6 +394,12 @@ export const SignUpPage: FC = () => {
           Login
         </Link>
       </p>
+
+      {state.errorMessage && (
+        <p className={styles.response__error}>
+          <span>❌</span> {state.errorMessage}
+        </p>
+      )}
     </Form>
   );
 };
