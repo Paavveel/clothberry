@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import basket from '@assets/img/basket.svg';
 import fav from '@assets/img/fav.svg';
-import signin from '@assets/img/signin.svg';
 import user from '@assets/img/user.svg';
 
 import styles from './Header.module.css';
@@ -39,7 +38,7 @@ export const Header: FC = () => {
             </a>
           </li>
         </ul>
-        <button className={styles.burger} onClick={handleActiveClass}>
+        <button className={active ? styles['burger-active'] : styles.burger} onClick={handleActiveClass}>
           <span className={active ? styles['burger-line-active'] : styles['burger-line']}> </span>
         </button>
       </nav>
@@ -50,20 +49,17 @@ export const Header: FC = () => {
       </div>
       <div className={styles.right}>
         <div className={styles['search-wrapper']}>
-          <input type='search' className={styles.search} placeholder='Поиск' />
+          <input type='search' className={styles.search} placeholder='search' />
         </div>
         <div className={styles['nav-btns']}>
           <Link to='*' className={styles.like}>
-            <img src={fav} alt='favorite' />
+            <img src={fav} alt='favorite' width='24' height='24' />
           </Link>
           <Link to='*' className={styles.bag}>
-            <img src={basket} alt='basket' />
-          </Link>
-          <Link to='/signin' className={styles.signin}>
-            <img src={signin} alt='signin' />
+            <img src={basket} alt='basket' width='24' height='24' />
           </Link>
           <Link to='/signup' className={styles.signup}>
-            <img src={user} alt='signup' />
+            <img src={user} alt='signup' width='24' height='24' />
           </Link>
         </div>
       </div>
