@@ -7,7 +7,11 @@ import { useAppSelector } from '@store/hooks';
 
 import { selectAuth } from './authSlice';
 
-export const RequireAuth: FC<PropsWithChildren> = ({ children }) => {
+interface RequireAuthProps {
+  children: JSX.Element;
+}
+
+export const RequireAuth: FC<PropsWithChildren<RequireAuthProps>> = ({ children }) => {
   const { isLoggedIn } = useAppSelector(selectAuth);
 
   if (!isLoggedIn) return <Navigate to={AppRoutes.SIGNIN} replace />;
