@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
-import { ReactComponent as Fav } from '@assets/img/fav.svg';
 import { ReactComponent as User } from '@assets/img/user.svg';
 
 import styles from './Header.module.css';
@@ -52,9 +51,6 @@ export const Header: FC = () => {
           <input type='search' className={styles.search} placeholder='search' />
         </div>
         <div className={styles['nav-btns']}>
-          <Link to='*' className={styles.like}>
-            <Fav />
-          </Link>
           <Link to='*' className={styles.bag}>
             <Basket />
           </Link>
