@@ -8,8 +8,9 @@ import { NotFoundPage } from '@pages/NotFoundPage';
 import { SignInPage } from '@pages/SignInPage';
 import { SignUpPage } from '@pages/SignUpPage';
 import { CheckAuth } from '@store/features/auth/CheckAuth';
+import { RequireAuth } from '@store/features/auth/RequireAuth';
 
-const { ROOT, SIGNUP, SIGNIN } = AppRoutes;
+const { ROOT, SIGNUP, SIGNIN, PROFILE, CART } = AppRoutes;
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,18 @@ const router = createBrowserRouter([
       {
         path: SIGNIN,
         element: <SignInPage />,
+      },
+      {
+        path: PROFILE,
+        element: (
+          <RequireAuth>
+            <h1>Profile</h1>
+          </RequireAuth>
+        ),
+      },
+      {
+        path: CART,
+        element: <h1>CART</h1>,
       },
     ],
   },

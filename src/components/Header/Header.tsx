@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
+import { AppRoutes } from 'config/routes';
 
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
 import { ReactComponent as Logout } from '@assets/img/logout.svg';
@@ -74,10 +75,10 @@ export const Header: FC = () => {
           <input type='search' className={styles.search} placeholder='search' />
         </div>
         <div className={styles['nav-btns']}>
-          <Link to='*'>
+          <Link to={AppRoutes.CART}>
             <Basket className={styles['header-icon']} />
           </Link>
-          <Link to='/signup'>
+          <Link to={AppRoutes.PROFILE}>
             <User className={styles['header-icon']} />
           </Link>
           {isLoggedIn && (

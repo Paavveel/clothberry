@@ -124,6 +124,8 @@
 }
 
 .logo {
+  position: relative;
+  z-index: 2;
   font-size: 28px;
   font-weight: 500;
   text-transform: uppercase;
@@ -131,7 +133,11 @@
 
 @media (width <= 400px) {
   .logo {
-    font-size: 24px;
+    font-size: 17px;
+  }
+
+  .nav-btns {
+    column-gap: 1.5rem;
   }
 }
 
