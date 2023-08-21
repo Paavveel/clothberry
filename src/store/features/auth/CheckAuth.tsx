@@ -8,7 +8,11 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { checkLogin } from './authApi';
 import { logout, selectAuth } from './authSlice';
 
-export const CheckAuth: FC<PropsWithChildren> = ({ children }) => {
+interface CheckAuthProps {
+  children: JSX.Element;
+}
+
+export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) => {
   const { isLoggedIn } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
