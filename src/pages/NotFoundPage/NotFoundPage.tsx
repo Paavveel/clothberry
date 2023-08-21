@@ -13,7 +13,7 @@ export const NotFoundPage = () => {
   } else if (typeof error === 'string') {
     errorMessage = error;
   } else {
-    errorMessage = '404';
+    errorMessage = 'Unknown error';
   }
   return (
     <div className={styles.wrapper}>

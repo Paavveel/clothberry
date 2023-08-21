@@ -9,14 +9,6 @@
   .nav {
     width: auto;
   }
-
-  .signin {
-    display: none;
-  }
-
-  .signup {
-    display: none;
-  }
 }
 
 .logo-wrapper {
@@ -51,101 +43,51 @@
 
 .menu-active {
   z-index: 1;
-  position: fixed;
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100%;
   row-gap: 15px;
   font-size: 3rem;
   background-color: var(--color-white);
-  padding: 40px 0 0 20px;
+  padding: 0;
   margin: 0;
   list-style-type: none;
-}
-
-@media (width <= 767px) {
-  .menu {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%);
-  }
-
-  .menu-link:hover {
-    transform: scale(1.05) translateX(14px) translateY(2px);
-    transition: 0.3s linear;
-  }
+  transition: 0.3s ease-out;
 }
 
 .menu-link {
   display: block;
-  width: 100%;
-}
-
-.burger {
-  position: relative;
-  display: flex;
-  width: 19px;
-  height: 13px;
-  cursor: pointer;
-  box-sizing: content-box;
-  padding: 5px;
-  border: none;
-  background-color: inherit;
-  outline: none;
-}
-
-.burger-active {
-  top: 1rem;
-  right: 1rem;
-  z-index: 2;
-  position: fixed;
-  display: flex;
-  width: 19px;
-  height: 13px;
-  cursor: pointer;
-  box-sizing: content-box;
-  padding: 5px;
-  border: none;
-  background-color: inherit;
-  outline: none;
-}
-
-.burger-line {
-  display: block;
-  width: 19px;
-  height: 1.5px;
-  background-color: var(--color-black);
-  transition: 0.3s;
-  box-shadow:
-    0 6px 0 0 var(--color-black),
-    0 12px 0 0 var(--color-black);
-}
-
-.burger-line-active {
-  position: relative;
-  top: 6px;
-  display: block;
-  width: 19px;
-  height: 1.5px;
-  background-color: var(--color-black);
-  transform: rotate(45deg);
+  width: fit-content;
   transition: 0.3s;
 }
 
-.burger-line-active::before {
-  content: "";
-  display: block;
-  width: 19px;
-  height: 1.5px;
-  background-color: var(--color-black);
-  transform: rotate(-90deg);
-  transition: 0.3s;
+@media (width <= 767px) {
+  .menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 15px;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transition: 0.3s;
+    transform: translateX(-100%);
+  }
+
+  .menu-link {
+    font-size: 4rem;
+  }
+}
+
+.menu-link:hover {
+  color: var(--color-gray-primary);
 }
 
 @media (width > 767px) {
@@ -166,6 +108,8 @@
 }
 
 .nav-btns {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   column-gap: 2.22rem;
@@ -180,6 +124,8 @@
 }
 
 .logo {
+  position: relative;
+  z-index: 2;
   font-size: 28px;
   font-weight: 500;
   text-transform: uppercase;
@@ -187,7 +133,11 @@
 
 @media (width <= 400px) {
   .logo {
-    font-size: 24px;
+    font-size: 17px;
+  }
+
+  .nav-btns {
+    column-gap: 1.5rem;
   }
 }
 
@@ -203,4 +153,77 @@
 
 .search::placeholder {
   color: var(--color-gray-primary);
+}
+
+.burger {
+  z-index: 2;
+  width: 26px;
+  height: 18px;
+  position: relative;
+  transform: rotate(0deg);
+  transition: 0.5s ease-in-out;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.burger span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: var(--color-black);
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: 0.25s ease-in-out;
+}
+
+.burger span:nth-child(1) {
+  top: 0;
+  transform-origin: left center;
+}
+
+.burger span:nth-child(2) {
+  top: 9px;
+  transform-origin: left center;
+}
+
+.burger span:nth-child(3) {
+  top: 18px;
+  transform-origin: left center;
+}
+
+.burger.open span:nth-child(1) {
+  transform: rotate(45deg);
+  top: -3px;
+  left: 8px;
+}
+
+.burger.open span:nth-child(2) {
+  width: 0%;
+  opacity: 0;
+}
+
+.burger.open span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 16px;
+  left: 8px;
+}
+
+.header-icon {
+  fill: #cecece;
+  transition: fill 0.2s;
+}
+
+.header-icon:hover {
+  fill: var(--color-black);
+}
+
+.logout {
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  border: none;
 }

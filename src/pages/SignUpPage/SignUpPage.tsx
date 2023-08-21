@@ -107,7 +107,7 @@ export const SignUpPage: FC = () => {
   return (
     <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
       <Input<FormRegister>
-        type='email'
+        type='text'
         placeholder='Email *'
         label='email'
         register={register}
@@ -200,10 +200,14 @@ export const SignUpPage: FC = () => {
                 return '⚠ Invalid date format';
               }
 
-              const ageDifference = today.getFullYear() - selectedDate.getFullYear();
+              const ageDifference = new Date(today.getTime() - selectedDate.getTime());
+              const age = Math.abs(ageDifference.getUTCFullYear() - 1970);
 
-              if (ageDifference < minAge) {
+              if (age < minAge) {
                 return `⚠ You must be at least ${minAge} years old`;
+              }
+              if (today.getTime() < selectedDate.getTime()) {
+                return `⚠ The date cannot be greater than the current one`;
               }
 
               return undefined;
