@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import classNames from 'classnames';
+
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
 import { ReactComponent as User } from '@assets/img/user.svg';
 
@@ -15,7 +17,13 @@ export const Header: FC = () => {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        <ul className={active ? styles['menu-active'] : styles.menu}>
+        {/* <ul className={active ? cn('burger open') : styles.menu}> */}
+        <ul
+          className={classNames({
+            [styles['menu-active']]: active,
+            [styles.menu]: !active,
+          })}
+        >
           <li>
             <a className={styles['menu-link']} href='*'>
               Sweatshirts
@@ -37,8 +45,16 @@ export const Header: FC = () => {
             </a>
           </li>
         </ul>
-        <button className={active ? styles['burger-active'] : styles.burger} onClick={handleActiveClass}>
-          <span className={active ? styles['burger-line-active'] : styles['burger-line']}> </span>
+        <button
+          className={classNames(styles.burger, {
+            [styles.open]: active,
+            [styles.menu]: !active,
+          })}
+          onClick={handleActiveClass}
+        >
+          <span> </span>
+          <span> </span>
+          <span> </span>
         </button>
       </nav>
       <div className={styles['logo-wrapper']}>
