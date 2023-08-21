@@ -214,3 +214,10 @@
 .header-icon:hover {
   fill: var(--color-black);
 }
+
+.logout {
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+}

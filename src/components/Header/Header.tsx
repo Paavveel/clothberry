@@ -4,13 +4,21 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
+import { ReactComponent as Logout } from '@assets/img/logout.svg';
 import { ReactComponent as User } from '@assets/img/user.svg';
+import { logout, selectAuth } from '@store/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
   const [active, setActive] = useState(false);
+  const { isLoggedIn } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   const handleActiveClass = () => {
     setActive((active) => !active);
   };
@@ -72,6 +80,11 @@ export const Header: FC = () => {
           <Link to='/signup'>
             <User className={styles['header-icon']} />
           </Link>
+          {isLoggedIn && (
+            <button type='button' className={styles.logout} onClick={handleLogout}>
+              <Logout className={styles['header-icon']} />
+            </button>
+          )}
         </div>
       </div>
     </header>
