@@ -17,7 +17,6 @@ export const Header: FC = () => {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        {/* <ul className={active ? cn('burger open') : styles.menu}> */}
         <ul
           className={classNames({
             [styles['menu-active']]: active,
@@ -67,11 +66,11 @@ export const Header: FC = () => {
           <input type='search' className={styles.search} placeholder='search' />
         </div>
         <div className={styles['nav-btns']}>
-          <Link to='*' className={styles.bag}>
-            <Basket />
+          <Link to='*'>
+            <Basket className={styles['header-icon']} />
           </Link>
-          <Link to='/signup' className={styles.signup}>
-            <User />
+          <Link to='/signup'>
+            <User className={styles['header-icon']} />
           </Link>
         </div>
       </div>

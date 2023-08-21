@@ -205,3 +205,12 @@
   top: 16px;
   left: 8px;
 }
+
+.header-icon {
+  fill: #cecece;
+  transition: fill 0.2s;
+}
+
+.header-icon:hover {
+  fill: var(--color-black);
+}
