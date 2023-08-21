@@ -18,22 +18,22 @@ export const Header: FC = () => {
         <ul className={active ? styles['menu-active'] : styles.menu}>
           <li>
             <a className={styles['menu-link']} href='*'>
-              Novelties
+              Sweatshirts
             </a>
           </li>
           <li>
             <a className={styles['menu-link']} href='*'>
-              Cloth
+              Hoodie
             </a>
           </li>
           <li>
             <a className={styles['menu-link']} href='*'>
-              Accessories
+              T-shirts
             </a>
           </li>
           <li>
             <a className={styles['menu-link']} href='*'>
-              Sale
+              Jeans
             </a>
           </li>
         </ul>
