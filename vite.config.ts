@@ -26,7 +26,7 @@ export default defineConfig({
     }),
   ],
   define: {
-    global: 'window',
+    global: 'globalThis',
   },
   server: {
     port: 3000,

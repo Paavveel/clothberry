@@ -4,9 +4,9 @@ The Clothberry ecommerce project aims to build a robust online store with Commer
 
 ## Upcoming Goals:
 
-- [ ] User login, registration, authentication
+- [x] User login, registration, authentication
 - [ ] Main pages with input validation
-- [ ] State management and routing
+- [x] State management and routing
 - [ ] Catalog browsing with API integration
 - [ ] Detailed product pages with image galleries
 - [ ] User profile editing
@@ -14,7 +14,7 @@ The Clothberry ecommerce project aims to build a robust online store with Commer
 - [ ] Enhance product pages
 - [ ] Build shopping cart with promo codes
 - [ ] Create about us page
-- [ ] Improve routing
+- [x] Improve routing
 
 The focus is on iterative development, adding new features and enhancements each sprint. Key priorities are smooth CommerceTools integration and robust front-end implementation.
 
@@ -78,8 +78,9 @@ Other available scripts:
 
 - `npm run preview` - Preview production build locally
 - `npm run test` - Run tests
-- `npm run prepare` - Install hunsky
+- `npm run coverage` - Run tests coverage
+- `npm run prepare` - Install husky
 
 ## Technology stack
 
-React, Redux Toolkit, Vite, TypeScript, HTML, CSS, CSSModules, ESLint, Stylelint, Prettier, Vites, Husky.
+React, Redux Toolkit, Vite, TypeScript, HTML, CSS, CSSModules, ESLint, Stylelint, Prettier, Vitest, Husky.
