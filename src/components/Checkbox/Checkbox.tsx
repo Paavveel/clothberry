@@ -9,9 +9,9 @@ interface CheckboxProps {
   value: boolean;
 }
 
-export const Checkbox: FC<CheckboxProps> = ({ title, htmlFor, onChange, value }) => {
+export const Checkbox: FC<CheckboxProps> = ({ title, htmlFor, onChange, value, ...props }) => {
   return (
-    <label className={styles['mcui-checkbox']} htmlFor={htmlFor}>
+    <label className={styles['mcui-checkbox']} htmlFor={htmlFor} {...props}>
       <input type='checkbox' id={htmlFor} onChange={onChange} checked={value} />
       <div>
         <svg className={styles['mcui-check']} viewBox='-2 -2 35 35' aria-hidden='true'>
