@@ -66,7 +66,7 @@ export const Header: FC = () => {
         </button>
       </nav>
       <div className={styles['logo-wrapper']}>
-        <Link to='/' className={styles.logo}>
+        <Link to='/' className={styles.logo} area-label='logo'>
           clothberry
         </Link>
       </div>
@@ -75,14 +75,14 @@ export const Header: FC = () => {
           <input type='search' className={styles.search} placeholder='search' />
         </div>
         <div className={styles['nav-btns']}>
-          <Link to={AppRoutes.CART}>
+          <Link to={AppRoutes.CART} area-label='cart'>
             <Basket className={styles['header-icon']} />
           </Link>
-          <Link to={AppRoutes.PROFILE}>
+          <Link to={AppRoutes.PROFILE} area-label='profile'>
             <User className={styles['header-icon']} />
           </Link>
           {isLoggedIn && (
-            <button type='button' className={styles.logout} onClick={handleLogout}>
+            <button type='button' aria-label='logout' className={styles.logout} onClick={handleLogout}>
               <Logout className={styles['header-icon']} />
             </button>
           )}
