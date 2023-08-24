@@ -2,11 +2,11 @@ import { api } from '@api/client';
 import { Customer } from '@commercetools/platform-sdk';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const getCustomer = createAsyncThunk<Customer, Customer['id'], { rejectValue: string }>(
+export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: string }>(
   'auth/getCustomer',
-  async (customerId, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const result = await api.request.customers().withId({ ID: customerId }).get().execute();
+      const result = await api.request.me().get().execute();
 
       return result.body;
     } catch (error) {
