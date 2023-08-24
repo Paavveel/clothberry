@@ -11,6 +11,12 @@ function checkDefaultAddress(
   if (defaultBillingShipping) {
     newCustomer.defaultBillingAddress = 0;
     newCustomer.defaultShippingAddress = 0;
+    newCustomer.shippingAddresses = [0];
+    newCustomer.billingAddresses = [0];
+  }
+  if (!defaultBillingShipping) {
+    newCustomer.shippingAddresses = [0];
+    newCustomer.billingAddresses = [1];
   }
   if (defaultShipping) {
     newCustomer.defaultShippingAddress = 0;

@@ -15,4 +15,6 @@ export type TCustomer = {
   defaultBillingAddress?: number;
   defaultShippingAddress?: number;
   addresses?: BaseAddress[];
+  shippingAddresses?: Array<number>;
+  billingAddresses?: Array<number>;
 };
