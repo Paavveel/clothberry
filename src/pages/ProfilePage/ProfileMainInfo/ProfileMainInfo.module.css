@@ -1,0 +1,26 @@
+.main-info__title {
+  font-size: 1.8rem;
+  font-weight: 400;
+  line-height: 2.1rem;
+  letter-spacing: 0.03em;
+  margin: 3rem 0 4rem;
+}
+
+.main-info__button {
+  width: 27rem;
+  height: 5.6rem;
+  margin-top: 4rem;
+}
+
+@media (width <= 767px) {
+  .main-info__title {
+    margin: 2.5rem 0 3rem;
+  }
+}
+
+@media (width <= 480px) {
+  .main-info__title {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+  }
+}
