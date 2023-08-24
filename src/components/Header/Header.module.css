@@ -27,7 +27,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 1rem;
+  padding-top: 4rem;
+}
+
+@media (width <= 500px) {
+  .header {
+    padding-top: 2.4rem;
+  }
 }
 
 .menu {
