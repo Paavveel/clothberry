@@ -1,0 +1,20 @@
+.profile {
+  padding: 1rem 0;
+}
+
+.response__error {
+  color: var(--color-red);
+  font-size: 2rem;
+  text-align: center;
+  column-gap: 1rem;
+  letter-spacing: 0.005rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (width <= 480px) {
+  .response__error {
+    font-size: 1.3rem;
+  }
+}

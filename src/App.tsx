@@ -5,6 +5,7 @@ import { AppRoutes } from 'config/routes';
 import { Layout } from '@layout/Layout';
 import { HomePage } from '@pages/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage';
+import { ProfilePage } from '@pages/ProfilePage';
 import { SignInPage } from '@pages/SignInPage';
 import { SignUpPage } from '@pages/SignUpPage';
 import { CheckAuth } from '@store/features/auth/CheckAuth';
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
         path: PROFILE,
         element: (
           <RequireAuth>
-            <h1>Profile</h1>
+            <ProfilePage />
           </RequireAuth>
         ),
       },
