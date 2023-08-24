@@ -1,0 +1,114 @@
+.mcui-checkbox {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  padding: 0.6em 0;
+  gap: 2rem;
+  justify-content: start;
+  text-align: left;
+}
+
+.title {
+  margin: 0;
+}
+
+.mcui-checkbox input[type="checkbox"],
+.mcui-radio input[type="checkbox"] {
+  position: absolute !important;
+  height: 0.1rem;
+  width: 0.1rem;
+  overflow: hidden;
+  clip: rect(0.1rem, 0.1rem, 0.1rem, 0.1rem);
+}
+
+.mcui-checkbox input[type="checkbox"] + div,
+.mcui-radio input[type="checkbox"] + div {
+  border: 0.2rem solid #8d9aa9;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 0.2rem;
+  position: relative;
+}
+
+.mcui-checkbox input[type="checkbox"] ~ div:last-child,
+.mcui-radio input[type="checkbox"] ~ div:last-child {
+  padding-left: 0.5em;
+}
+
+.mcui-checkbox input[type="checkbox"]:focus + div,
+.mcui-checkbox input[type="checkbox"]:active + div,
+.mcui-radio input[type="checkbox"]:focus + div,
+.mcui-radio input[type="checkbox"]:active + div {
+  outline: 0.2rem dashed #8d9aa9;
+  outline-offset: 0.2rem;
+}
+
+.mcui-checkbox input[type="checkbox"]:checked + div,
+.mcui-radio input[type="checkbox"]:checked + div {
+  border-color: black;
+  transition: border-color 107ms cubic-bezier(0.65, 0.25, 0.56, 0.96);
+}
+
+.mcui-check {
+  height: 100%;
+  width: 100%;
+  transform: scale(1);
+  color: black;
+  opacity: 0;
+}
+
+.mcui-check polyline {
+  fill: none;
+  transform-origin: 50% 50%;
+  stroke-width: 0.5rem;
+  stroke-dasharray: 22.7714;
+  stroke: currentcolor;
+}
+
+.mcui-checkbox input[type="checkbox"]:checked + div .mcui-check,
+.mcui-radio input[type="checkbox"]:checked + div .mcui-check {
+  opacity: 1;
+  transition: opacity 107ms cubic-bezier(0.65, 0.25, 0.56, 0.96);
+}
+
+.mcui-checkbox input[type="checkbox"]:checked + div .mcui-check polyline,
+.mcui-radio input[type="checkbox"]:checked + div .mcui-check polyline {
+  -webkit-animation: dash-check 107ms cubic-bezier(0.65, 0.25, 0.56, 0.96) forwards;
+  animation: dash-check 107ms cubic-bezier(0.65, 0.25, 0.56, 0.96) forwards;
+}
+
+.mcui-checkbox input[type="checkbox"]:indeterminate + div::after,
+.mcui-radio input[type="checkbox"]:indeterminate + div::after {
+  content: "";
+  height: 0.4rem;
+  width: 60%;
+  left: 20%;
+  top: calc(50% - 0.2rem);
+  position: absolute;
+  background: #8d9aa9;
+  border-radius: 0.1rem;
+}
+
+.mcui-checkbox input[type="checkbox"]:disabled ~ div,
+.mcui-radio input[type="checkbox"]:disabled ~ div {
+  color: #8d9aa9;
+  cursor: not-allowed;
+}
+
+.mcui-checkbox input[type="checkbox"]:enabled ~ div,
+.mcui-radio input[type="checkbox"]:enabled ~ div {
+  cursor: default;
+  flex-shrink: 0;
+}
+
+@supports (display: grid) {
+  .mcui-check polyline {
+    stroke-dashoffset: 22.7714;
+  }
+}
+
+@keyframes dash-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

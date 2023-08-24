@@ -8,6 +8,7 @@
     "build": "npx tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "eslint": "npx eslint --ext .ts,.tsx ./",
     "eslint-fix": "npx eslint --ext .ts,.tsx --fix ./",
     "stylelint": "npx stylelint \"src/{**/*,*}.css\"",
@@ -19,29 +20,32 @@
   "dependencies": {
     "@commercetools/platform-sdk": "4.11.0",
     "@commercetools/sdk-client-v2": "2.2.0",
-    "@esbuild-plugins/node-globals-polyfill": "0.2.3",
-    "@esbuild-plugins/node-modules-polyfill": "0.2.2",
     "@reduxjs/toolkit": "1.8.1",
     "@testing-library/jest-dom": "5.11.4",
     "classnames": "2.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "7.45.4",
     "react-redux": "8.0.1",
     "react-router-dom": "6.14.2",
-    "rollup-plugin-node-polyfills": "0.2.1"
+    "react-select": "5.7.4",
+    "uuid": "9.0.0",
+    "vite-plugin-svgr": "3.2.0"
   },
   "devDependencies": {
     "@testing-library/dom": "9.2.0",
     "@testing-library/react": "14.0.0",
-    "@testing-library/user-event": "14.2.5",
+    "@testing-library/user-event": "14.4.3",
     "@trivago/prettier-plugin-sort-imports": "4.2.0",
     "@types/node": "20.4.5",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
     "@types/testing-library__jest-dom": "5.14.5",
+    "@types/uuid": "9.0.2",
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
     "@vitejs/plugin-react": "4.0.3",
+    "@vitest/coverage-v8": "^0.34.2",
     "eslint": "8.45.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.1.0",
@@ -61,8 +65,9 @@
     "typescript": "5.0.2",
     "vite": "4.4.5",
     "vite-plugin-eslint": "1.8.1",
+    "vite-plugin-node-polyfills": "0.11.2",
     "vite-plugin-stylelint": "4.3.0",
     "vite-tsconfig-paths": "4.2.0",
-    "vitest": "0.30.1"
+    "vitest": "0.34.2"
   }
 }
