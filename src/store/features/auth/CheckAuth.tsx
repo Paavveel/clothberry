@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
 
+import { Loader } from '@components/Loader';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { checkLogin } from './authApi';
@@ -13,7 +14,7 @@ interface CheckAuthProps {
 }
 
 export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) => {
-  const { isLoggedIn } = useAppSelector(selectAuth);
+  const { isLoggedIn, loading } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -33,6 +34,8 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
       requestForAuth();
     }
   }, [dispatch, isLoggedIn, navigate]);
+
+  if (loading) return <Loader pageLoader />;
 
   return children;
 };
