@@ -7,8 +7,8 @@ import { Customer } from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import { emailValidator, validateName } from '@helpers/Validators';
-import { selectAuth } from '@store/features/auth/authSlice';
-import { useAppSelector } from '@store/hooks';
+import { updatePersonalInfo } from '@store/features/auth/profileApi';
+import { useAppDispatch } from '@store/hooks';
 
 import styles from './ProfileMainInfo.module.css';
 
@@ -25,7 +25,7 @@ export interface FormProfileMain extends Record<string, unknown> {
 }
 
 export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer, ...props }) => {
-  const { email, firstName, lastName, dateOfBirth } = customer;
+  const { email, firstName, lastName, dateOfBirth, version } = customer;
   const {
     register,
     handleSubmit,
@@ -35,18 +35,39 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
     mode: 'onChange',
     defaultValues: { email, firstName, lastName, dateOfBirth },
   });
-  const { loading, errorMessage } = useAppSelector(selectAuth);
 
+  const dispatch = useAppDispatch();
   const [disabled, setDisabled] = useState(true);
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState(false);
 
   const submit: SubmitHandler<FormProfileMain> = async (data) => {
-    console.log(data);
-    setDisabled(true);
-    setSuccess(true);
+    setSuccess('');
+    setError(false);
+    if (
+      data.firstName === firstName &&
+      data.lastName === lastName &&
+      data.dateOfBirth === dateOfBirth &&
+      data.email === email
+    ) {
+      setSuccess('Nothing to change');
+      setDisabled(true);
+      return;
+    }
+    try {
+      setLoading(true);
+      await dispatch(updatePersonalInfo({ ...data, version })).unwrap();
+      setSuccess('Information is updated');
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEdit = () => {
+    setSuccess('');
     clearErrors();
     setDisabled((prev) => !prev);
   };
@@ -133,8 +154,8 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
           Save
         </Button>
       </fieldset>
-      {success && <p className={styles.response__success}>Information is updated</p>}
-      {errorMessage && <p className={styles.response__error}>{errorMessage}</p>}
+      {!!success && <p className={styles.response__success}>{success}</p>}
+      {error && <p className={styles.response__error}>Error with updating</p>}
     </form>
   );
 };

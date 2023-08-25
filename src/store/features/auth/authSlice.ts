@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
 import { login } from './authApi';
-import { getCustomer } from './profileApi';
+import { getCustomer, updatePersonalInfo } from './profileApi';
 import { signup } from './signupApi';
 
 export interface AuthState {
@@ -71,19 +71,20 @@ export const authSlice = createSlice({
 
     builder
       .addCase(getCustomer.pending, (state) => {
-        state.loading = true;
         state.errorMessage = '';
       })
       .addCase(getCustomer.fulfilled, (state, action) => {
         state.customer = action.payload;
-        state.loading = false;
       })
       .addCase(getCustomer.rejected, (state, action) => {
-        state.loading = false;
         if (action.payload) {
           state.errorMessage = action.payload;
         }
       });
+
+    builder.addCase(updatePersonalInfo.fulfilled, (state, action) => {
+      state.customer = action.payload;
+    });
   },
 });
 

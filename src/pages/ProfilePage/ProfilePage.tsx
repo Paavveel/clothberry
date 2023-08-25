@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Loader } from '@components/Loader';
-import { clearError, selectAuth } from '@store/features/auth/authSlice';
+import { selectAuth } from '@store/features/auth/authSlice';
 import { getCustomer } from '@store/features/auth/profileApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -12,13 +12,16 @@ export const ProfilePage = () => {
   const { customer, errorMessage } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const requestForCustomer = async () => {
       try {
+        setError(false);
         setLoading(true);
-        await dispatch(getCustomer());
+        await dispatch(getCustomer()).unwrap();
       } catch (error) {
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -27,14 +30,11 @@ export const ProfilePage = () => {
     if (!customer && !errorMessage) {
       requestForCustomer();
     }
-    return () => {
-      dispatch(clearError());
-    };
   }, [customer, errorMessage, dispatch]);
 
   if (loading) return <Loader pageLoader />;
 
-  if (errorMessage) return <p className={styles.response__error}>{errorMessage}</p>;
+  if (error) return <p className={styles.response__error}>Something went wrong with profile loading.</p>;
 
   return (
     <>
