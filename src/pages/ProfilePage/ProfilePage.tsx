@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Loader } from '@components/Loader';
 import { clearError, selectAuth } from '@store/features/auth/authSlice';
@@ -9,12 +9,23 @@ import { ProfileMainInfo } from './ProfileMainInfo';
 import styles from './ProfilePage.module.css';
 
 export const ProfilePage = () => {
-  const { customer, loading, errorMessage } = useAppSelector(selectAuth);
+  const { customer, errorMessage } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const requestForCustomer = async () => {
+      try {
+        setLoading(true);
+        await dispatch(getCustomer());
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (!customer && !errorMessage) {
-      dispatch(getCustomer());
+      requestForCustomer();
     }
     return () => {
       dispatch(clearError());
@@ -28,7 +39,7 @@ export const ProfilePage = () => {
   return (
     <>
       <h2 className={styles.profile__title}>Your profile</h2>
-      <ProfileMainInfo className={styles.profile__main} />
+      {!!customer && <ProfileMainInfo className={styles.profile__main} customer={customer} />}
     </>
   );
 };

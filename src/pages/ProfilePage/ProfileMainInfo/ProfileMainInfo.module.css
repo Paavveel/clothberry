@@ -1,15 +1,63 @@
-.main-info__title {
+.main-info-title,
+.main-info-edit-button {
+  display: inline-block;
   font-size: 1.8rem;
-  font-weight: 400;
   line-height: 2.1rem;
   letter-spacing: 0.03em;
+}
+
+.main-info-title {
+  font-weight: 400;
   margin: 3rem 0 4rem;
 }
 
-.main-info__button {
+.main-info-edit-button {
+  color: var(--color-gray-secondary);
+  font-style: italic;
+  font-weight: 300;
+  text-decoration: underline dashed 0.13rem;
+  border: none;
+  background-color: transparent;
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.main-info-edit-button-active {
+  color: var(--color-black);
+  font-style: normal;
+  text-decoration: underline solid 0.13rem;
+}
+
+.main-info-edit-button:hover {
+  color: var(--color-black);
+}
+
+.main-info-submit-button {
   width: 27rem;
   height: 5.6rem;
-  margin-top: 4rem;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+.main-info-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.response__success,
+.response__error {
+  font-size: 1.3rem;
+  margin-top: 3rem;
+}
+
+.response__success {
+  color: var(--color-green);
+}
+
+.response__error {
+  color: var(--color-red);
 }
 
 @media (width <= 767px) {
@@ -19,7 +67,8 @@
 }
 
 @media (width <= 480px) {
-  .main-info__title {
+  .main-info-title,
+  .main-info-edit-button {
     font-size: 1.3rem;
     line-height: 1.5rem;
   }
