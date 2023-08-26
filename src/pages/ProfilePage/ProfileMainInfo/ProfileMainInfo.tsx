@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import cn from 'classnames';
 
-import { Customer } from '@commercetools/platform-sdk';
+import { Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import { emailValidator, validateName } from '@helpers/Validators';
@@ -42,9 +42,12 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
   const [success, setSuccess] = useState('');
   const [error, setError] = useState(false);
 
-  const submit: SubmitHandler<FormProfileMain> = async (data) => {
+  const handleUpdateMainInfo: SubmitHandler<FormProfileMain> = async (data) => {
     setSuccess('');
     setError(false);
+
+    const body: MyCustomerUpdate = { version, actions: [] };
+
     if (
       data.firstName === firstName &&
       data.lastName === lastName &&
@@ -55,9 +58,36 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
       setDisabled(true);
       return;
     }
+
+    if (data.firstName !== firstName) {
+      body.actions.push({
+        action: 'setFirstName',
+        firstName: data.firstName,
+      });
+    }
+    if (data.lastName !== lastName) {
+      body.actions.push({
+        action: 'setLastName',
+        lastName: data.lastName,
+      });
+    }
+    if (data.dateOfBirth !== dateOfBirth) {
+      body.actions.push({
+        action: 'setDateOfBirth',
+        dateOfBirth: data.dateOfBirth,
+      });
+    }
+    if (data.email !== email) {
+      body.actions.push({
+        action: 'changeEmail',
+        email: data.email,
+      });
+    }
+
     try {
       setLoading(true);
-      await dispatch(updatePersonalInfo({ ...data, version })).unwrap();
+      await dispatch(updatePersonalInfo(body)).unwrap();
+      setDisabled(true);
       setSuccess('Information is updated');
     } catch (error) {
       setError(true);
@@ -68,12 +98,18 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
 
   const handleEdit = () => {
     setSuccess('');
+    setError(false);
     clearErrors();
     setDisabled((prev) => !prev);
   };
 
   return (
-    <form className={cn(className, styles['main-info'])} onSubmit={handleSubmit(submit)} noValidate {...props}>
+    <form
+      className={cn(className, styles['main-info'])}
+      onSubmit={handleSubmit(handleUpdateMainInfo)}
+      noValidate
+      {...props}
+    >
       <h3 className={styles['main-info-title']}>Personal information</h3>
       <button
         className={cn(styles['main-info-edit-button'], {

@@ -1,5 +1,5 @@
 import { api } from '@api/client';
-import { Customer } from '@commercetools/platform-sdk';
+import { Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: string }>(
@@ -18,36 +18,14 @@ export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: strin
   }
 );
 
-type UpdatePersonalInfoType = Pick<Customer, 'email' | 'firstName' | 'lastName' | 'dateOfBirth' | 'version'>;
-
-export const updatePersonalInfo = createAsyncThunk<Customer, UpdatePersonalInfoType, { rejectValue: string }>(
+export const updatePersonalInfo = createAsyncThunk<Customer, MyCustomerUpdate, { rejectValue: string }>(
   'auth/updatePersonalInfo',
-  async ({ email, firstName, lastName, dateOfBirth, version }, { rejectWithValue }) => {
+  async (body, { rejectWithValue }) => {
     try {
       const result = await api.request
         .me()
         .post({
-          body: {
-            version,
-            actions: [
-              {
-                action: 'changeEmail',
-                email,
-              },
-              {
-                action: 'setFirstName',
-                firstName,
-              },
-              {
-                action: 'setLastName',
-                lastName,
-              },
-              {
-                action: 'setDateOfBirth',
-                dateOfBirth,
-              },
-            ],
-          },
+          body,
         })
         .execute();
 
