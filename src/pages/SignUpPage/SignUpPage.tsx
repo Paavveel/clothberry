@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
+import { countries } from 'config/countries';
 import { AppRoutes } from 'config/routes';
 
 import { api } from '@api/client';
@@ -19,15 +20,8 @@ import { buildNewCustomer } from './buildNewCustomer';
 import type { OptionCountry, TCustomer } from './types';
 import { FormRegister } from './types/interface';
 
-const options: OptionCountry[] = [
-  { value: 'DE', label: 'Germany' },
-  { value: 'AT', label: 'Austria' },
-  { value: 'US', label: 'United States' },
-  { value: 'NL', label: 'Netherlands' },
-];
-
 const getValueFromCountry = (value: string) => {
-  return value ? options.find((option) => option.value === value) : '';
+  return value ? countries.find((option) => option.value === value) : '';
 };
 
 export const SignUpPage: FC = () => {
@@ -266,7 +260,7 @@ export const SignUpPage: FC = () => {
               className={classNames(styles.country, {
                 'validate-error__select': error,
               })}
-              options={options}
+              options={countries}
               placeholder='Country *'
               value={getValueFromCountry(value)}
               onChange={(newValue) => onChange(newValue as OptionCountry)}
@@ -355,7 +349,7 @@ export const SignUpPage: FC = () => {
                   className={classNames(styles.country, {
                     'validate-error__select': error,
                   })}
-                  options={options}
+                  options={countries}
                   placeholder='Country *'
                   value={getValueFromCountry(value)}
                   onChange={(newValue) => onChange(newValue as OptionCountry)}
