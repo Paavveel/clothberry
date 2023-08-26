@@ -1,7 +1,6 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import classNames from 'classnames';
 import { AppRoutes } from 'config/routes';
 
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
@@ -10,61 +9,19 @@ import { ReactComponent as User } from '@assets/img/user.svg';
 import { logout, selectAuth } from '@store/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
+import { Navbar } from '../Navbar/Navbar';
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
-  const [active, setActive] = useState(false);
   const { isLoggedIn } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
   };
-  const handleActiveClass = () => {
-    setActive((active) => !active);
-  };
   return (
     <header className={styles.header}>
-      <nav className={styles.nav}>
-        <ul
-          className={classNames({
-            [styles['menu-active']]: active,
-            [styles.menu]: !active,
-          })}
-        >
-          <li>
-            <a className={styles['menu-link']} href='*'>
-              Sweatshirts
-            </a>
-          </li>
-          <li>
-            <a className={styles['menu-link']} href='*'>
-              Hoodie
-            </a>
-          </li>
-          <li>
-            <a className={styles['menu-link']} href='*'>
-              T-shirts
-            </a>
-          </li>
-          <li>
-            <a className={styles['menu-link']} href='*'>
-              Jeans
-            </a>
-          </li>
-        </ul>
-        <button
-          className={classNames(styles.burger, {
-            [styles.open]: active,
-            [styles.menu]: !active,
-          })}
-          onClick={handleActiveClass}
-        >
-          <span> </span>
-          <span> </span>
-          <span> </span>
-        </button>
-      </nav>
+      <Navbar />
       <div className={styles['logo-wrapper']}>
         <Link to='/' className={styles.logo} area-label='logo'>
           clothberry

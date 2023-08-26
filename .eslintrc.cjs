@@ -51,6 +51,8 @@ module.exports = {
     'react/button-has-type': 0,
     'no-param-reassign': [2, { props: false }],
     'no-empty': [2, { allowEmptyCatch: true }],
+    'no-return-assign': 0,
+    'react/no-array-index-key': 0,
   },
   settings: {
     'import/resolver': {

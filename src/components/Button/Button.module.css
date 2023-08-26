@@ -40,13 +40,13 @@
   background-color: var(--color-white);
 }
 
-.button:focus {
+/* .button:active {
   outline: solid var(--color-blue);
-}
+} */
 
-.button:focus-visible {
+/* .button:focus-visible {
   outline: solid var(--color-blue);
-}
+} */
 
 .button:disabled {
   cursor: default;

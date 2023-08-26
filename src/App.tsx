@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
 
+import { ProductList } from '@components/ProductList/ProductList';
 import { Layout } from '@layout/Layout';
 import { HomePage } from '@pages/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage';
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
             <h1>Profile</h1>
           </RequireAuth>
         ),
+      },
+      {
+        path: '/:category?/:name',
+        element: <ProductList />,
+        errorElement: <NotFoundPage />,
       },
       {
         path: CART,
