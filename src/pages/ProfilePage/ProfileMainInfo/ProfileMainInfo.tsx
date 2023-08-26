@@ -123,18 +123,6 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
       <fieldset className={styles['main-info-fieldset']} disabled={disabled}>
         <Input<FormProfileMain>
           type='text'
-          placeholder='Email *'
-          label='email'
-          register={register}
-          error={errors.email}
-          inputMode='email'
-          options={{
-            required: '⚠ Email is required field!',
-            validate: (value: string) => emailValidator(value, 'Please enter valid email!'),
-          }}
-        />
-        <Input<FormProfileMain>
-          type='text'
           placeholder='First Name *'
           label='firstName'
           register={register}
@@ -184,6 +172,18 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
 
               return undefined;
             },
+          }}
+        />
+        <Input<FormProfileMain>
+          type='text'
+          placeholder='Email *'
+          label='email'
+          register={register}
+          error={errors.email}
+          inputMode='email'
+          options={{
+            required: '⚠ Email is required field!',
+            validate: (value: string) => emailValidator(value, 'Please enter valid email!'),
           }}
         />
         <Button className={styles['main-info-submit-button']} type='submit' secondary loading={loading}>
