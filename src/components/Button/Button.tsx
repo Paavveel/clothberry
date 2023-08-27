@@ -11,6 +11,7 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   loading?: boolean;
+  disabled?: boolean;
   primary?: boolean;
   secondary?: boolean;
 }
@@ -21,6 +22,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   type,
   className,
   loading,
+  disabled,
   primary,
   secondary,
 }) => {
@@ -32,7 +34,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         [styles['button-primary']]: primary,
         [styles['button-secondary']]: secondary,
       })}
-      disabled={loading}
+      disabled={disabled || loading}
     >
       {loading && <div className={styles.loading} />}
       {children}
@@ -46,4 +48,5 @@ Button.defaultProps = {
   className: '',
   onClick: undefined,
   loading: false,
+  disabled: false,
 };
