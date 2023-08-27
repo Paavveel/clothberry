@@ -11,6 +11,15 @@
   margin: 3rem 0 4rem;
 }
 
+.main-info-subtitle {
+  font-size: 1.7rem;
+  line-height: 2.1rem;
+  letter-spacing: 0.03em;
+  color: var(--color-gray-dark);
+  font-weight: 400;
+  margin: 1.5rem 0;
+}
+
 .main-info-edit-button {
   font-style: italic;
   font-weight: 200;
@@ -66,6 +75,11 @@
   .main-info-title,
   .main-info-edit-button {
     font-size: 1.3rem;
+    line-height: 1.5rem;
+  }
+
+  .main-info-subtitle {
+    font-size: 1rem;
     line-height: 1.5rem;
   }
 }
