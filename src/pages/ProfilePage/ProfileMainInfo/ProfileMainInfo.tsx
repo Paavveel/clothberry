@@ -30,7 +30,8 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
     register,
     handleSubmit,
     clearErrors,
-    formState: { errors },
+    reset,
+    formState: { errors, isDirty },
   } = useForm<FormProfileMain>({
     mode: 'onChange',
     defaultValues: { email, firstName, lastName, dateOfBirth },
@@ -47,17 +48,6 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
     setError(false);
 
     const body: MyCustomerUpdate = { version, actions: [] };
-
-    if (
-      data.firstName === firstName &&
-      data.lastName === lastName &&
-      data.dateOfBirth === dateOfBirth &&
-      data.email === email
-    ) {
-      setSuccess('Nothing to change');
-      setDisabled(true);
-      return;
-    }
 
     if (data.firstName !== firstName) {
       body.actions.push({
@@ -87,6 +77,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
     try {
       setLoading(true);
       await dispatch(updatePersonalInfo(body)).unwrap();
+      reset({ ...data }, { keepDirty: false });
       setDisabled(true);
       setSuccess('Information is updated');
     } catch (error) {
@@ -186,7 +177,13 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
             validate: (value: string) => emailValidator(value, 'Please enter valid email!'),
           }}
         />
-        <Button className={styles['main-info-submit-button']} type='submit' secondary loading={loading}>
+        <Button
+          className={styles['main-info-submit-button']}
+          type='submit'
+          secondary
+          loading={loading}
+          disabled={!isDirty}
+        >
           Save
         </Button>
       </fieldset>
