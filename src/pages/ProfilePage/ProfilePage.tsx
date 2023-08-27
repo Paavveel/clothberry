@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { ProfileMainInfo } from './ProfileMainInfo';
 import styles from './ProfilePage.module.css';
+import { ShippingAddresses } from './ShippingAddresses';
 
 export const ProfilePage = () => {
   const { customer, errorMessage } = useAppSelector(selectAuth);
@@ -40,6 +41,7 @@ export const ProfilePage = () => {
     <>
       <h2 className={styles.profile__title}>Your profile</h2>
       {!!customer && <ProfileMainInfo className={styles.profile__main} customer={customer} />}
+      {!!customer && <ShippingAddresses customer={customer} />}
     </>
   );
 };

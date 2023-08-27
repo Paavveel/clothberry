@@ -1,0 +1,57 @@
+.address-card {
+  position: relative;
+  width: 40rem;
+  border-radius: 1rem;
+  padding: 4rem 3rem;
+  box-shadow:
+    rgb(60 64 67 / 30%) 0 1px 2px 0,
+    rgb(60 64 67 / 15%) 0 1px 3px 1px;
+}
+
+.country {
+  text-align: left;
+  margin-bottom: 2.6rem;
+}
+
+.input_title {
+  font-size: 1.2rem;
+  line-height: 2.1rem;
+  letter-spacing: 0.03em;
+  color: var(--color-gray-dark);
+  font-weight: 400;
+  margin: 0 0 0.2rem;
+}
+
+@media (width <= 480px) {
+  .country {
+    margin: 1rem 0;
+  }
+
+  .input_title {
+    line-height: 1.5rem;
+  }
+}
+
+.address-card-submit-button {
+  width: 12rem;
+  height: 5rem;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+.response__success,
+.response__error {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.response__success {
+  color: var(--color-green);
+}
+
+.response__error {
+  color: var(--color-red);
+}
