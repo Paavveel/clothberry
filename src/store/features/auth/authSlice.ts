@@ -59,7 +59,6 @@ export const authSlice = createSlice({
         state.errorMessage = '';
       })
       .addCase(signup.fulfilled, (state) => {
-        state.isLoggedIn = true;
         state.loading = false;
       })
       .addCase(signup.rejected, (state, action) => {

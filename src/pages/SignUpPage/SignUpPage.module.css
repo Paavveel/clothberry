@@ -67,7 +67,7 @@
 
 .subheading {
   margin: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4rem;
 }
 
 .subheading_billing {
@@ -92,6 +92,10 @@
 
 .date-wrapper div {
   flex-grow: 2;
+}
+
+.address-wrapper {
+  margin-top: 6rem;
 }
 
 .response__error {

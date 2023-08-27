@@ -20,6 +20,7 @@ type InputProps<TFormValues extends FieldValues> = {
   error: FieldError | undefined;
   inputMode?: InputMode;
   showPasswordToggler?: boolean;
+  disabled?: boolean;
 };
 
 export const Input = <TFormValues extends Record<string, unknown>>({
@@ -32,6 +33,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   options,
   inputMode,
   showPasswordToggler,
+  disabled,
 }: InputProps<TFormValues>) => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isHiddenIcon, setIsHiddenIcon] = useState(true);
@@ -66,6 +68,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
             })}
             autoComplete='off'
             placeholder={placeholder}
+            disabled={disabled}
             {...register(label, {
               required,
               ...options,
@@ -89,6 +92,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
           })}
           autoComplete='off'
           placeholder={placeholder}
+          disabled={disabled}
           {...register(label, { required, ...options })}
         />
       )}
@@ -102,4 +106,5 @@ Input.defaultProps = {
   required: false,
   inputMode: 'text',
   showPasswordToggler: false,
+  disabled: false,
 };

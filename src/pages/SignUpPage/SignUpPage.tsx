@@ -17,12 +17,8 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { Button, Checkbox, Form, Input } from '../../components';
 import styles from './SignUpPage.module.css';
 import { buildNewCustomer } from './buildNewCustomer';
-import type { OptionCountry, TCustomer } from './types';
+import type { TCustomer } from './types';
 import { FormRegister } from './types/interface';
-
-const getValueFromCountry = (value: string) => {
-  return value ? countries.find((option) => option.value === value) : '';
-};
 
 export const SignUpPage: FC = () => {
   const [defaultBillingShipping, setDefaultBillingShipping] = useState(false);
@@ -50,8 +46,8 @@ export const SignUpPage: FC = () => {
 
   const navigate = useNavigate();
 
-  const watchShippingCountry = watch('ShippingCountry') as unknown as OptionCountry;
-  const watchBillingPostalCode = watch('BillingCountry') as unknown as OptionCountry;
+  const watchShippingCountry = watch('ShippingCountry');
+  const watchBillingCountry = watch('BillingCountry');
 
   const handleDefaultBillingShipping = () => {
     if (defaultShipping) {
@@ -210,110 +206,130 @@ export const SignUpPage: FC = () => {
         />
       </div>
 
-      <h3 className={styles.subheading}>Shipping address</h3>
-      <Input<FormRegister>
-        type='text'
-        placeholder='Street *'
-        label='ShippingStreet'
-        register={register}
-        error={errors.ShippingStreet}
-        options={{
-          required: '⚠ Street is required field!',
-          validate: (value: string) => {
-            if (value.length < 1) {
-              return '⚠ Must contain at least one character';
-            }
-            return undefined;
-          },
-        }}
-      />
-
-      <Input<FormRegister>
-        type='text'
-        placeholder='City *'
-        label='ShippingCity'
-        register={register}
-        error={errors.ShippingCity}
-        options={{
-          required: '⚠ City is required field!',
-          validate: (value: string) => {
-            if (value.length < 1) {
-              return 'Must contain at least one character';
-            }
-            if (/[^\p{L}\s]/u.test(value)) {
-              return 'City should not contain special characters or numbers';
-            }
-            return undefined;
-          },
-        }}
-      />
-
-      <Controller
-        control={control}
-        name='ShippingCountry'
-        rules={{
-          required: '⚠ Country is required!',
-        }}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <>
-            <Select
-              className={classNames(styles.country, {
-                'validate-error__select': error,
-              })}
-              options={countries}
-              placeholder='Country *'
-              value={getValueFromCountry(value)}
-              onChange={(newValue) => onChange(newValue as OptionCountry)}
-            />
-            {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
-          </>
-        )}
-      />
-
-      <Input<FormRegister>
-        type='text'
-        placeholder='Postal Code *'
-        label='ShippingPostalCode'
-        register={register}
-        error={errors.ShippingPostalCode}
-        options={{
-          required: '⚠ Postal Code is required field!',
-          validate: (value: string) => validatePostCode(value, watchShippingCountry),
-        }}
-      />
-
-      <Checkbox
-        title='Set as default address for billing and shipping'
-        htmlFor='default_billing_shipping_address'
-        onChange={handleDefaultBillingShipping}
-        value={defaultBillingShipping}
-      />
-      {!defaultBillingShipping && (
-        <Checkbox
-          title='Set as default shipping address'
-          htmlFor='default_shipping_address'
-          onChange={handleDefaultShipping}
-          value={defaultShipping}
+      <div className={styles['address-wrapper']}>
+        <h3 className={styles.subheading}>Shipping address</h3>
+        <Controller
+          control={control}
+          name='ShippingCountry'
+          rules={{
+            required: '⚠ Country is required!',
+          }}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <>
+              <Select
+                className={classNames(styles.country, {
+                  'validate-error__select': error,
+                })}
+                options={countries}
+                placeholder='Country *'
+                value={countries.find((c) => c.value === value)}
+                onChange={(val) => onChange(val?.value)}
+              />
+              {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
+            </>
+          )}
         />
-      )}
+
+        <Input<FormRegister>
+          type='text'
+          placeholder='Postal Code *'
+          label='ShippingPostalCode'
+          register={register}
+          error={errors.ShippingPostalCode}
+          disabled={!watchShippingCountry}
+          options={{
+            required: '⚠ Postal Code is required field!',
+            validate: (value: string) => validatePostCode(value, watchShippingCountry),
+          }}
+        />
+
+        <Input<FormRegister>
+          type='text'
+          placeholder='City *'
+          label='ShippingCity'
+          register={register}
+          error={errors.ShippingCity}
+          options={{
+            required: '⚠ City is required field!',
+            validate: (value: string) => {
+              if (value.length < 1) {
+                return 'Must contain at least one character';
+              }
+              if (/[^\p{L}\s]/u.test(value)) {
+                return 'City should not contain special characters or numbers';
+              }
+              return undefined;
+            },
+          }}
+        />
+        <Input<FormRegister>
+          type='text'
+          placeholder='Street *'
+          label='ShippingStreet'
+          register={register}
+          error={errors.ShippingStreet}
+          options={{
+            required: '⚠ Street is required field!',
+            validate: (value: string) => {
+              if (value.length < 1) {
+                return '⚠ Must contain at least one character';
+              }
+              return undefined;
+            },
+          }}
+        />
+
+        <Checkbox
+          title='Set as default address for billing and shipping'
+          htmlFor='default_billing_shipping_address'
+          onChange={handleDefaultBillingShipping}
+          value={defaultBillingShipping}
+        />
+        {!defaultBillingShipping && (
+          <Checkbox
+            title='Set as default shipping address'
+            htmlFor='default_shipping_address'
+            onChange={handleDefaultShipping}
+            value={defaultShipping}
+          />
+        )}
+      </div>
 
       {!defaultBillingShipping && (
-        <>
+        <div className={styles['address-wrapper']}>
           <h3 className={`${styles.subheading} ${styles.subheading_billing}`}>Billing address</h3>
+          <Controller
+            control={control}
+            name='BillingCountry'
+            rules={{
+              required: '⚠ Country is required!',
+            }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <>
+                <Select
+                  className={classNames(styles.country, {
+                    'validate-error__select': error,
+                  })}
+                  options={countries}
+                  placeholder='Country *'
+                  value={countries.find((c) => c.value === value)}
+                  onChange={(val) => onChange(val?.value)}
+                />
+                {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
+              </>
+            )}
+          />
+
           <Input<FormRegister>
             type='text'
-            placeholder='Street *'
-            label='BillingStreet'
+            placeholder='Postal Code *'
+            label='BillingPostalCode'
             register={register}
-            error={errors.BillingStreet}
+            error={errors.BillingPostalCode}
+            disabled={!watchBillingCountry}
             options={{
-              required: '⚠ Street is required field!',
-              validate: (value: string) => {
-                if (value.length < 1) {
-                  return '⚠ Must contain at least one character';
-                }
-                return undefined;
-              },
+              required: '⚠ Postal Code is required field!',
+              validate: (value: string) => validatePostCode(value, watchBillingCountry),
             }}
           />
 
@@ -336,41 +352,23 @@ export const SignUpPage: FC = () => {
               },
             }}
           />
-
-          <Controller
-            control={control}
-            name='BillingCountry'
-            rules={{
-              required: '⚠ Country is required!',
-            }}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <>
-                <Select
-                  className={classNames(styles.country, {
-                    'validate-error__select': error,
-                  })}
-                  options={countries}
-                  placeholder='Country *'
-                  value={getValueFromCountry(value)}
-                  onChange={(newValue) => onChange(newValue as OptionCountry)}
-                />
-                {error && <small className='validate-error__text'>{error.message || 'Error'}</small>}
-              </>
-            )}
-          />
-
           <Input<FormRegister>
             type='text'
-            placeholder='Postal Code *'
-            label='BillingPostalCode'
+            placeholder='Street *'
+            label='BillingStreet'
             register={register}
-            error={errors.BillingPostalCode}
+            error={errors.BillingStreet}
             options={{
-              required: '⚠ Postal Code is required field!',
-              validate: (value: string) => validatePostCode(value, watchBillingPostalCode),
+              required: '⚠ Street is required field!',
+              validate: (value: string) => {
+                if (value.length < 1) {
+                  return '⚠ Must contain at least one character';
+                }
+                return undefined;
+              },
             }}
           />
-        </>
+        </div>
       )}
 
       {!defaultBillingShipping && (

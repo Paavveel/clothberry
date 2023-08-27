@@ -1,6 +1,6 @@
 import { BaseAddress } from '@commercetools/platform-sdk';
 
-import { FormRegister, OptionCountry, TCustomer } from './types';
+import { FormRegister, TCustomer } from './types';
 
 function checkDefaultAddress(
   newCustomer: TCustomer,
@@ -51,7 +51,7 @@ export const buildNewCustomer = (
 
   const addresses: BaseAddress[] = [
     {
-      country: (ShippingCountry as unknown as OptionCountry).value,
+      country: ShippingCountry,
       postalCode: ShippingPostalCode,
       city: ShippingCity,
       streetName: ShippingStreet,
@@ -61,14 +61,9 @@ export const buildNewCustomer = (
   if (registerFormCustomer.middleName.length) {
     newCustomer.middleName = middleName;
   }
-  if (
-    BillingCity.length &&
-    (BillingCountry as unknown as OptionCountry).value &&
-    BillingPostalCode.length &&
-    BillingStreet.length
-  ) {
+  if (BillingCity.length && BillingCountry && BillingPostalCode.length && BillingStreet.length) {
     addresses.push({
-      country: (BillingCountry as unknown as OptionCountry).value,
+      country: BillingCountry,
       postalCode: BillingPostalCode,
       city: BillingCity,
       streetName: BillingStreet,
