@@ -1,1 +1,1 @@
-export * from './ShippingAddresses.tsx';
+export * from './AddressesList.tsx';
