@@ -53,6 +53,7 @@ body {
 .app.container {
   max-width: 1175px;
   margin: 0 auto;
+  padding: 0 15px;
 }
 
 .validate-error__text {
