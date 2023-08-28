@@ -5,7 +5,12 @@ import Select from 'react-select';
 import cn from 'classnames';
 import { countries } from 'config/countries';
 
-import { Address, MyCustomerChangeAddressAction } from '@commercetools/platform-sdk';
+import {
+  Address,
+  MyCustomerChangeAddressAction,
+  MyCustomerSetDefaultShippingAddressAction,
+  MyCustomerUpdateAction,
+} from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Checkbox } from '@components/Checkbox';
 import { Input } from '@components/Input';
@@ -16,7 +21,8 @@ import styles from './AddressCard.module.css';
 interface AddressCardProps {
   className?: string;
   address: Address;
-  updateHandler: (action: MyCustomerChangeAddressAction) => Promise<void>;
+  isDefaultAddress?: boolean;
+  updateHandler: (action: MyCustomerUpdateAction[]) => Promise<void>;
 }
 
 export interface FormAddressCard extends Record<string, unknown> {
@@ -27,8 +33,13 @@ export interface FormAddressCard extends Record<string, unknown> {
   country: string;
 }
 
-export const AddressCard: FC<AddressCardProps> = ({ className, address, updateHandler, ...props }) => {
-  const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
+export const AddressCard: FC<AddressCardProps> = ({
+  className,
+  address,
+  isDefaultAddress,
+  updateHandler,
+  ...props
+}) => {
   const { id, country, city, streetName, postalCode } = address;
   const {
     register,
@@ -45,26 +56,46 @@ export const AddressCard: FC<AddressCardProps> = ({ className, address, updateHa
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState(false);
+  const [isDefaultChecked, setIsDefaultChecked] = useState(false);
 
   const watchShippingCountry = watch('country');
 
   const handleDefaultShipping = () => {
-    setIsDefaultAddress((prev) => !prev);
+    setIsDefaultChecked((prev) => !prev);
   };
 
   const handleUpdateAddress: SubmitHandler<FormAddressCard> = async (data) => {
     setSuccess('');
     setError(false);
 
-    const action: MyCustomerChangeAddressAction = {
-      action: 'changeAddress',
-      addressId: id,
-      address: { country: data.country, city: data.city, streetName: data.streetName, postalCode: data.postalCode },
-    };
+    if (!isDirty && !isDefaultChecked) {
+      setSuccess('Nothing to change');
+      return;
+    }
+
+    const actions = [];
+
+    if (isDirty) {
+      const action: MyCustomerChangeAddressAction = {
+        action: 'changeAddress',
+        addressId: id,
+        address: { country: data.country, city: data.city, streetName: data.streetName, postalCode: data.postalCode },
+      };
+
+      actions.push(action);
+    }
+
+    if (isDefaultChecked) {
+      const action: MyCustomerSetDefaultShippingAddressAction = {
+        action: 'setDefaultShippingAddress',
+        addressId: id,
+      };
+      actions.push(action);
+    }
 
     try {
       setLoading(true);
-      await updateHandler(action);
+      await updateHandler(actions);
       setSuccess('Address is updated');
       reset({ ...data }, { keepDirty: false });
     } catch (error) {
@@ -76,11 +107,14 @@ export const AddressCard: FC<AddressCardProps> = ({ className, address, updateHa
 
   return (
     <form
-      className={cn(className, styles['address-card'])}
+      className={cn(className, styles['address-card'], {
+        [styles['default-address']]: isDefaultAddress,
+      })}
       onSubmit={handleSubmit(handleUpdateAddress)}
       noValidate
       {...props}
     >
+      {isDefaultAddress && <span className={styles['default-address-badge']}>Default</span>}
       <h4 className={styles.input_title}>Country</h4>
       <Controller
         control={control}
@@ -154,22 +188,23 @@ export const AddressCard: FC<AddressCardProps> = ({ className, address, updateHa
         }}
       />
 
-      <Checkbox
-        title='Set as default address'
-        htmlFor={address.id ?? ''}
-        onChange={handleDefaultShipping}
-        value={isDefaultAddress}
-      />
+      {!isDefaultAddress && (
+        <Checkbox
+          title='Set as default address'
+          htmlFor={address.id ?? ''}
+          onChange={handleDefaultShipping}
+          value={isDefaultChecked}
+        />
+      )}
 
-      <Button
-        className={styles['address-card-submit-button']}
-        type='submit'
-        secondary
-        loading={loading}
-        disabled={!isDirty}
-      >
-        Save
-      </Button>
+      <div className={styles['address-buttons-wrapper']}>
+        <Button className={styles['address-card-submit-button']} type='submit' secondary disabled={loading}>
+          Save
+        </Button>
+        <Button className={styles['address-card-submit-button']} type='button' danger disabled={loading}>
+          Delete
+        </Button>
+      </div>
 
       {!!success && <p className={styles.response__success}>{success}</p>}
       {error && <p className={styles.response__error}>Error with updating</p>}
@@ -179,4 +214,5 @@ export const AddressCard: FC<AddressCardProps> = ({ className, address, updateHa
 
 AddressCard.defaultProps = {
   className: '',
+  isDefaultAddress: false,
 };

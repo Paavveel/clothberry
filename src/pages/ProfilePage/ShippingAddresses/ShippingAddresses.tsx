@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import cn from 'classnames';
 
-import { Customer, MyCustomerChangeAddressAction, MyCustomerUpdate } from '@commercetools/platform-sdk';
+import { Customer, MyCustomerUpdate, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { updatePersonalInfo } from '@store/features/auth/profileApi';
 import { useAppDispatch } from '@store/hooks';
 
@@ -20,46 +20,57 @@ export type AddressOption = {
 };
 
 export const ShippingAddresses: FC<ProfileAddressesProps> = ({ className, customer, ...props }) => {
-  const { addresses, shippingAddressIds, version } = customer;
-  const [disabled, setDisabled] = useState(false);
+  const { addresses, shippingAddressIds, version, defaultShippingAddressId } = customer;
+  // const [isAddNew, setIsAddNew] = useState(false);
   const dispatch = useAppDispatch();
-  const handleAddNew = () => {
-    setDisabled((prev) => !prev);
-  };
+  // const handleAddNew = () => {
+  //   setIsAddNew((prev) => !prev);
+  // };
 
-  const handleUpdateAddress = async (action: MyCustomerChangeAddressAction) => {
-    const data: MyCustomerUpdate = { version, actions: [action] };
+  const handleUpdateAddress = async (actions: MyCustomerUpdateAction[]) => {
+    const data: MyCustomerUpdate = { version, actions };
     await dispatch(updatePersonalInfo(data));
   };
 
+  const shippingAddresses = addresses.filter(({ id }) => {
+    if (id && shippingAddressIds && shippingAddressIds.includes(id)) {
+      return true;
+    }
+    return false;
+  });
+
+  const defaultAddress = shippingAddresses.find(({ id }) => {
+    if (id && defaultShippingAddressId && defaultShippingAddressId === id) {
+      return true;
+    }
+    return false;
+  });
+
   return (
     <div className={styles['addresses-wrapper']} {...props}>
-      <h3 className={styles['main-info-title']}>Shipping address</h3>
-      <button
-        className={cn(styles['main-info-edit-button'], {
-          [styles['main-info-edit-button-active']]: !disabled,
-        })}
-        type='button'
-        onClick={handleAddNew}
-      >
+      <h3 className={styles['addresses-title']}>Shipping address</h3>
+      <button className={cn(styles['addresses-add-button'])} type='button'>
         Add new
       </button>
 
       <div className={styles['addresses-cards']}>
-        {addresses
-          .filter((address) => {
-            if (address.id && shippingAddressIds && shippingAddressIds.includes(address.id)) {
+        {!!defaultAddress && (
+          <AddressCard
+            key={defaultAddress.id}
+            address={defaultAddress}
+            isDefaultAddress
+            updateHandler={handleUpdateAddress}
+          />
+        )}
+        {shippingAddresses
+          .filter(({ id }) => {
+            if (id && defaultShippingAddressId && defaultShippingAddressId !== id) {
               return true;
             }
             return false;
           })
           .map((address) => (
-            <AddressCard
-              className={styles.profile__main}
-              key={address.id}
-              address={address}
-              updateHandler={handleUpdateAddress}
-            />
+            <AddressCard key={address.id} address={address} updateHandler={handleUpdateAddress} />
           ))}
       </div>
     </div>
