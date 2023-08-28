@@ -14,6 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   primary?: boolean;
   secondary?: boolean;
+  danger?: boolean;
 }
 
 export const Button: FC<PropsWithChildren<ButtonProps>> = ({
@@ -25,6 +26,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   disabled,
   primary,
   secondary,
+  danger,
 }) => {
   return (
     <button
@@ -33,6 +35,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       className={cn(styles.button, className, {
         [styles['button-primary']]: primary,
         [styles['button-secondary']]: secondary,
+        [styles['button-danger']]: danger,
       })}
       disabled={disabled || loading}
     >
@@ -49,4 +52,5 @@ Button.defaultProps = {
   onClick: undefined,
   loading: false,
   disabled: false,
+  danger: false,
 };
