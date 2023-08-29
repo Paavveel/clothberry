@@ -51,26 +51,6 @@
   padding: 0;
 }
 
-.response__success,
-.response__error {
-  font-size: 1.3rem;
-  margin-top: 3rem;
-}
-
-.response__success {
-  color: var(--color-green);
-}
-
-.response__error {
-  color: var(--color-red);
-}
-
-@media (width <= 767px) {
-  .main-info__title {
-    margin: 2.5rem 0 3rem;
-  }
-}
-
 @media (width <= 480px) {
   .main-info-title,
   .main-info-edit-button {

@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 import cn from 'classnames';
 
@@ -40,13 +41,8 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
   const dispatch = useAppDispatch();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState(false);
 
   const handleUpdateMainInfo: SubmitHandler<FormProfileMain> = async (data) => {
-    setSuccess('');
-    setError(false);
-
     const body: MyCustomerUpdate = { version, actions: [] };
 
     if (data.firstName !== firstName) {
@@ -79,17 +75,15 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
       await dispatch(updateCustomer(body)).unwrap();
       reset({ ...data }, { keepDirty: false });
       setDisabled(true);
-      setSuccess('Information is updated');
+      toast.success('Information is updated');
     } catch (error) {
-      setError(true);
+      toast.error('Error with updating');
     } finally {
       setLoading(false);
     }
   };
 
   const handleEdit = () => {
-    setSuccess('');
-    setError(false);
     clearErrors();
     setDisabled((prev) => !prev);
   };
@@ -109,7 +103,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
         type='button'
         onClick={handleEdit}
       >
-        edit
+        Edit
       </button>
       <fieldset className={styles['main-info-fieldset']} disabled={disabled}>
         <h4 className={styles['main-info-subtitle']}>First name</h4>
@@ -191,8 +185,6 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
           Save
         </Button>
       </fieldset>
-      {!!success && <p className={styles.response__success}>{success}</p>}
-      {error && <p className={styles.response__error}>Error with updating</p>}
     </form>
   );
 };
