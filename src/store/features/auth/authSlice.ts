@@ -31,6 +31,7 @@ export const authSlice = createSlice({
       api.changeToAnonymousFlow();
       state.isLoggedIn = false;
       state.customer = null;
+      state.errorMessage = '';
     },
     clearError: (state) => {
       state.errorMessage = '';
