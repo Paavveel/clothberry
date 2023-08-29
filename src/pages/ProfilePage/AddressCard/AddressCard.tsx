@@ -5,12 +5,7 @@ import Select from 'react-select';
 import cn from 'classnames';
 import { countries } from 'config/countries';
 
-import {
-  Address,
-  MyCustomerChangeAddressAction,
-  MyCustomerSetDefaultShippingAddressAction,
-  MyCustomerUpdateAction,
-} from '@commercetools/platform-sdk';
+import { Address } from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Checkbox } from '@components/Checkbox';
 import { Input } from '@components/Input';
@@ -18,11 +13,12 @@ import { validatePostCode } from '@helpers/Validators';
 
 import styles from './AddressCard.module.css';
 
-interface AddressCardProps {
+export interface AddressCardProps {
   className?: string;
   address: Address;
   isDefaultAddress?: boolean;
-  updateHandler: (action: MyCustomerUpdateAction[]) => Promise<void>;
+  updateHandler: (data: FormAddressCard, isFieldsValueChange?: boolean, isDefaultAddress?: boolean) => Promise<void>;
+  deleteHandler?: (id: string) => Promise<void>;
 }
 
 export interface FormAddressCard extends Record<string, unknown> {
@@ -38,6 +34,7 @@ export const AddressCard: FC<AddressCardProps> = ({
   address,
   isDefaultAddress,
   updateHandler,
+  deleteHandler,
   ...props
 }) => {
   const { id, country, city, streetName, postalCode } = address;
@@ -73,31 +70,30 @@ export const AddressCard: FC<AddressCardProps> = ({
       return;
     }
 
-    const actions = [];
-
-    if (isDirty) {
-      const action: MyCustomerChangeAddressAction = {
-        action: 'changeAddress',
-        addressId: id,
-        address: { country: data.country, city: data.city, streetName: data.streetName, postalCode: data.postalCode },
-      };
-
-      actions.push(action);
+    try {
+      setLoading(true);
+      if (id) {
+        await updateHandler({ ...data, id }, isDirty, isDefaultChecked);
+      }
+      setSuccess('Address is updated');
+      reset({ ...data }, { keepDirty: false });
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (isDefaultChecked) {
-      const action: MyCustomerSetDefaultShippingAddressAction = {
-        action: 'setDefaultShippingAddress',
-        addressId: id,
-      };
-      actions.push(action);
-    }
+  const handleDeleteAddress = async () => {
+    setSuccess('');
+    setError(false);
 
     try {
       setLoading(true);
-      await updateHandler(actions);
-      setSuccess('Address is updated');
-      reset({ ...data }, { keepDirty: false });
+      if (id && deleteHandler) {
+        await deleteHandler(id);
+      }
+      setSuccess('Address is deleted');
     } catch (error) {
       setError(true);
     } finally {
@@ -201,7 +197,13 @@ export const AddressCard: FC<AddressCardProps> = ({
         <Button className={styles['address-card-submit-button']} type='submit' secondary disabled={loading}>
           Save
         </Button>
-        <Button className={styles['address-card-submit-button']} type='button' danger disabled={loading}>
+        <Button
+          className={styles['address-card-submit-button']}
+          type='button'
+          danger
+          disabled={loading}
+          onClick={handleDeleteAddress}
+        >
           Delete
         </Button>
       </div>
@@ -215,4 +217,5 @@ export const AddressCard: FC<AddressCardProps> = ({
 AddressCard.defaultProps = {
   className: '',
   isDefaultAddress: false,
+  deleteHandler: undefined,
 };

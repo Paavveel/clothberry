@@ -18,8 +18,8 @@ export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: strin
   }
 );
 
-export const updatePersonalInfo = createAsyncThunk<Customer, MyCustomerUpdate, { rejectValue: string }>(
-  'auth/updatePersonalInfo',
+export const updateCustomer = createAsyncThunk<Customer, MyCustomerUpdate, { rejectValue: string }>(
+  'auth/updateCustomer',
   async (body, { rejectWithValue }) => {
     try {
       const result = await api.request

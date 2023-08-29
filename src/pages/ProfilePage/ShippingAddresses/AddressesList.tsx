@@ -2,11 +2,11 @@ import { FC, useState } from 'react';
 
 import cn from 'classnames';
 
-import { Customer, MyCustomerUpdate, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
-import { updatePersonalInfo } from '@store/features/auth/profileApi';
+import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import { updateCustomer } from '@store/features/auth/profileApi';
 import { useAppDispatch } from '@store/hooks';
 
-import { AddressCard } from '../AddressCard';
+import { AddressCard, FormAddressCard } from '../AddressCard';
 import { NewAddressCard } from '../NewAddressCard';
 import styles from './ShippingAddresses.module.css';
 
@@ -24,24 +24,91 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
   defaultAddressId,
   ...props
 }) => {
-  const { addresses, version: currentVersion } = customer;
+  const { addresses, version } = customer;
   const [isAddNew, setIsAddNew] = useState(false);
   const dispatch = useAppDispatch();
+
   const handleAddNew = () => {
     setIsAddNew((prev) => !prev);
   };
 
-  const handleUpdateAddress = async (actions: MyCustomerUpdateAction[]) => {
-    const data: MyCustomerUpdate = { version: currentVersion, actions };
-    await dispatch(updatePersonalInfo(data));
+  const handleUpdateAddress = async (
+    data: FormAddressCard,
+    isFieldsValueChange?: boolean,
+    isDefaultAddress?: boolean
+  ) => {
+    const { id, country, city, streetName, postalCode } = data;
+    const actions: MyCustomerUpdateAction[] = [];
+
+    if (isFieldsValueChange) {
+      actions.push({ action: 'changeAddress', addressId: id, address: { country, city, streetName, postalCode } });
+    }
+    if (isDefaultAddress) {
+      actions.push({
+        action: 'setDefaultShippingAddress',
+        addressId: id,
+      });
+    }
+    await dispatch(updateCustomer({ version, actions }));
   };
 
-  const handleAddAddress = async (data: MyCustomerUpdate) => {
-    const { version, actions } = data;
-    const result = await dispatch(
-      updatePersonalInfo({ version: version === 0 ? currentVersion : version, actions })
+  const handleAddAddress = async (data: FormAddressCard, isDefaultAddress?: boolean) => {
+    const { country, city, streetName, postalCode } = data;
+
+    const customer = await dispatch(
+      updateCustomer({
+        version,
+        actions: [
+          {
+            action: 'addAddress',
+            address: { country, city, streetName, postalCode },
+          },
+        ],
+      })
     ).unwrap();
-    return result;
+
+    const newAddress = customer.addresses.at(-1);
+
+    const customerWithAddedAddress = await dispatch(
+      updateCustomer({
+        version: customer.version,
+        actions: [
+          {
+            action: 'addShippingAddressId',
+            addressId: newAddress?.id,
+          },
+        ],
+      })
+    ).unwrap();
+
+    if (isDefaultAddress) {
+      await dispatch(
+        updateCustomer({
+          version: customerWithAddedAddress.version,
+          actions: [
+            {
+              action: 'setDefaultShippingAddress',
+              addressId: newAddress?.id,
+            },
+          ],
+        })
+      );
+    }
+    setIsAddNew(false);
+  };
+
+  const handleDeleteAddress = async (id: string) => {
+    await dispatch(
+      updateCustomer({
+        version,
+        actions: [
+          {
+            action: 'removeAddress',
+            addressId: id,
+          },
+        ],
+      })
+    ).unwrap();
   };
 
   const shippingAddresses = addresses.filter(({ id }) => {
@@ -51,12 +118,15 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
     return false;
   });
 
-  const defaultAddress = shippingAddresses.find(({ id }) => {
-    if (id && defaultAddressId && defaultAddressId === id) {
-      return true;
-    }
-    return false;
-  });
+  const defaultAddressIndex = shippingAddresses.findIndex(
+    ({ id }) => id && defaultAddressId && defaultAddressId === id
+  );
+
+  const shippingAddressesCopy = [...shippingAddresses];
+  const shippingAddressesWithDefault = [
+    ...(defaultAddressIndex >= 0 ? shippingAddressesCopy.splice(defaultAddressIndex, 1) : []),
+    ...shippingAddressesCopy,
+  ];
 
   return (
     <div className={styles['addresses-wrapper']} {...props}>
@@ -66,25 +136,25 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
       </button>
 
       <div className={styles['addresses-cards']}>
-        {!!isAddNew && <NewAddressCard updateHandler={handleAddAddress} />}
-        {!!defaultAddress && (
+        {!!isAddNew && <NewAddressCard addNewAddressHandler={handleAddAddress} />}
+        {/* {!!defaultAddress && (
           <AddressCard
             key={defaultAddress.id}
             address={defaultAddress}
             isDefaultAddress
             updateHandler={handleUpdateAddress}
+            deleteHandler={handleDeleteAddress}
           />
-        )}
-        {shippingAddresses
-          .filter(({ id }) => {
-            if (id && defaultAddressId && defaultAddressId !== id) {
-              return true;
-            }
-            return false;
-          })
-          .map((address) => (
-            <AddressCard key={address.id} address={address} updateHandler={handleUpdateAddress} />
-          ))}
+        )} */}
+        {(defaultAddressIndex >= 0 ? shippingAddressesWithDefault : shippingAddresses).map((address, i) => (
+          <AddressCard
+            key={address.id}
+            address={address}
+            isDefaultAddress={defaultAddressIndex >= 0 && i === 0}
+            updateHandler={handleUpdateAddress}
+            deleteHandler={handleDeleteAddress}
+          />
+        ))}
       </div>
     </div>
   );

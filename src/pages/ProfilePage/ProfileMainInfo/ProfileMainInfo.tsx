@@ -7,7 +7,7 @@ import { Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import { emailValidator, validateName } from '@helpers/Validators';
-import { updatePersonalInfo } from '@store/features/auth/profileApi';
+import { updateCustomer } from '@store/features/auth/profileApi';
 import { useAppDispatch } from '@store/hooks';
 
 import styles from './ProfileMainInfo.module.css';
@@ -76,7 +76,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
 
     try {
       setLoading(true);
-      await dispatch(updatePersonalInfo(body)).unwrap();
+      await dispatch(updateCustomer(body)).unwrap();
       reset({ ...data }, { keepDirty: false });
       setDisabled(true);
       setSuccess('Information is updated');

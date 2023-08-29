@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
 import { login } from './authApi';
-import { getCustomer, updatePersonalInfo } from './profileApi';
+import { getCustomer, updateCustomer } from './profileApi';
 import { signup } from './signupApi';
 
 export interface AuthState {
@@ -81,7 +81,7 @@ export const authSlice = createSlice({
         }
       });
 
-    builder.addCase(updatePersonalInfo.fulfilled, (state, action) => {
+    builder.addCase(updateCustomer.fulfilled, (state, action) => {
       state.customer = action.payload;
     });
   },
