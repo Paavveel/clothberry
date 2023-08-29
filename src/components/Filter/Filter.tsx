@@ -7,7 +7,6 @@ import Select, { SingleValue, StylesConfig } from 'react-select';
 import chroma from 'chroma-js';
 import classNames from 'classnames';
 
-// import makeAnimated from 'react-select/animated';
 import styles from './Filter.module.css';
 import { ColourOption, Option, colourOptions, optionsSize, sortBy } from './data';
 
@@ -54,11 +53,11 @@ const colourStyles: StylesConfig<ColourOption> = {
 };
 
 interface FilterProps {
-  handleSortPrice: (option: Option | null) => void;
+  handleSort: (option: Option | null) => void;
   handleFilterColor: (option: ColourOption | null) => void;
 }
 
-export const Filter: FC<FilterProps> = ({ handleSortPrice, handleFilterColor }) => {
+export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor }) => {
   const [show, setShow] = useState(false);
   return (
     <div className={styles.container}>
@@ -82,7 +81,7 @@ export const Filter: FC<FilterProps> = ({ handleSortPrice, handleFilterColor }) 
             options={sortBy}
             placeholder='sort'
             isClearable
-            onChange={(e) => handleSortPrice(e)}
+            onChange={(e) => handleSort(e)}
           />
         </div>
         <div className={styles.right}>
