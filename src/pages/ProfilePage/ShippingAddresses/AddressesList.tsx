@@ -7,8 +7,7 @@ import { updateCustomer } from '@store/features/auth/profileApi';
 import { useAppDispatch } from '@store/hooks';
 
 import { AddressCard, FormAddressCard } from '../AddressCard';
-import { NewAddressCard } from '../NewAddressCard';
-import styles from './ShippingAddresses.module.css';
+import styles from './AddressesList.module.css';
 
 interface ProfileAddressesProps {
   className?: string;
@@ -111,33 +110,34 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
     ).unwrap();
   };
 
-  const shippingAddresses = addresses.filter(({ id }) => {
+  const addressesArray = addresses.filter(({ id }) => {
     if (id && addressIds && addressIds.includes(id)) {
       return true;
     }
     return false;
   });
 
-  const defaultAddressIndex = shippingAddresses.findIndex(
-    ({ id }) => id && defaultAddressId && defaultAddressId === id
-  );
-
-  const shippingAddressesCopy = [...shippingAddresses];
-  const shippingAddressesWithDefault = [
-    ...(defaultAddressIndex >= 0 ? shippingAddressesCopy.splice(defaultAddressIndex, 1) : []),
-    ...shippingAddressesCopy,
-  ];
+  const defaultAddress = addressesArray.find(({ id }) => {
+    if (id && defaultAddressId && defaultAddressId === id) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <div className={styles['addresses-wrapper']} {...props}>
       <h3 className={styles['addresses-title']}>Shipping address</h3>
-      <button className={cn(styles['addresses-add-button'])} type='button' onClick={handleAddNew}>
+      <button
+        className={cn(styles['addresses-add-button'], { [styles['addresses-add-button-active']]: isAddNew })}
+        type='button'
+        onClick={handleAddNew}
+      >
         Add new
       </button>
 
       <div className={styles['addresses-cards']}>
-        {!!isAddNew && <NewAddressCard addNewAddressHandler={handleAddAddress} />}
-        {/* {!!defaultAddress && (
+        {isAddNew && <AddressCard isNewAddress createHandler={handleAddAddress} />}
+        {!!defaultAddress && (
           <AddressCard
             key={defaultAddress.id}
             address={defaultAddress}
@@ -145,16 +145,17 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
             updateHandler={handleUpdateAddress}
             deleteHandler={handleDeleteAddress}
           />
-        )} */}
-        {(defaultAddressIndex >= 0 ? shippingAddressesWithDefault : shippingAddresses).map((address, i) => (
-          <AddressCard
-            key={address.id}
-            address={address}
-            isDefaultAddress={defaultAddressIndex >= 0 && i === 0}
-            updateHandler={handleUpdateAddress}
-            deleteHandler={handleDeleteAddress}
-          />
-        ))}
+        )}
+        {(defaultAddress ? addressesArray.filter((address) => address.id !== defaultAddress.id) : addressesArray).map(
+          (address) => (
+            <AddressCard
+              key={address.id}
+              address={address}
+              updateHandler={handleUpdateAddress}
+              deleteHandler={handleDeleteAddress}
+            />
+          )
+        )}
       </div>
     </div>
   );
