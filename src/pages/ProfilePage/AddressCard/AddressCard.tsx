@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import Select from 'react-select';
 
 import cn from 'classnames';
@@ -14,10 +15,12 @@ import { validatePostCode } from '@helpers/Validators';
 import styles from './AddressCard.module.css';
 
 export interface AddressCardProps {
+  address?: Address;
   className?: string;
-  address: Address;
   isDefaultAddress?: boolean;
-  updateHandler: (data: FormAddressCard, isFieldsValueChange?: boolean, isDefaultAddress?: boolean) => Promise<void>;
+  isNewAddress?: boolean;
+  updateHandler?: (data: FormAddressCard, isFieldsValueChange?: boolean, isDefaultAddress?: boolean) => Promise<void>;
+  createHandler?: (data: FormAddressCard, isDefaultAddress?: boolean) => Promise<void>;
   deleteHandler?: (id: string) => Promise<void>;
 }
 
@@ -33,11 +36,12 @@ export const AddressCard: FC<AddressCardProps> = ({
   className,
   address,
   isDefaultAddress,
+  isNewAddress,
+  createHandler,
   updateHandler,
   deleteHandler,
   ...props
 }) => {
-  const { id, country, city, streetName, postalCode } = address;
   const {
     register,
     handleSubmit,
@@ -47,12 +51,16 @@ export const AddressCard: FC<AddressCardProps> = ({
     formState: { errors, isDirty },
   } = useForm<FormAddressCard>({
     mode: 'onChange',
-    defaultValues: { country, city, streetName, postalCode },
+    defaultValues: {
+      id: address?.id,
+      country: address?.country,
+      city: address?.city,
+      streetName: address?.streetName,
+      postalCode: address?.postalCode,
+    },
   });
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState(false);
   const [isDefaultChecked, setIsDefaultChecked] = useState(false);
 
   const watchShippingCountry = watch('country');
@@ -62,40 +70,48 @@ export const AddressCard: FC<AddressCardProps> = ({
   };
 
   const handleUpdateAddress: SubmitHandler<FormAddressCard> = async (data) => {
-    setSuccess('');
-    setError(false);
-
     if (!isDirty && !isDefaultChecked) {
-      setSuccess('Nothing to change');
+      toast.error('Nothing to change');
       return;
     }
 
     try {
       setLoading(true);
-      if (id) {
-        await updateHandler({ ...data, id }, isDirty, isDefaultChecked);
+      if (updateHandler) {
+        await updateHandler(data, isDirty, isDefaultChecked);
       }
-      setSuccess('Address is updated');
-      reset({ ...data }, { keepDirty: false });
+      toast.success('Address is updated');
+      reset(data, { keepDirty: false });
     } catch (error) {
-      setError(true);
+      toast.error('Error with update');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddAddress: SubmitHandler<FormAddressCard> = async (data) => {
+    try {
+      setLoading(true);
+      if (createHandler) {
+        await createHandler(data, isDefaultChecked);
+      }
+      toast.success('New address added');
+    } catch (error) {
+      toast.error('Error with create');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteAddress = async () => {
-    setSuccess('');
-    setError(false);
-
     try {
       setLoading(true);
-      if (id && deleteHandler) {
-        await deleteHandler(id);
+      if (address?.id && deleteHandler) {
+        await deleteHandler(address.id);
       }
-      setSuccess('Address is deleted');
+      toast.success('Address is deleted');
     } catch (error) {
-      setError(true);
+      toast.error('Error with delete');
     } finally {
       setLoading(false);
     }
@@ -103,10 +119,8 @@ export const AddressCard: FC<AddressCardProps> = ({
 
   return (
     <form
-      className={cn(className, styles['address-card'], {
-        [styles['default-address']]: isDefaultAddress,
-      })}
-      onSubmit={handleSubmit(handleUpdateAddress)}
+      className={cn(className, styles['address-card'])}
+      onSubmit={handleSubmit(isNewAddress ? handleAddAddress : handleUpdateAddress)}
       noValidate
       {...props}
     >
@@ -186,36 +200,40 @@ export const AddressCard: FC<AddressCardProps> = ({
 
       {!isDefaultAddress && (
         <Checkbox
+          className={styles['address-default-checkbox']}
           title='Set as default address'
-          htmlFor={address.id ?? ''}
+          htmlFor={address?.id ?? 'new-address'}
           onChange={handleDefaultShipping}
           value={isDefaultChecked}
         />
       )}
 
       <div className={styles['address-buttons-wrapper']}>
-        <Button className={styles['address-card-submit-button']} type='submit' secondary disabled={loading}>
-          Save
+        <Button className={styles['address-card-button']} type='submit' secondary disabled={loading}>
+          {isNewAddress ? 'Add' : 'Save'}
         </Button>
-        <Button
-          className={styles['address-card-submit-button']}
-          type='button'
-          danger
-          disabled={loading}
-          onClick={handleDeleteAddress}
-        >
-          Delete
-        </Button>
+        {!isNewAddress && (
+          <Button
+            className={styles['address-card-button']}
+            type='button'
+            danger
+            disabled={loading}
+            onClick={handleDeleteAddress}
+          >
+            Delete
+          </Button>
+        )}
       </div>
-
-      {!!success && <p className={styles.response__success}>{success}</p>}
-      {error && <p className={styles.response__error}>Error with updating</p>}
     </form>
   );
 };
 
 AddressCard.defaultProps = {
   className: '',
+  address: undefined,
   isDefaultAddress: false,
+  isNewAddress: false,
+  createHandler: undefined,
+  updateHandler: undefined,
   deleteHandler: undefined,
 };
