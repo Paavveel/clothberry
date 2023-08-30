@@ -59,30 +59,38 @@
   position: fixed;
   z-index: 800;
   inset: 0;
+  height: max-content;
+  width: max-content;
   top: 7rem;
   transform: translateX(-1000px);
   background-color: #fff;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 3.5rem;
   display: flex;
-  transition: transform 0.5s;
+  box-shadow: 0 3100px 8px 3000px rgba(0 0 0 / 0%);
+  transition:
+    transform 0.5s,
+    box-shadow 0.3s;
 }
 
 .nav.show {
   transform: translateX(0);
+  box-shadow: 0 3000px 8px 3000px rgba(0 0 0 / 50%);
 }
 
 .menu__list {
-  font-size: 2rem;
+  font-size: 2.5rem;
   list-style: none;
   display: flex;
   flex-direction: column;
+  padding: 2.5rem 0;
   gap: 1rem;
 }
 
 .menu__list.menu__list__submenu {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .menu__list li a {

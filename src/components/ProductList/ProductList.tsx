@@ -7,6 +7,7 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { Filter } from '@components/Filter/Filter';
 import { ColorOption, Option } from '@components/Filter/data';
 import { ProductItem } from '@components/ProductItem/ProductItem';
+import { Skeleton } from '@components/Skeleton/Skeleton';
 import { NotFoundPage } from '@pages/NotFoundPage';
 
 import styles from './ProductList.module.css';
@@ -17,6 +18,7 @@ export const ProductList: FC = () => {
   const [errorCategory, setErrorCategory] = useState(false);
   const [sortByNameAndPrice, setSortByNameAndPrice] = useState('');
   const [filterByColor, setFilterByColor] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleSort = (option: Option | null) => {
     if (option) {
@@ -39,12 +41,16 @@ export const ProductList: FC = () => {
       const categoryId = await getCategoryBySlug(name!);
       if (categoryId) {
         const productsByCategory = await getProductsByCategoryId(categoryId, sortByNameAndPrice, filterByColor);
-        if (productsByCategory) setProducts(productsByCategory);
+        if (productsByCategory) {
+          setProducts(productsByCategory);
+          setIsLoading(false);
+        }
       } else {
         setErrorCategory(true);
       }
     }
     fetchRequest();
+
     return () => {
       if (errorCategory) {
         setErrorCategory(false);
@@ -60,11 +66,12 @@ export const ProductList: FC = () => {
     <div className={styles.products__wrapper}>
       <Filter handleSort={handleSort} handleFilterColor={handleFilterColor} />
       <section className={styles['product-list']}>
-        {products.length > 0 ? (
-          products.map((product) => <ProductItem key={product.id} product={product} />)
-        ) : (
-          <p>Not found</p>
-        )}
+        {/* {products.length === 0 && isLoading && <p>not found</p>} */}
+        {isLoading
+          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+          : products.map((product) => <ProductItem key={product.id} product={product} />)}
+
+        {isLoading && <Skeleton />}
       </section>
     </div>
   );

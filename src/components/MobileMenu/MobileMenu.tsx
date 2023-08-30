@@ -1,8 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { menuItems } from 'config/routes';
+
+import { useClickOutside } from '@hooks/useClickOutside';
 
 import styles from './MobileMenu.module.css';
 
@@ -10,19 +12,21 @@ interface MobileMenuProps {}
 
 export const MobileMenu: FC<MobileMenuProps> = () => {
   const [active, setActive] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const handleActiveClass = () => {
     setActive((active) => !active);
   };
+  useClickOutside(mobileMenuRef, () => setActive(false));
 
   useEffect(() => {
     if (active) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'scroll';
+      document.body.style.overflow = '';
     }
   }, [active]);
   return (
-    <div className={styles.mobile__menu}>
+    <div className={styles.mobile__menu} ref={mobileMenuRef}>
       <button
         className={classNames(styles.burger, {
           [styles.open]: active,
@@ -62,6 +66,8 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
             </li>
           ))}
         </ul>
+
+        <div className={active ? styles.overlay : ''} />
       </nav>
     </div>
   );

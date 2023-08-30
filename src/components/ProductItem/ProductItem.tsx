@@ -1,4 +1,6 @@
 import { FC } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import { Image, Price } from '@commercetools/platform-sdk';
 
@@ -24,7 +26,6 @@ interface ProductCardProps {
   product: Product;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const ProductItem: FC<ProductCardProps> = ({ product }) => {
   const { name, description, masterVariant } = product;
   const { images, prices } = masterVariant;
@@ -33,10 +34,13 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
   return (
     <div className={styles.product__item}>
       <div className={styles['product__item--cover']}>
-        <img
-          className={styles.product__item__image}
+        <LazyLoadImage
           src={images && images.length > 0 ? images[0].url : ''}
           alt={name.en}
+          width={300}
+          height={300}
+          effect='blur'
+          placeholderSrc={images && images.length > 0 ? images[0].url : ''}
         />
         <div className={styles['black-mask']} />
         <div className={styles.price}>

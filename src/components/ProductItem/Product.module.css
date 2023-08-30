@@ -17,15 +17,12 @@
   justify-content: center;
   overflow: hidden;
   position: relative;
+  flex-direction: column;
 }
 
 .product__item__image {
-  height: 80%;
-  left: 5%;
-  object-fit: contain;
-  position: absolute;
-  top: 15%;
-  width: 90%;
+  width: 300px;
+  height: 300px;
 }
 
 .price {
@@ -78,7 +75,7 @@
   font-weight: 400;
   height: 50px;
   letter-spacing: 1px;
-  position: relative;
+  position: absolute;
   text-transform: uppercase;
   transition: opacity 0.5s;
   width: 220px;
