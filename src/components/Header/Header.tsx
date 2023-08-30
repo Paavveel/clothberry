@@ -7,14 +7,14 @@ import { AppRoutes } from 'config/routes';
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
 import { ReactComponent as Logout } from '@assets/img/logout.svg';
 import { ReactComponent as User } from '@assets/img/user.svg';
-import { logout, selectAuth } from '@store/features/auth/authSlice';
+import { logout } from '@store/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
   const [active, setActive] = useState(false);
-  const { isLoggedIn } = useAppSelector(selectAuth);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
