@@ -89,12 +89,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
   };
 
   return (
-    <form
-      className={cn(className, styles['main-info'])}
-      onSubmit={handleSubmit(handleUpdateMainInfo)}
-      noValidate
-      {...props}
-    >
+    <form className={cn(className)} onSubmit={handleSubmit(handleUpdateMainInfo)} noValidate {...props}>
       <h3 className={styles['main-info-title']}>Personal information</h3>
       <button
         className={cn(styles['main-info-edit-button'], {
@@ -191,8 +186,4 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
       </fieldset>
     </form>
   );
-};
-
-ProfileMainInfo.defaultProps = {
-  className: '',
 };
