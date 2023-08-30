@@ -65,12 +65,6 @@
   color: var(--color-gray-primary);
 }
 
-@media (width > 767px) {
-  .burger {
-    display: none;
-  }
-}
-
 .right {
   display: flex;
   column-gap: 75px;

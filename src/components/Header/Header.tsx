@@ -6,10 +6,12 @@ import { AppRoutes } from 'config/routes';
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
 import { ReactComponent as Logout } from '@assets/img/logout.svg';
 import { ReactComponent as User } from '@assets/img/user.svg';
+import { MobileMenu } from '@components/MobileMenu/MobileMenu';
+import { Navbar } from '@components/Navbar/Navbar';
 import { logout, selectAuth } from '@store/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-import { Navbar } from '../Navbar/Navbar';
+// import { Navbar } from '../Navbar/Navbar';
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
@@ -22,6 +24,7 @@ export const Header: FC = () => {
   return (
     <header className={styles.header}>
       <Navbar />
+      <MobileMenu />
       <div className={styles['logo-wrapper']}>
         <Link to='/' className={styles.logo} area-label='logo'>
           clothberry
