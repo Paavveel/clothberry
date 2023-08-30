@@ -1,4 +1,4 @@
-export type ColourOption = {
+export type ColorOption = {
   readonly value: string;
   readonly label: string;
   readonly color: string;
@@ -6,7 +6,7 @@ export type ColourOption = {
   readonly isDisabled?: boolean;
 };
 
-export const colourOptions: readonly ColourOption[] = [
+export const colorOptions: readonly ColorOption[] = [
   { value: 'blue', label: 'Blue', color: '#0052CC' },
   { value: 'black', label: 'Black', color: '#000' },
   { value: 'multicolored', label: 'Multicolored', color: '#ff00e1' },

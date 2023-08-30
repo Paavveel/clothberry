@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getCategoryBySlug, getProductsByCategoryId } from '@api/search';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Filter } from '@components/Filter/Filter';
-import { ColourOption, Option } from '@components/Filter/data';
+import { ColorOption, Option } from '@components/Filter/data';
 import { ProductItem } from '@components/ProductItem/ProductItem';
 import { NotFoundPage } from '@pages/NotFoundPage';
 
@@ -15,50 +15,56 @@ export const ProductList: FC = () => {
   const { name } = useParams();
   const [products, setProducts] = useState<ProductProjection[]>([]);
   const [errorCategory, setErrorCategory] = useState(false);
-  const [sortBy, setSortBy] = useState('');
+  const [sortByNameAndPrice, setSortByNameAndPrice] = useState('');
   const [filterByColor, setFilterByColor] = useState('');
+
+  const handleSort = (option: Option | null) => {
+    if (option) {
+      setSortByNameAndPrice(option.value);
+    } else {
+      setSortByNameAndPrice('');
+    }
+  };
+
+  const handleFilterColor = (option: ColorOption | null) => {
+    if (option) {
+      setFilterByColor(option.value);
+    } else {
+      setFilterByColor('');
+    }
+  };
 
   useEffect(() => {
     async function fetchRequest() {
-      const res = await getCategoryBySlug(name!);
-      if ('error' in res) {
+      const categoryId = await getCategoryBySlug(name!);
+      if (categoryId) {
+        const productsByCategory = await getProductsByCategoryId(categoryId, sortByNameAndPrice, filterByColor);
+        if (productsByCategory) setProducts(productsByCategory);
+      } else {
         setErrorCategory(true);
-      } else if ('body' in res) {
-        const categoryId = res.body.id;
-        const productsByCategory = (await getProductsByCategoryId(categoryId, sortBy, filterByColor)).body.results;
-        setProducts(productsByCategory);
       }
     }
     fetchRequest();
-    return () => setErrorCategory(false);
-  }, [name, sortBy, filterByColor]);
+    return () => {
+      if (errorCategory) {
+        setErrorCategory(false);
+      }
+    };
+  }, [name, sortByNameAndPrice, filterByColor, errorCategory]);
 
   if (errorCategory) {
     return <NotFoundPage />;
   }
 
-  const handleSort = async (option: Option | null) => {
-    if (option && option.value !== sortBy) {
-      setSortBy(option.value);
-    }
-  };
-
-  const handleFilterColor = async (option: ColourOption | null) => {
-    if (option && option.value !== filterByColor) {
-      setFilterByColor(option.value);
-    }
-  };
-
-  console.log(sortBy);
-  console.log(filterByColor);
-
   return (
     <div className={styles.products__wrapper}>
       <Filter handleSort={handleSort} handleFilterColor={handleFilterColor} />
       <section className={styles['product-list']}>
-        {products.map((product) => (
-          <ProductItem key={product.id} product={product} />
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => <ProductItem key={product.id} product={product} />)
+        ) : (
+          <p>Not found</p>
+        )}
       </section>
     </div>
   );

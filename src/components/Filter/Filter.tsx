@@ -8,7 +8,7 @@ import chroma from 'chroma-js';
 import classNames from 'classnames';
 
 import styles from './Filter.module.css';
-import { ColourOption, Option, colourOptions, optionsSize, sortBy } from './data';
+import { ColorOption, Option, colorOptions, optionsSize, sortBy } from './data';
 
 const dot = (color = 'transparent') => ({
   alignItems: 'center',
@@ -25,7 +25,7 @@ const dot = (color = 'transparent') => ({
   },
 });
 
-const colourStyles: StylesConfig<ColourOption> = {
+const colourStyles: StylesConfig<ColorOption> = {
   control: (styles) => ({ ...styles, backgroundColor: 'white' }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     const color = chroma(data.color);
@@ -54,7 +54,7 @@ const colourStyles: StylesConfig<ColourOption> = {
 
 interface FilterProps {
   handleSort: (option: Option | null) => void;
-  handleFilterColor: (option: ColourOption | null) => void;
+  handleFilterColor: (option: ColorOption | null) => void;
 }
 
 export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor }) => {
@@ -89,10 +89,10 @@ export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor }) => {
             isSearchable={false}
             className={`${styles.color} ${styles.select}`}
             placeholder='by color'
-            options={colourOptions}
+            options={colorOptions}
             styles={colourStyles}
             isClearable
-            onChange={(e) => handleFilterColor(e as SingleValue<ColourOption>)}
+            onChange={(e) => handleFilterColor(e as SingleValue<ColorOption>)}
           />
           <Select
             isSearchable={false}
