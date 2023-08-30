@@ -1,0 +1,17 @@
+.product {
+  display: flex;
+}
+
+.img {
+  flex: 1 1 670px;
+  margin-right: 76px;
+  background-color: var(--color-gray-primary);
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
+.title {
+  font-size: 3rem;
+}
