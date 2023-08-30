@@ -5,9 +5,9 @@ import { selectAuth } from '@store/features/auth/authSlice';
 import { getCustomer } from '@store/features/auth/profileApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
+import { AddressesList } from './AddressesList';
 import { ProfileMainInfo } from './ProfileMainInfo';
 import styles from './ProfilePage.module.css';
-import { AddressesList } from './ShippingAddresses';
 
 export const ProfilePage = () => {
   const { customer, errorMessage } = useAppSelector(selectAuth);
@@ -44,8 +44,17 @@ export const ProfilePage = () => {
       {!!customer && (
         <AddressesList
           customer={customer}
+          addressType='Shipping'
           addressIds={customer.shippingAddressIds}
           defaultAddressId={customer.defaultShippingAddressId}
+        />
+      )}
+      {!!customer && (
+        <AddressesList
+          customer={customer}
+          addressType='Billing'
+          addressIds={customer.billingAddressIds}
+          defaultAddressId={customer.defaultBillingAddressId}
         />
       )}
     </>

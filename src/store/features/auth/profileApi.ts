@@ -2,6 +2,8 @@ import { api } from '@api/client';
 import { Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { logout } from './authSlice';
+
 export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: string }>(
   'auth/getCustomer',
   async (_, { rejectWithValue }) => {
@@ -20,7 +22,7 @@ export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: strin
 
 export const updateCustomer = createAsyncThunk<Customer, MyCustomerUpdate, { rejectValue: string }>(
   'auth/updateCustomer',
-  async (body, { rejectWithValue }) => {
+  async (body, { rejectWithValue, dispatch }) => {
     try {
       const result = await api.request
         .me()
@@ -31,6 +33,12 @@ export const updateCustomer = createAsyncThunk<Customer, MyCustomerUpdate, { rej
 
       return result.body;
     } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout);
+        }
+        return rejectWithValue(error.message);
+      }
       return rejectWithValue('Error with update');
     }
   }

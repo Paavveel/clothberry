@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { memo, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import Select from 'react-select';
@@ -32,7 +32,7 @@ export interface FormAddressCard extends Record<string, unknown> {
   country: string;
 }
 
-export const AddressCard: FC<AddressCardProps> = ({
+export const AddressCard = memo(function AddressCard({
   className,
   address,
   isDefaultAddress,
@@ -41,7 +41,7 @@ export const AddressCard: FC<AddressCardProps> = ({
   updateHandler,
   deleteHandler,
   ...props
-}) => {
+}: AddressCardProps) {
   const {
     register,
     handleSubmit,
@@ -226,14 +226,4 @@ export const AddressCard: FC<AddressCardProps> = ({
       </div>
     </form>
   );
-};
-
-AddressCard.defaultProps = {
-  className: '',
-  address: undefined,
-  isDefaultAddress: false,
-  isNewAddress: false,
-  createHandler: undefined,
-  updateHandler: undefined,
-  deleteHandler: undefined,
-};
+});
