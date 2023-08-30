@@ -1,5 +1,5 @@
 import { api } from '@api/client';
-import { Customer, MyCustomerUpdate } from '@commercetools/platform-sdk';
+import { Customer, MyCustomerChangePassword, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { logout } from './authSlice';
@@ -26,6 +26,31 @@ export const updateCustomer = createAsyncThunk<Customer, MyCustomerUpdate, { rej
     try {
       const result = await api.request
         .me()
+        .post({
+          body,
+        })
+        .execute();
+
+      return result.body;
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout);
+        }
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error with update');
+    }
+  }
+);
+
+export const changeCustomerPassword = createAsyncThunk<Customer, MyCustomerChangePassword, { rejectValue: string }>(
+  'auth/changeCustomerPassword',
+  async (body, { rejectWithValue, dispatch }) => {
+    try {
+      const result = await api.request
+        .me()
+        .password()
         .post({
           body,
         })
