@@ -10,6 +10,7 @@ import { Address } from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Checkbox } from '@components/Checkbox';
 import { Input } from '@components/Input';
+import { Loader } from '@components/Loader';
 import { validatePostCode } from '@helpers/Validators';
 
 import { AddressType } from '../AddressesList';
@@ -123,6 +124,7 @@ export const AddressCard = memo(function AddressCard({
   return (
     <form
       className={cn(className, styles['address-card'])}
+      style={{ opacity: loading ? 0.5 : 1 }}
       onSubmit={handleSubmit(isNewAddress ? handleAddAddress : handleUpdateAddress)}
       noValidate
       {...props}
@@ -230,6 +232,7 @@ export const AddressCard = memo(function AddressCard({
           </Button>
         )}
       </div>
+      {loading && <Loader className={styles['address-loader']} />}
     </form>
   );
 });

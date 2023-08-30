@@ -57,6 +57,13 @@
   padding: 0;
 }
 
+.address-loader {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 2;
+}
+
 @media (width <= 480px) {
   .address-card {
     min-height: 52rem;
