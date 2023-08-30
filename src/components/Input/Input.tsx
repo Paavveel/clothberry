@@ -15,6 +15,7 @@ type InputProps<TFormValues extends FieldValues> = {
   type: string;
   required?: boolean;
   label: Path<TFormValues>;
+  id: string;
   register: UseFormRegister<TFormValues>;
   options: RegisterOptions;
   error: FieldError | undefined;
@@ -27,6 +28,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   placeholder,
   type,
   label,
+  id,
   required,
   register,
   error,
@@ -43,7 +45,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   };
   return (
     <div className={styles.input_wrapper}>
-      <label htmlFor={label} className={styles['visually-hidden']}>
+      <label htmlFor={id} className={styles['visually-hidden']}>
         {placeholder}
       </label>
       {type === 'password' && showPasswordToggler ? (
@@ -60,7 +62,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
           )}
 
           <input
-            id={label}
+            id={id}
             type={isShowPassword ? 'text' : type}
             inputMode={inputMode}
             className={classNames(styles.field, {
@@ -84,7 +86,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
         </div>
       ) : (
         <input
-          id={label}
+          id={id}
           type={type}
           inputMode={inputMode}
           className={classNames(styles.field, {

@@ -108,6 +108,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
       <fieldset className={styles['main-info-fieldset']} disabled={disabled}>
         <h4 className={styles['main-info-subtitle']}>First name</h4>
         <Input<FormProfileMain>
+          id='firstName'
           type='text'
           placeholder='First Name *'
           label='firstName'
@@ -120,6 +121,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
         />
         <h4 className={styles['main-info-subtitle']}>Last name</h4>
         <Input<FormProfileMain>
+          id='main-info-last-name'
           type='text'
           placeholder='Last Name *'
           label='lastName'
@@ -132,6 +134,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
         />
         <h4 className={styles['main-info-subtitle']}>Date of birth</h4>
         <Input<FormProfileMain>
+          id='main-info-birth-date'
           type='date'
           placeholder='Date of birth'
           label='dateOfBirth'
@@ -164,6 +167,7 @@ export const ProfileMainInfo: FC<ProfileMainInfoProps> = ({ className, customer,
         />
         <h4 className={styles['main-info-subtitle']}>Email </h4>
         <Input<FormProfileMain>
+          id='main-info-email'
           type='text'
           placeholder='Email *'
           label='email'

@@ -97,6 +97,7 @@ export const SignUpPage: FC = () => {
   return (
     <Form title='Sign up an account' onSubmit={handleSubmit(submit)}>
       <Input<FormRegister>
+        id='signup-email'
         type='text'
         placeholder='Email *'
         label='email'
@@ -109,6 +110,7 @@ export const SignUpPage: FC = () => {
         }}
       />
       <Input<FormRegister>
+        id='signup-password'
         type='password'
         placeholder='Password *'
         label='password'
@@ -125,6 +127,7 @@ export const SignUpPage: FC = () => {
         }}
       />
       <Input<FormRegister>
+        id='signup-last-confirm-password'
         type='password'
         placeholder='Confirm Password *'
         label='confirmPassword'
@@ -139,6 +142,7 @@ export const SignUpPage: FC = () => {
         }}
       />
       <Input<FormRegister>
+        id='signup-last-first-name'
         type='text'
         placeholder='First Name *'
         label='firstName'
@@ -150,6 +154,7 @@ export const SignUpPage: FC = () => {
         }}
       />
       <Input<FormRegister>
+        id='signup-last-name'
         type='text'
         placeholder='Last Name *'
         label='lastName'
@@ -161,6 +166,7 @@ export const SignUpPage: FC = () => {
         }}
       />
       <Input<FormRegister>
+        id='signup-middle-name'
         type='text'
         placeholder='Middle Name'
         label='middleName'
@@ -174,6 +180,7 @@ export const SignUpPage: FC = () => {
       <div className={styles['date-wrapper']}>
         <span>Date of Birth:</span>
         <Input<FormRegister>
+          id='signup-birth-date'
           type='date'
           placeholder='Date of birth'
           label='dateOfBirth'
@@ -231,6 +238,7 @@ export const SignUpPage: FC = () => {
         />
 
         <Input<FormRegister>
+          id='signup-shipping-postal-code'
           type='text'
           placeholder='Postal Code *'
           label='ShippingPostalCode'
@@ -244,6 +252,7 @@ export const SignUpPage: FC = () => {
         />
 
         <Input<FormRegister>
+          id='signup-shipping-city'
           type='text'
           placeholder='City *'
           label='ShippingCity'
@@ -263,6 +272,7 @@ export const SignUpPage: FC = () => {
           }}
         />
         <Input<FormRegister>
+          id='signup-shipping-street'
           type='text'
           placeholder='Street *'
           label='ShippingStreet'
@@ -321,6 +331,7 @@ export const SignUpPage: FC = () => {
           />
 
           <Input<FormRegister>
+            id='signup-billing-postal-code'
             type='text'
             placeholder='Postal Code *'
             label='BillingPostalCode'
@@ -334,6 +345,7 @@ export const SignUpPage: FC = () => {
           />
 
           <Input<FormRegister>
+            id='signup-billing-city'
             type='text'
             placeholder='City *'
             label='BillingCity'
@@ -353,6 +365,7 @@ export const SignUpPage: FC = () => {
             }}
           />
           <Input<FormRegister>
+            id='signup-billing-street'
             type='text'
             placeholder='Street *'
             label='BillingStreet'

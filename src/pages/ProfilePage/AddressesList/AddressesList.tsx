@@ -9,10 +9,12 @@ import { useAppDispatch } from '@store/hooks';
 import { AddressCard, FormAddressCard } from '../AddressCard';
 import styles from './AddressesList.module.css';
 
+export type AddressType = 'Shipping' | 'Billing';
+
 interface ProfileAddressesProps {
   className?: string;
   customer: Customer;
-  addressType: 'Shipping' | 'Billing';
+  addressType: AddressType;
   addressIds: Customer['shippingAddressIds'] | Customer['billingAddressIds'];
   defaultAddressId: Customer['defaultShippingAddressId'] | Customer['defaultBillingAddressId'];
 }
@@ -143,7 +145,7 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
       </button>
 
       <div className={styles['addresses-cards']}>
-        {isAddNew && <AddressCard isNewAddress createHandler={handleAddAddress} />}
+        {isAddNew && <AddressCard isNewAddress addressType={addressType} createHandler={handleAddAddress} />}
         {!!defaultAddress && (
           <AddressCard
             key={defaultAddress.id}

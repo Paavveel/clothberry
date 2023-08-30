@@ -12,6 +12,7 @@ import { Checkbox } from '@components/Checkbox';
 import { Input } from '@components/Input';
 import { validatePostCode } from '@helpers/Validators';
 
+import { AddressType } from '../AddressesList';
 import styles from './AddressCard.module.css';
 
 export interface AddressCardProps {
@@ -19,6 +20,7 @@ export interface AddressCardProps {
   className?: string;
   isDefaultAddress?: boolean;
   isNewAddress?: boolean;
+  addressType?: AddressType;
   updateHandler?: (data: FormAddressCard, isFieldsValueChange?: boolean, isDefaultAddress?: boolean) => Promise<void>;
   createHandler?: (data: FormAddressCard, isDefaultAddress?: boolean) => Promise<void>;
   deleteHandler?: (id: string) => Promise<void>;
@@ -37,6 +39,7 @@ export const AddressCard = memo(function AddressCard({
   address,
   isDefaultAddress,
   isNewAddress,
+  addressType,
   createHandler,
   updateHandler,
   deleteHandler,
@@ -149,6 +152,7 @@ export const AddressCard = memo(function AddressCard({
       />
       <h4 className={styles.input_title}>Postal code</h4>
       <Input<FormAddressCard>
+        id={address?.id ? `${address?.id}-postalCode` : `${addressType}-postalCode`}
         type='text'
         placeholder='Postal Code *'
         label='postalCode'
@@ -162,6 +166,7 @@ export const AddressCard = memo(function AddressCard({
       />
       <h4 className={styles.input_title}>City</h4>
       <Input<FormAddressCard>
+        id={address?.id ? `${address?.id}-city` : `${addressType}-city`}
         type='text'
         placeholder='City *'
         label='city'
@@ -182,6 +187,7 @@ export const AddressCard = memo(function AddressCard({
       />
       <h4 className={styles.input_title}>Street</h4>
       <Input<FormAddressCard>
+        id={address?.id ? `${address?.id}-streetName` : `${addressType}-streetName`}
         type='text'
         placeholder='Street *'
         label='streetName'
@@ -202,7 +208,7 @@ export const AddressCard = memo(function AddressCard({
         <Checkbox
           className={styles['address-default-checkbox']}
           title='Set as default address'
-          htmlFor={address?.id ?? 'new-address'}
+          htmlFor={address?.id ? `${address?.id}-checkbox-default` : `${addressType}-new-address`}
           onChange={handleDefaultShipping}
           value={isDefaultChecked}
         />
