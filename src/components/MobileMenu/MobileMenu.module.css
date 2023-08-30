@@ -67,9 +67,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 3.5rem;
+  padding: 3.5rem;
   display: flex;
-  box-shadow: 0 3100px 8px 3000px rgba(0 0 0 / 0%);
   transition:
     transform 0.5s,
     box-shadow 0.3s;
@@ -77,7 +76,6 @@
 
 .nav.show {
   transform: translateX(0);
-  box-shadow: 0 3000px 8px 3000px rgba(0 0 0 / 50%);
 }
 
 .menu__list {
@@ -87,6 +85,11 @@
   flex-direction: column;
   padding: 2.5rem 0;
   gap: 1rem;
+  margin: 0;
+}
+
+.menu__list:first-child {
+  padding: 0;
 }
 
 .menu__list.menu__list__submenu {
@@ -99,6 +102,17 @@
 
 .menu__list.menu__list__submenu li a {
   border-bottom: none;
+}
+
+.overlay {
+  position: absolute;
+  z-index: 3;
+  top: 7rem;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0 0 0 / 50%);
+  transition: background-color 0.3s ease-in-out;
 }
 
 @media (width > 767px) {
