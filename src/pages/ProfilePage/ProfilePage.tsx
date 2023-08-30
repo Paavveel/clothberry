@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { AddressesList } from './AddressesList';
 import { ProfileMainInfo } from './ProfileMainInfo';
 import styles from './ProfilePage.module.css';
+import { ProfilePassword } from './ProfilePassword';
 
 export const ProfilePage = () => {
   const { customer, errorMessage } = useAppSelector(selectAuth);
@@ -57,6 +58,7 @@ export const ProfilePage = () => {
           defaultAddressId={customer.defaultBillingAddressId}
         />
       )}
+      {!!customer && <ProfilePassword className={styles.profile__password} customer={customer} />}
     </>
   );
 };
