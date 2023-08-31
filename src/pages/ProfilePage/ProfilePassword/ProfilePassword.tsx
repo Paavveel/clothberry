@@ -8,6 +8,7 @@ import { Customer } from '@commercetools/platform-sdk';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import { validatePassword } from '@helpers/Validators';
+import { login } from '@store/features/auth/authApi';
 import { changeCustomerPassword } from '@store/features/auth/profileApi';
 import { useAppDispatch } from '@store/hooks';
 
@@ -29,6 +30,8 @@ export const ProfilePassword: FC<ProfilePasswordProps> = ({ className, customer,
     register,
     handleSubmit,
     watch,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<FormProfilePassword>({
     mode: 'onChange',
@@ -42,9 +45,14 @@ export const ProfilePassword: FC<ProfilePasswordProps> = ({ className, customer,
 
     try {
       setLoading(true);
-      await dispatch(changeCustomerPassword({ version: customer.version, currentPassword, newPassword })).unwrap();
+      const { email } = await dispatch(
+        changeCustomerPassword({ version: customer.version, currentPassword, newPassword })
+      ).unwrap();
+      await dispatch(login({ username: email, password: data.newPassword }));
       toast.success('Password is updated');
+      reset();
     } catch (error) {
+      setError('currentPassword', { message: 'The given current password does not match' }, { shouldFocus: true });
       toast.error('Invalid current password');
     } finally {
       setLoading(false);

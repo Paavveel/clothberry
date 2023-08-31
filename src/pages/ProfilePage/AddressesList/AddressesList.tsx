@@ -49,7 +49,7 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
           addressId: id,
         });
       }
-      await dispatch(updateCustomer({ version, actions }));
+      await dispatch(updateCustomer({ version, actions })).unwrap();
     },
     [addressType, dispatch, version]
   );
@@ -95,7 +95,7 @@ export const AddressesList: FC<ProfileAddressesProps> = ({
               },
             ],
           })
-        );
+        ).unwrap();
       }
       setIsAddNew(false);
     },
