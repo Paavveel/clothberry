@@ -23,8 +23,9 @@
 }
 
 @media (width <= 767px) {
-  .profile__main {
-    width: auto;
+  .profile__main,
+  .profile__password {
+    width: 70%;
   }
 
   .profile__title {
@@ -33,8 +34,13 @@
 }
 
 @media (width <= 480px) {
+  .profile__main,
+  .profile__password {
+    width: auto;
+  }
+
   .profile__title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     line-height: 2.1rem;
   }
 
