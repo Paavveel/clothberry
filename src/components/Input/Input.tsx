@@ -15,23 +15,27 @@ type InputProps<TFormValues extends FieldValues> = {
   type: string;
   required?: boolean;
   label: Path<TFormValues>;
+  id: string;
   register: UseFormRegister<TFormValues>;
   options: RegisterOptions;
   error: FieldError | undefined;
   inputMode?: InputMode;
   showPasswordToggler?: boolean;
+  disabled?: boolean;
 };
 
 export const Input = <TFormValues extends Record<string, unknown>>({
   placeholder,
   type,
   label,
+  id,
   required,
   register,
   error,
   options,
   inputMode,
   showPasswordToggler,
+  disabled,
 }: InputProps<TFormValues>) => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isHiddenIcon, setIsHiddenIcon] = useState(true);
@@ -41,7 +45,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
   };
   return (
     <div className={styles.input_wrapper}>
-      <label htmlFor={label} className={styles['visually-hidden']}>
+      <label htmlFor={id} className={styles['visually-hidden']}>
         {placeholder}
       </label>
       {type === 'password' && showPasswordToggler ? (
@@ -58,7 +62,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
           )}
 
           <input
-            id={label}
+            id={id}
             type={isShowPassword ? 'text' : type}
             inputMode={inputMode}
             className={classNames(styles.field, {
@@ -66,6 +70,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
             })}
             autoComplete='off'
             placeholder={placeholder}
+            disabled={disabled}
             {...register(label, {
               required,
               ...options,
@@ -81,7 +86,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
         </div>
       ) : (
         <input
-          id={label}
+          id={id}
           type={type}
           inputMode={inputMode}
           className={classNames(styles.field, {
@@ -89,6 +94,7 @@ export const Input = <TFormValues extends Record<string, unknown>>({
           })}
           autoComplete='off'
           placeholder={placeholder}
+          disabled={disabled}
           {...register(label, { required, ...options })}
         />
       )}
@@ -102,4 +108,5 @@ Input.defaultProps = {
   required: false,
   inputMode: 'text',
   showPasswordToggler: false,
+  disabled: false,
 };

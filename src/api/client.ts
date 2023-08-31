@@ -80,7 +80,16 @@ class CreateApi {
     });
   }
 
+  private restoreTokenStore() {
+    this.currentToken.tokenStore = {
+      expirationTime: 0,
+      token: '',
+      refreshToken: '',
+    };
+  }
+
   public changeToPasswordFlow(credentials: UserAuthOptions) {
+    this.restoreTokenStore();
     this.request = this.getPasswordFlowApi(credentials);
   }
 

@@ -29,6 +29,7 @@
 }
 
 .field {
+  letter-spacing: 0.03em;
   outline: 0;
   border: none;
   border-bottom: 0.1rem solid var(--color-gray-primary);
@@ -37,16 +38,8 @@
   width: 100%;
 }
 
-.field:focus {
-  background-color: var(--color-gray-light);
-}
-
 .field::placeholder {
   color: var(--color-gray-primary);
-}
-
-.field:focus.field::placeholder {
-  color: var(--color-black);
 }
 
 .input_wrapper small {
