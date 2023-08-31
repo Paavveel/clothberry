@@ -123,8 +123,7 @@ export const AddressCard = memo(function AddressCard({
 
   return (
     <form
-      className={cn(className, styles['address-card'])}
-      style={{ opacity: loading ? 0.5 : 1 }}
+      className={cn(className, styles['address-card'], { [styles['address-card-loading']]: loading })}
       onSubmit={handleSubmit(isNewAddress ? handleAddAddress : handleUpdateAddress)}
       noValidate
       {...props}
