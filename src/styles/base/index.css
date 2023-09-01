@@ -111,3 +111,14 @@ body {
   opacity: 0.5;
   border: 2px solid var(--color-gray-primary);
 }
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 13px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgb(45 45 45 / 69%);
+  filter: drop-shadow(1px 0 0 var(--color-white)) drop-shadow(0 0 1px var(--color-white));
+}

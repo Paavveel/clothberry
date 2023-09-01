@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import 'swiper/css';
+import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
-import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
+import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { api } from '@api/client';
@@ -40,11 +41,10 @@ export const ProductPage = () => {
     <section className={classes.product}>
       <div className={classes.img}>
         <Swiper
-          loop={!true}
-          navigation={!true}
+          navigation
           pagination={{ clickable: true }}
           thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs, Pagination]}
+          modules={[Navigation, Thumbs, Pagination]}
           className='mySwiper2'
         >
           {arrImage.map((arrImage, index) => (
@@ -53,16 +53,7 @@ export const ProductPage = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <Swiper
-          onSwiper={setThumbsSwiper}
-          loop={!true}
-          slidesPerView={arrImage.length}
-          pagination={{ clickable: true }}
-          freeMode={!true}
-          watchSlidesProgress={!true}
-          modules={[FreeMode, Navigation, Thumbs, Pagination]}
-          className='mySwiper'
-        >
+        <Swiper onSwiper={setThumbsSwiper} slidesPerView={arrImage.length} modules={[Thumbs]} className='mySwiper'>
           {arrImage.map((arrImage, index) => (
             <SwiperSlide key={arrImage} virtualIndex={index}>
               <img src={arrImage} alt='da' width='100%' height='100%' />
