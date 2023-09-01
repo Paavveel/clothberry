@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import 'swiper/css';
+import 'swiper/css/thumbs';
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { api } from '@api/client';
 
 import classes from './ProductPage.module.css';
@@ -20,12 +25,49 @@ export const ProductPage = () => {
     fetch('9de39ac5-f559-4e53-a82f-4d5eeb4457f8').then((response) => setData(response));
   }, []);
 
+  const arrImage: string[] = [];
+  data.masterVariant?.images.forEach((item) => {
+    arrImage.push(item.url);
+  });
+
   const price = data.masterVariant?.prices[0].value.centAmount;
   const currentPrice = price / 100;
   const code = data.masterVariant?.prices[0].value.currencyCode;
+
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
     <section className={classes.product}>
-      <div className={classes.img}> </div>
+      <div className={classes.img}>
+        <Swiper
+          loop={!true}
+          navigation={!true}
+          thumbs={{ swiper: thumbsSwiper }}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className='mySwiper2'
+        >
+          {arrImage.map((arrImage, index) => (
+            <SwiperSlide key={arrImage} virtualIndex={index}>
+              <img src={arrImage} alt='da' width='100%' height='100%' />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          loop={!true}
+          slidesPerView={arrImage.length}
+          freeMode={!true}
+          watchSlidesProgress={!true}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className='mySwiper'
+        >
+          {arrImage.map((arrImage, index) => (
+            <SwiperSlide key={arrImage} virtualIndex={index}>
+              <img src={arrImage} alt='da' width='100%' height='100%' />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
       <div className={classes.content}>
         <h1 className={classes.title}>{data.name?.en}</h1>
         <span className={classes.price}>{`${currentPrice} ${code}`}</span>
