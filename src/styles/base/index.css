@@ -79,3 +79,35 @@ body {
     cursor: default;
   }
 }
+
+.mySwiper2 {
+  margin-left: 8rem;
+  position: relative;
+  z-index: 2;
+}
+
+.mySwiper .swiper-wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  width: auto;
+}
+
+.mySwiper {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 28rem;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  background: var(--color-white);
+  opacity: 1;
+  border: 2px solid var(--color-gray-primary);
+}
+
+.swiper-pagination-bullet {
+  background: var(--color-white);
+  opacity: 0.5;
+  border: 2px solid var(--color-gray-primary);
+}

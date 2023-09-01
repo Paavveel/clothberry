@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import 'swiper/css';
+import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { api } from '@api/client';
@@ -41,8 +42,9 @@ export const ProductPage = () => {
         <Swiper
           loop={!true}
           navigation={!true}
+          pagination={{ clickable: true }}
           thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs]}
+          modules={[FreeMode, Navigation, Thumbs, Pagination]}
           className='mySwiper2'
         >
           {arrImage.map((arrImage, index) => (
@@ -55,9 +57,10 @@ export const ProductPage = () => {
           onSwiper={setThumbsSwiper}
           loop={!true}
           slidesPerView={arrImage.length}
+          pagination={{ clickable: true }}
           freeMode={!true}
           watchSlidesProgress={!true}
-          modules={[FreeMode, Navigation, Thumbs]}
+          modules={[FreeMode, Navigation, Thumbs, Pagination]}
           className='mySwiper'
         >
           {arrImage.map((arrImage, index) => (
@@ -70,7 +73,7 @@ export const ProductPage = () => {
 
       <div className={classes.content}>
         <h1 className={classes.title}>{data.name?.en}</h1>
-        <span className={classes.price}>{`${currentPrice} ${code}`}</span>
+        <span className={classes.price}>{`${currentPrice}.00 ${code}`}</span>
         <p className={classes.description}>{data.description?.en}</p>
       </div>
     </section>
