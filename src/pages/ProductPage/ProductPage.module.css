@@ -3,15 +3,26 @@
 }
 
 .img {
-  flex: 1 1 670px;
+  flex: 1 1 66.6%;
   margin-right: 76px;
   background-color: var(--color-gray-primary);
 }
 
 .content {
-  flex: 1 1 auto;
+  flex: 1 1 33.3%;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: 2.5rem;
+  margin: 0 0 4.6rem;
+}
+
+.price {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 1.6rem;
+  margin: 2rem 0 4rem;
 }
