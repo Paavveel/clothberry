@@ -28,6 +28,12 @@ body::-webkit-scrollbar-track {
   background: var(--color-gray-primary);
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body::-webkit-scrollbar-thumb {
   background-color: var(--color-black);
   border-radius: 20px;
@@ -48,6 +54,18 @@ body {
     "Helvetica Neue",
     sans-serif;
   font-size: 1.6rem;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .app.container {
