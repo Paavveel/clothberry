@@ -133,6 +133,10 @@ body {
   display: none;
 }
 
+.swiper-slide.swiper-slide-visible.swiper-slide-thumb-active img {
+  border: 1.5px solid var(--color-gray-primary);
+}
+
 @media (width <= 767px) {
   .mySwiper {
     display: none;
