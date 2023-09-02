@@ -8,6 +8,7 @@ import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { api } from '@api/client';
+import { Fancybox } from '@components/Fancybox/Fancybox';
 
 import classes from './ProductPage.module.css';
 
@@ -40,26 +41,36 @@ export const ProductPage = () => {
   return (
     <section className={classes.product}>
       <div className={classes.img}>
-        <Swiper
-          navigation
-          pagination={{ clickable: true }}
-          thumbs={{ swiper: thumbsSwiper }}
-          modules={[Navigation, Thumbs, Pagination]}
-          className='mySwiper2'
+        <Fancybox
+          options={{
+            Carousel: {
+              infinite: false,
+            },
+          }}
         >
-          {arrImage.map((arrImage, index) => (
-            <SwiperSlide key={arrImage} virtualIndex={index}>
-              <img src={arrImage} alt='da' width='100%' height='100%' />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <Swiper onSwiper={setThumbsSwiper} slidesPerView={arrImage.length} modules={[Thumbs]} className='mySwiper'>
-          {arrImage.map((arrImage, index) => (
-            <SwiperSlide key={arrImage} virtualIndex={index}>
-              <img src={arrImage} alt='da' width='100%' height='100%' />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <Swiper
+            navigation
+            pagination={{ clickable: true }}
+            thumbs={{ swiper: thumbsSwiper }}
+            modules={[Navigation, Thumbs, Pagination]}
+            className='mySwiper2'
+          >
+            {arrImage.map((arrImage, index) => (
+              <SwiperSlide key={arrImage} virtualIndex={index}>
+                <a data-fancybox='gallery' href={arrImage}>
+                  <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
+                </a>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <Swiper onSwiper={setThumbsSwiper} slidesPerView={arrImage.length} modules={[Thumbs]} className='mySwiper'>
+            {arrImage.map((arrImage, index) => (
+              <SwiperSlide key={arrImage} virtualIndex={index}>
+                <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Fancybox>
       </div>
 
       <div className={classes.content}>
