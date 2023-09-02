@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import Select from 'react-select';
 
+import { size } from 'config/size';
 import { type Swiper as SwiperRef } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -13,7 +15,7 @@ import { Image, LocalizedString, Price } from '@commercetools/platform-sdk';
 import { Fancybox } from '@components/Fancybox/Fancybox';
 import { Loader } from '@components/Loader';
 
-import classes from './ProductPage.module.css';
+import styles from './ProductPage.module.css';
 
 interface Product {
   id: string;
@@ -62,9 +64,9 @@ export const ProductPage = () => {
   }, []);
 
   return (
-    <section className={classes.product}>
+    <section className={styles.product}>
       {loading && <Loader pageLoader />}
-      <div className={classes.img}>
+      <div className={styles.img}>
         <Fancybox
           options={{
             Carousel: {
@@ -104,13 +106,14 @@ export const ProductPage = () => {
         </Fancybox>
       </div>
       {!loading && (
-        <div className={classes.content}>
-          <h1 className={classes.title}>{name?.en}</h1>
-          <span className={classes.price}>{`${new Intl.NumberFormat(country, {
+        <div className={styles.content}>
+          <h1 className={styles.title}>{name?.en}</h1>
+          <span className={styles.price}>{`${new Intl.NumberFormat(country, {
             style: 'currency',
             currency: code,
           }).format(price)} ${code}`}</span>
-          <p className={classes.description}>{description?.en}</p>
+          <p className={styles.description}>{description?.en}</p>
+          <Select className='' placeholder='Choose size' value={size} options={size} />
         </div>
       )}
     </section>
