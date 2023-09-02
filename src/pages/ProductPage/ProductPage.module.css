@@ -10,6 +10,12 @@
   position: relative;
 }
 
+@media (width < 900px) {
+  .img {
+    margin-right: 2.5rem;
+  }
+}
+
 .content {
   flex: 1 1 33.3%;
 }
@@ -27,4 +33,15 @@
 .description {
   font-size: 1.6rem;
   margin: 2rem 0 4rem;
+}
+
+@media (width <= 767px) {
+  .img {
+    margin-right: 0;
+    max-width: 100%;
+  }
+
+  .product {
+    flex-direction: column;
+  }
 }
