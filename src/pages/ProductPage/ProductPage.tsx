@@ -27,7 +27,7 @@ interface Product {
 
 export const ProductPage = () => {
   const [data, setData] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const swiperRef = useRef<SwiperRef>();
 
   const arrImage: string[] = [];
@@ -36,9 +36,9 @@ export const ProductPage = () => {
   images?.forEach((item: Image) => {
     arrImage.push(item.url);
   });
-
-  const price = prices ? prices[0].value.centAmount / 100 : '';
-  const code = prices ? prices[0].value.currencyCode : '';
+  const price = prices ? prices[0].value.centAmount / 100 : 0;
+  const code = prices ? prices[0].value.currencyCode : 'EUR';
+  const country = prices ? prices[0].country : 'eu';
 
   useEffect(() => {
     const getProduct = async (id: string) => {
@@ -103,11 +103,16 @@ export const ProductPage = () => {
           </Swiper>
         </Fancybox>
       </div>
-      <div className={classes.content}>
-        <h1 className={classes.title}>{name?.en}</h1>
-        <span className={classes.price}>{`${price} ${code}`}</span>
-        <p className={classes.description}>{description?.en}</p>
-      </div>
+      {!loading && (
+        <div className={classes.content}>
+          <h1 className={classes.title}>{name?.en}</h1>
+          <span className={classes.price}>{`${new Intl.NumberFormat(country, {
+            style: 'currency',
+            currency: code,
+          }).format(price)} ${code}`}</span>
+          <p className={classes.description}>{description?.en}</p>
+        </div>
+      )}
     </section>
   );
 };
