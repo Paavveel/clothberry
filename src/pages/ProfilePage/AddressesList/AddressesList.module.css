@@ -1,0 +1,48 @@
+.addresses-wrapper {
+  margin: 5rem 0;
+}
+
+.addresses-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.addresses-title,
+.addresses-add-button {
+  display: inline-block;
+  font-size: 1.8rem;
+  line-height: 2.1rem;
+  letter-spacing: 0.03em;
+}
+
+.addresses-title {
+  font-weight: 400;
+  margin: 3rem 0 4rem;
+}
+
+.addresses-add-button {
+  font-style: italic;
+  font-weight: 200;
+  text-decoration: underline dashed 0.15rem;
+  text-underline-offset: 0.5rem;
+  border: none;
+  background-color: transparent;
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.addresses-add-button-active {
+  color: var(--color-black);
+  font-style: normal;
+  text-decoration-style: solid;
+}
+
+@media (width <= 480px) {
+  .addresses-title,
+  .addresses-add-button {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+}

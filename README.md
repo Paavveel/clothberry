@@ -9,7 +9,7 @@ The Clothberry ecommerce project aims to build a robust online store with Commer
 - [x] State management and routing
 - [ ] Catalog browsing with API integration
 - [ ] Detailed product pages with image galleries
-- [ ] User profile editing
+- [x] User profile editing
 - [ ] Filtering and search
 - [ ] Enhance product pages
 - [ ] Build shopping cart with promo codes
