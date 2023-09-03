@@ -110,7 +110,7 @@ export const ProductPage = () => {
             >
               {arrImage.map((arrImage, index) => (
                 <SwiperSlide key={arrImage} virtualIndex={index}>
-                  <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
+                  <img src={arrImage} alt={`картинка ${index}`} width='70px' height='70px' />
                 </SwiperSlide>
               ))}
             </Swiper>
