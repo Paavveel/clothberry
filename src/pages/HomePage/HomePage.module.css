@@ -2,17 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 1rem;
+  overflow: hidden;
+
+  @media (width < 1175px) {
+    margin: 0 -3rem;
+  }
 }
 
-.links {
-  align-self: flex-end;
+.home-wrapper {
+  position: relative;
+  filter: contrast(100%) grayscale(100%) invert(25%);
+  width: 100%;
 }
 
-.links a:not(:last-child) {
-  margin-right: 10px;
-}
-
-.links a:hover {
-  text-decoration: underline;
+.home-wrapper::after {
+  content: "WELCOME TO CLOTHBERRY";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--color-white);
+  font-size: 3rem;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 10;
+  text-align: center;
 }
