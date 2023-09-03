@@ -12,16 +12,15 @@
   width: 100%;
 }
 
-@media (width <= 800px) {
+@media (width <= 767px) {
   .logo-wrapper {
-    width: 80%;
+    justify-content: center;
   }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 4rem 0;
 }
 
