@@ -13,6 +13,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { api } from '@api/client';
 import { Image, LocalizedString, Price } from '@commercetools/platform-sdk';
+import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Fancybox } from '@components/Fancybox/Fancybox';
 import { Loader } from '@components/Loader';
 
@@ -70,68 +71,71 @@ export const ProductPage = () => {
   }, []);
 
   return (
-    <section className={styles.product}>
-      {loading && <Loader pageLoader />}
-      <div className={styles.img}>
-        <Fancybox
-          options={{
-            Carousel: {
-              infinite: false,
-            },
-          }}
-        >
-          <Swiper
-            navigation
-            pagination={{ clickable: true }}
-            thumbs={{ swiper: swiperRef.current }}
-            modules={[Navigation, Thumbs, Pagination]}
-            className='mySwiper2'
-          >
-            {arrImage.map((arrImage, index) => (
-              <SwiperSlide key={arrImage} virtualIndex={index}>
-                <a data-fancybox='gallery' href={arrImage}>
-                  <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
-                </a>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <Swiper
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
+    <div>
+      <Breadcrumbs />
+      <section className={styles.product}>
+        {loading && <Loader pageLoader />}
+        <div className={styles.img}>
+          <Fancybox
+            options={{
+              Carousel: {
+                infinite: false,
+              },
             }}
-            slidesPerView={arrImage.length}
-            modules={[Thumbs]}
-            className='mySwiper'
           >
-            {arrImage.map((arrImage, index) => (
-              <SwiperSlide key={arrImage} virtualIndex={index}>
-                <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </Fancybox>
-      </div>
-      {!loading && (
-        <div className={styles.content}>
-          <h1 className={styles.title}>{name?.en}</h1>
-          <div
-            className={classNames(styles.price__current, {
-              [styles.price__discount]: discount,
-            })}
-          >
-            <span>{`${correctPrice} ${code}`}</span>
-            {discount && (
-              <span>
-                {discount / 100}&nbsp;
-                {code}
-              </span>
-            )}
-          </div>
-
-          <p className={styles.description}>{description?.en}</p>
-          <Select placeholder='Choose size' options={size} />
+            <Swiper
+              navigation
+              pagination={{ clickable: true }}
+              thumbs={{ swiper: swiperRef.current }}
+              modules={[Navigation, Thumbs, Pagination]}
+              className='mySwiper2'
+            >
+              {arrImage.map((arrImage, index) => (
+                <SwiperSlide key={arrImage} virtualIndex={index}>
+                  <a data-fancybox='gallery' href={arrImage}>
+                    <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
+                  </a>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <Swiper
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              slidesPerView={arrImage.length}
+              modules={[Thumbs]}
+              className='mySwiper'
+            >
+              {arrImage.map((arrImage, index) => (
+                <SwiperSlide key={arrImage} virtualIndex={index}>
+                  <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </Fancybox>
         </div>
-      )}
-    </section>
+        {!loading && (
+          <div className={styles.content}>
+            <h1 className={styles.title}>{name?.en}</h1>
+            <div
+              className={classNames(styles.price__current, {
+                [styles.price__discount]: discount,
+              })}
+            >
+              <span>{`${correctPrice} ${code}`}</span>
+              {discount && (
+                <span>
+                  {discount / 100}&nbsp;
+                  {code}
+                </span>
+              )}
+            </div>
+
+            <p className={styles.description}>{description?.en}</p>
+            <Select placeholder='Choose size' options={size} />
+          </div>
+        )}
+      </section>
+    </div>
   );
 };
