@@ -12,22 +12,10 @@
   width: 100%;
 }
 
-@media (width <= 767px) {
-  .logo-wrapper {
-    justify-content: center;
-  }
-}
-
 .header {
   display: flex;
   justify-content: space-between;
   padding: 4rem 0;
-}
-
-@media (width <= 500px) {
-  .header {
-    padding-top: 2.4rem;
-  }
 }
 
 .right {
@@ -89,4 +77,24 @@
   padding: 0;
   cursor: pointer;
   border: none;
+}
+
+@media (width <= 876px) {
+  .logo-wrapper {
+    width: 70%;
+  }
+}
+
+@media (width <= 767px) {
+  .header {
+    padding-top: 2.4rem;
+  }
+
+  .logo-wrapper {
+    justify-content: center;
+  }
+
+  .nav {
+    display: none;
+  }
 }
