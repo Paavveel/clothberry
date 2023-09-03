@@ -31,9 +31,6 @@ export const Header: FC = () => {
         </Link>
       </div>
       <div className={styles.right}>
-        <div className={styles['search-wrapper']}>
-          <input type='search' className={styles.search} placeholder='search' />
-        </div>
         <div className={styles['nav-btns']}>
           <Link to={AppRoutes.CART} area-label='cart'>
             <Basket className={styles['header-icon']} />

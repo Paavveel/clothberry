@@ -69,20 +69,6 @@
   }
 }
 
-.search {
-  outline: 0;
-  border: none;
-  border-bottom: 1px solid var(--color-gray-primary);
-  background-image: url("@assets/img/search.svg");
-  background-repeat: no-repeat;
-  padding-left: 2.5rem;
-  padding-bottom: 5px;
-}
-
-.search::placeholder {
-  color: var(--color-gray-primary);
-}
-
 .header-icon {
   fill: #cecece;
   transition: fill 0.2s;

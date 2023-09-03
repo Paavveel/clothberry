@@ -16,6 +16,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 2px solid var(--color-gray-primary);
   padding: 20px 0;
   gap: 15px;
@@ -40,6 +41,20 @@
 
 .sort {
   width: 25rem;
+}
+
+.search {
+  outline: 0;
+  border: none;
+  border-bottom: 1px solid var(--color-gray-primary);
+  background-image: url("@assets/img/search.svg");
+  background-repeat: no-repeat;
+  padding-left: 2.5rem;
+  padding-bottom: 5px;
+}
+
+.search::placeholder {
+  color: var(--color-gray-primary);
 }
 
 @media (width <= 680px) {

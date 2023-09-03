@@ -1,3 +1,4 @@
+/* stylelint-disable property-no-unknown */
 .product__item {
   width: 32rem;
   cursor: default;
@@ -37,13 +38,15 @@
   border-radius: 0 0 1rem;
   background: var(--color-black-secondary);
   color: var(--color-white);
-  padding: 0 1em;
+  padding: 0 2rem;
   z-index: 1;
-  height: 2em;
+  height: 5rem;
   position: relative;
   white-space: nowrap;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .black-mask {
@@ -107,7 +110,12 @@
   font-weight: 500;
   font-size: 14px;
   text-align: left;
-  padding: 7px 15px;
+  padding: 0 15px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 1.3rem;
 }
 
 .product__item:hover .product__description {
@@ -162,4 +170,11 @@
 
 .product__item:hover .bag svg {
   fill: var(--color-white);
+}
+
+.price__discount span:first-child {
+  text-decoration-line: line-through;
+  text-decoration-color: red;
+  font-size: 14px;
+  opacity: 0.6;
 }

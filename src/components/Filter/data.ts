@@ -25,10 +25,10 @@ export type Option = {
 };
 
 export const optionsSize: Option[] = [
-  { value: 'S', label: 'S' },
-  { value: 'M', label: 'M' },
-  { value: 'L', label: 'L' },
-  { value: 'XL', label: 'XL' },
+  { value: 's', label: 'S' },
+  { value: 'm', label: 'M' },
+  { value: 'l', label: 'L' },
+  { value: 'xl', label: 'XL' },
 ];
 
 export const sortBy: Option[] = [

@@ -2,6 +2,8 @@ import { FC } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
+import classNames from 'classnames';
+
 import { Image, Price } from '@commercetools/platform-sdk';
 
 import { Button } from '..';
@@ -30,6 +32,7 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
   const { name, description, masterVariant } = product;
   const { images, prices } = masterVariant;
   const price = prices ? prices[0].value.centAmount / 100 : 0;
+  const discount = prices ? prices[0].discounted?.value.centAmount : null;
   const code = prices ? prices[0].value.currencyCode : '';
   return (
     <div className={styles.product__item}>
@@ -44,11 +47,21 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
         />
         <div className={styles['black-mask']} />
         <div className={styles.price}>
-          <div className={styles.price__current}>
+          <div
+            className={classNames(styles.price__current, {
+              [styles.price__discount]: discount,
+            })}
+          >
             <span>
               {price}&nbsp;
               {code}
             </span>
+            {discount && (
+              <span>
+                {discount / 100}&nbsp;
+                {code}
+              </span>
+            )}
           </div>
         </div>
         <a className={styles.bag} type='button' href='/'>

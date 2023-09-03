@@ -1,7 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 /* eslint-disable no-nested-ternary */
-import { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 
 import chroma from 'chroma-js';
@@ -54,11 +55,22 @@ const colourStyles: StylesConfig<ColorOption> = {
 
 interface FilterProps {
   handleSort: (option: Option | null) => void;
+  handleFilterSize: (option: Option | null) => void;
   handleFilterColor: (option: ColorOption | null) => void;
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor }) => {
+export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor, handleSearch, handleFilterSize }) => {
   const [show, setShow] = useState(false);
+  const [search] = useSearchParams();
+  const setFocus = useCallback(
+    (element: HTMLInputElement) => {
+      if (element && search.get('q')) {
+        element.focus();
+      }
+    },
+    [search]
+  );
   return (
     <div className={styles.container}>
       <button
@@ -100,6 +112,17 @@ export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor }) => {
             options={optionsSize}
             placeholder='by size'
             isClearable
+            onChange={(e) => handleFilterSize(e)}
+          />
+        </div>
+        <div className={styles['search-wrapper']}>
+          <input
+            ref={setFocus}
+            type='search'
+            className={styles.search}
+            placeholder='search'
+            onChange={handleSearch}
+            defaultValue={search.get('q') || ''}
           />
         </div>
       </div>

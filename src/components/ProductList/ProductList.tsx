@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
-import { getCategoryBySlug, getProductsByCategoryId } from '@api/search';
+import { debounce } from 'lodash';
+
+import { fetchSearchResults, getAllProducts, getCategoryBySlug, getProductsByCategoryId } from '@api/search';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Filter } from '@components/Filter/Filter';
 import { ColorOption, Option } from '@components/Filter/data';
@@ -18,7 +20,10 @@ export const ProductList: FC = () => {
   const [errorCategory, setErrorCategory] = useState(false);
   const [sortByNameAndPrice, setSortByNameAndPrice] = useState('');
   const [filterByColor, setFilterByColor] = useState('');
+  const [filterBySize, setFilterBySize] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleSort = (option: Option | null) => {
     if (option) {
@@ -36,35 +41,91 @@ export const ProductList: FC = () => {
     }
   };
 
+  const handleFilterSize = (option: Option | null) => {
+    if (option) {
+      setFilterBySize(option.value);
+    } else {
+      setFilterBySize('');
+    }
+  };
+
+  const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    if (text.length === 0) {
+      search.delete('q');
+      setSearch(search, {
+        replace: true,
+      });
+    } else {
+      search.set('q', text);
+      setSearch(search, {
+        replace: true,
+      });
+    }
+    console.log(search.get('q'));
+    navigate(`/product-list-page?${search}`);
+  }, 400);
+
   useEffect(() => {
     async function fetchRequest() {
-      const categoryId = await getCategoryBySlug(name!);
-      if (categoryId) {
-        const productsByCategory = await getProductsByCategoryId(categoryId, sortByNameAndPrice, filterByColor);
-        if (productsByCategory) {
-          setProducts(productsByCategory);
-          setIsLoading(false);
+      if (name) {
+        const categoryId = await getCategoryBySlug(name);
+        if (categoryId) {
+          const productsByCategory = await getProductsByCategoryId(
+            categoryId,
+            sortByNameAndPrice,
+            filterByColor,
+            filterBySize
+          );
+          if (productsByCategory) {
+            setProducts(productsByCategory);
+            setIsLoading(false);
+          }
+        } else {
+          setErrorCategory(true);
         }
       } else {
-        setErrorCategory(true);
+        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize).then((data) => {
+          if (data) {
+            setProducts(data);
+            setIsLoading(false);
+          }
+        });
       }
     }
-    fetchRequest();
+    if (!search.get('q')) {
+      fetchRequest();
+    } else {
+      const queryString = search.get('q');
+      if (queryString) {
+        fetchSearchResults(queryString, sortByNameAndPrice, filterByColor, filterBySize).then((data) => {
+          if (data) {
+            setProducts(data);
+            setIsLoading(false);
+          }
+        });
+      }
+    }
 
     return () => {
       if (errorCategory) {
         setErrorCategory(false);
       }
     };
-  }, [name, sortByNameAndPrice, filterByColor, errorCategory]);
+  }, [name, sortByNameAndPrice, filterByColor, errorCategory, search, filterBySize]);
 
   if (errorCategory) {
     return <NotFoundPage />;
   }
-
+  console.log('productlist Render');
   return (
     <div className={styles.products__wrapper}>
-      <Filter handleSort={handleSort} handleFilterColor={handleFilterColor} />
+      <Filter
+        handleSort={handleSort}
+        handleFilterColor={handleFilterColor}
+        handleSearch={handleSearch}
+        handleFilterSize={handleFilterSize}
+      />
       <section className={styles['product-list']}>
         {/* {products.length === 0 && isLoading && <p>not found</p>} */}
         {isLoading

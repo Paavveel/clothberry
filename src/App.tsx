@@ -49,6 +49,10 @@ const router = createBrowserRouter([
         errorElement: <NotFoundPage />,
       },
       {
+        path: '/product-list-page',
+        element: <ProductList />,
+      },
+      {
         path: CART,
         element: <h1>CART</h1>,
       },

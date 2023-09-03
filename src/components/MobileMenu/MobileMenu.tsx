@@ -26,7 +26,7 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
     }
   }, [active]);
   return (
-    <div className={styles.mobile__menu}>
+    <div className={styles.mobile__menu} ref={mobileMenuRef}>
       <button
         className={classNames(styles.burger, {
           [styles.open]: active,
@@ -67,7 +67,7 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
           ))}
         </ul>
       </nav>
-      <div className={active ? styles.overlay : ''} ref={mobileMenuRef} />
+      <div className={active ? styles.overlay : ''} />
     </div>
   );
 };
