@@ -129,7 +129,6 @@ export const ProductList: FC = () => {
 
   return (
     <div className={styles.products__wrapper}>
-      <Breadcrumbs />
       <Filter
         handleSort={handleSort}
         handleFilterColor={handleFilterColor}
@@ -137,6 +136,7 @@ export const ProductList: FC = () => {
         handleFilterSize={handleFilterSize}
         handleFilterPrice={handleFilterPrice}
       />
+      <Breadcrumbs />
       <section className={styles['product-list']}>
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)

@@ -29,20 +29,19 @@ export const Header: FC = () => {
           clothberry
         </Link>
       </div>
-      <div className={styles.right}>
-        <div className={styles['nav-btns']}>
-          <Link to={AppRoutes.CART} area-label='cart'>
-            <Basket className={styles['header-icon']} />
-          </Link>
-          <Link to={AppRoutes.PROFILE} area-label='profile'>
-            <User className={styles['header-icon']} />
-          </Link>
-          {isLoggedIn && (
-            <button type='button' aria-label='logout' className={styles.logout} onClick={handleLogout}>
-              <Logout className={styles['header-icon']} />
-            </button>
-          )}
-        </div>
+
+      <div className={styles['nav-btns']}>
+        <Link to={AppRoutes.CART} area-label='cart'>
+          <Basket className={styles['header-icon']} />
+        </Link>
+        <Link to={AppRoutes.PROFILE} area-label='profile'>
+          <User className={styles['header-icon']} />
+        </Link>
+        {isLoggedIn && (
+          <button type='button' aria-label='logout' className={styles.logout} onClick={handleLogout}>
+            <Logout className={styles['header-icon']} />
+          </button>
+        )}
       </div>
     </header>
   );

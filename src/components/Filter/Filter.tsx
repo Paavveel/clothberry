@@ -90,7 +90,7 @@ export const Filter: FC<FilterProps> = ({
           [styles.active]: show,
         })}
       >
-        <div className={styles.left}>
+        <div className={styles.row}>
           <Select
             isSearchable={false}
             className={`${styles.sort} ${styles.select}`}
@@ -99,8 +99,6 @@ export const Filter: FC<FilterProps> = ({
             isClearable
             onChange={(e) => handleSort(e)}
           />
-        </div>
-        <div className={styles.right}>
           <Select
             isSearchable={false}
             className={`${styles.color} ${styles.select}`}
@@ -120,22 +118,40 @@ export const Filter: FC<FilterProps> = ({
           />
           <Select
             isSearchable={false}
-            className={`${styles.sort} ${styles.sizes}`}
+            className={styles.select}
             placeholder='by price'
             options={optionsPrice}
             isClearable
             onChange={(e) => handleFilterPrice(e)}
           />
+          <Select isSearchable={false} placeholder='by brand' isClearable className={styles.select} />
         </div>
+
         <div className={styles['search-wrapper']}>
           <input
+            className={styles['search-input']}
+            type='text'
+            placeholder='Search'
             ref={setFocus}
-            type='search'
-            className={styles.search}
-            placeholder='search'
             onChange={handleSearch}
             defaultValue={search.get('q') || ''}
           />
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='20'
+            height='20'
+            fill='none'
+            stroke='currentColor'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth='2'
+            className={`${styles.feather} ${'feather-search'}`}
+            viewBox='0 0 24 24'
+          >
+            <defs />
+            <circle cx='11' cy='11' r='8' />
+            <path d='M21 21l-4.35-4.35' />
+          </svg>
         </div>
       </div>
     </div>
