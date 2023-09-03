@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Select from 'react-select';
 
+import classNames from 'classnames';
 import { size } from 'config/size';
 import { type Swiper as SwiperRef } from 'swiper';
 import 'swiper/css';
@@ -39,8 +40,13 @@ export const ProductPage = () => {
     arrImage.push(item.url);
   });
   const price = prices ? prices[0].value.centAmount / 100 : 0;
+  const discount = prices ? prices[0].discounted?.value.centAmount : 0;
   const code = prices ? prices[0].value.currencyCode : 'EUR';
   const country = prices ? prices[0].country : 'eu';
+  const correctPrice = new Intl.NumberFormat(country, {
+    style: 'currency',
+    currency: code,
+  }).format(price);
 
   useEffect(() => {
     const getProduct = async (id: string) => {
@@ -56,7 +62,7 @@ export const ProductPage = () => {
         setLoading(false);
       }
     };
-    getProduct('9de39ac5-f559-4e53-a82f-4d5eeb4457f8').then((response) => {
+    getProduct('0867d198-8fde-4483-8e7b-90f0f3826a53').then((response) => {
       if (response) {
         setData(response);
       }
@@ -108,10 +114,20 @@ export const ProductPage = () => {
       {!loading && (
         <div className={styles.content}>
           <h1 className={styles.title}>{name?.en}</h1>
-          <span className={styles.price}>{`${new Intl.NumberFormat(country, {
-            style: 'currency',
-            currency: code,
-          }).format(price)} ${code}`}</span>
+          <div
+            className={classNames(styles.price__current, {
+              [styles.price__discount]: discount,
+            })}
+          >
+            <span>{`${correctPrice} ${code}`}</span>
+            {discount && (
+              <span>
+                {discount / 100}&nbsp;
+                {code}
+              </span>
+            )}
+          </div>
+
           <p className={styles.description}>{description?.en}</p>
           <Select className='' placeholder='Choose size' value={size} options={size} />
         </div>

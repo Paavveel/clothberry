@@ -1,6 +1,6 @@
 .product {
   display: flex;
-  margin-bottom: 5rem;
+  margin-bottom: 10rem;
 }
 
 .img {
@@ -25,9 +25,23 @@
   margin: 0 0 2rem;
 }
 
-.price {
-  font-size: 1.8rem;
-  font-weight: 500;
+.price__current {
+  font-size: 2.4rem;
+  background: var(--color-black-secondary);
+  color: var(--color-white);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.price__discount span:first-child {
+  text-decoration-line: line-through;
+  text-decoration-color: red;
+  font-size: 14px;
+  opacity: 0.6;
 }
 
 .description {
