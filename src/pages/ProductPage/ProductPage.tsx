@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
@@ -32,6 +33,7 @@ interface Product {
 export const ProductPage = () => {
   const [data, setData] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const { state } = useLocation();
   const swiperRef = useRef<SwiperRef>();
 
   const arrImage: string[] = [];
@@ -63,12 +65,12 @@ export const ProductPage = () => {
         setLoading(false);
       }
     };
-    getProduct('0867d198-8fde-4483-8e7b-90f0f3826a53').then((response) => {
+    getProduct(state.id).then((response) => {
       if (response) {
         setData(response);
       }
     });
-  }, []);
+  }, [state.id]);
 
   return (
     <div>

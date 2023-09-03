@@ -6,6 +6,7 @@ import { ProductList } from '@components/ProductList/ProductList';
 import { Layout } from '@layout/Layout';
 import { HomePage } from '@pages/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage';
+import { ProductPage } from '@pages/ProductPage';
 import { ProfilePage } from '@pages/ProfilePage';
 import { SignInPage } from '@pages/SignInPage';
 import { SignUpPage } from '@pages/SignUpPage';
@@ -45,9 +46,13 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/:category?/:name',
+        path: '/:category/:name?',
         element: <ProductList />,
         errorElement: <NotFoundPage />,
+      },
+      {
+        path: '/:category/:name?/:id',
+        element: <ProductPage />,
       },
       {
         path: '/product-list-page',
