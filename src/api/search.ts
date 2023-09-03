@@ -1,6 +1,6 @@
 import { api } from './client';
 
-export const getAllProducts = async (sortBy: string, color: string, size: string) => {
+export const getAllProducts = async (sortBy: string, color: string, size: string, price: string) => {
   try {
     const response = await api.request
       .productProjections()
@@ -10,6 +10,7 @@ export const getAllProducts = async (sortBy: string, color: string, size: string
           filter: [
             `${color !== '' ? `variants.attributes.color.key:"${color}"` : ''}`,
             `${size !== '' ? `variants.attributes.size.key:"${size}"` : ''}`,
+            `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
         },
@@ -22,7 +23,13 @@ export const getAllProducts = async (sortBy: string, color: string, size: string
   }
 };
 
-export const getProductsByCategoryId = async (id: string, sortBy: string, color: string, size: string) => {
+export const getProductsByCategoryId = async (
+  id: string,
+  sortBy: string,
+  color: string,
+  size: string,
+  price: string
+) => {
   let response;
   try {
     response = await api.request
@@ -34,6 +41,7 @@ export const getProductsByCategoryId = async (id: string, sortBy: string, color:
             `categories.id:subtree("${id}")`,
             `${color !== '' ? `variants.attributes.color.key:"${color}"` : ''}`,
             `${size !== '' ? `variants.attributes.size.key:"${size}"` : ''}`,
+            `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
         },
@@ -56,7 +64,7 @@ export const getCategoryBySlug = async (slug: string) => {
   }
 };
 
-export const fetchSearchResults = async (query: string, sortBy: string, color: string, size: string) => {
+export const fetchSearchResults = async (query: string, sortBy: string, color: string, size: string, price: string) => {
   let response;
   try {
     response = await api.request
@@ -67,6 +75,7 @@ export const fetchSearchResults = async (query: string, sortBy: string, color: s
           filter: [
             `${color !== '' ? `variants.attributes.color.key:"${color}"` : ''}`,
             `${size !== '' ? `variants.attributes.size.key:"${size}"` : ''}`,
+            `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
           ],
           'text.en': query,
           fuzzy: true,

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import ContentLoader from 'react-content-loader';
 
 export const Skeleton = () => (

@@ -1,6 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
-/* eslint-disable no-nested-ternary */
 import React, { FC, useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Select, { SingleValue, StylesConfig } from 'react-select';
@@ -9,7 +6,7 @@ import chroma from 'chroma-js';
 import classNames from 'classnames';
 
 import styles from './Filter.module.css';
-import { ColorOption, Option, colorOptions, optionsSize, sortBy } from './data';
+import { ColorOption, Option, colorOptions, optionsPrice, optionsSize, sortBy } from './data';
 
 const dot = (color = 'transparent') => ({
   alignItems: 'center',
@@ -57,10 +54,17 @@ interface FilterProps {
   handleSort: (option: Option | null) => void;
   handleFilterSize: (option: Option | null) => void;
   handleFilterColor: (option: ColorOption | null) => void;
+  handleFilterPrice: (option: Option | null) => void;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor, handleSearch, handleFilterSize }) => {
+export const Filter: FC<FilterProps> = ({
+  handleSort,
+  handleFilterColor,
+  handleSearch,
+  handleFilterSize,
+  handleFilterPrice,
+}) => {
   const [show, setShow] = useState(false);
   const [search] = useSearchParams();
   const setFocus = useCallback(
@@ -113,6 +117,14 @@ export const Filter: FC<FilterProps> = ({ handleSort, handleFilterColor, handleS
             placeholder='by size'
             isClearable
             onChange={(e) => handleFilterSize(e)}
+          />
+          <Select
+            isSearchable={false}
+            className={`${styles.sort} ${styles.sizes}`}
+            placeholder='by price'
+            options={optionsPrice}
+            isClearable
+            onChange={(e) => handleFilterPrice(e)}
           />
         </div>
         <div className={styles['search-wrapper']}>

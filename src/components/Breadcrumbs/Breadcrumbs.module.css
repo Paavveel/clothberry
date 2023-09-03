@@ -1,0 +1,44 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-gray-light);
+  width: max-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  height: 35px;
+  column-gap: 20px;
+}
+
+.crumb {
+  position: relative;
+}
+
+.crumb a {
+  color: var(--color-black);
+  transition: 0.3s;
+}
+
+.crumb a:hover {
+  border-bottom: 1px solid var(--color-black);
+}
+
+.crumb::after {
+  content: "/";
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  position: absolute;
+  font-weight: bold;
+}
+
+.crumb:last-child a {
+  font-weight: bold;
+}
+
+.crumb:last-child a:hover {
+  border-bottom: none;
+}
+
+.crumb:last-child::after {
+  display: none;
+}

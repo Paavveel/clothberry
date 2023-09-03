@@ -31,6 +31,13 @@ export const optionsSize: Option[] = [
   { value: 'xl', label: 'XL' },
 ];
 
+export const optionsPrice: Option[] = [
+  { value: '0 to 25000', label: '0 to 25 USD' },
+  { value: '2500 to 5000', label: '25 to 50 USD' },
+  { value: '5000 to 10000', label: '50 to 100 USD' },
+  { value: '10000 to 20000', label: '100 to 200 USD' },
+];
+
 export const sortBy: Option[] = [
   { value: 'price asc', label: 'Price: Low to High' },
   { value: 'price desc', label: 'Price: High to Low' },

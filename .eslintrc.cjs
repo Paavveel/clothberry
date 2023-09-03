@@ -53,6 +53,7 @@ module.exports = {
     'no-empty': [2, { allowEmptyCatch: true }],
     'no-return-assign': 0,
     'react/no-array-index-key': 0,
+    'no-nested-ternary': 0,
   },
   settings: {
     'import/resolver': {

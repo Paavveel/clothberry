@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
@@ -6,6 +5,7 @@ import { debounce } from 'lodash';
 
 import { fetchSearchResults, getAllProducts, getCategoryBySlug, getProductsByCategoryId } from '@api/search';
 import { ProductProjection } from '@commercetools/platform-sdk';
+import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Filter } from '@components/Filter/Filter';
 import { ColorOption, Option } from '@components/Filter/data';
 import { ProductItem } from '@components/ProductItem/ProductItem';
@@ -21,6 +21,7 @@ export const ProductList: FC = () => {
   const [sortByNameAndPrice, setSortByNameAndPrice] = useState('');
   const [filterByColor, setFilterByColor] = useState('');
   const [filterBySize, setFilterBySize] = useState('');
+  const [filterByPrice, setFilterByPrice] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useSearchParams();
   const navigate = useNavigate();
@@ -49,6 +50,14 @@ export const ProductList: FC = () => {
     }
   };
 
+  const handleFilterPrice = (option: Option | null) => {
+    if (option) {
+      setFilterByPrice(option.value);
+    } else {
+      setFilterByPrice('');
+    }
+  };
+
   const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     if (text.length === 0) {
@@ -62,7 +71,6 @@ export const ProductList: FC = () => {
         replace: true,
       });
     }
-    console.log(search.get('q'));
     navigate(`/product-list-page?${search}`);
   }, 400);
 
@@ -75,7 +83,8 @@ export const ProductList: FC = () => {
             categoryId,
             sortByNameAndPrice,
             filterByColor,
-            filterBySize
+            filterBySize,
+            filterByPrice
           );
           if (productsByCategory) {
             setProducts(productsByCategory);
@@ -85,7 +94,7 @@ export const ProductList: FC = () => {
           setErrorCategory(true);
         }
       } else {
-        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize).then((data) => {
+        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice).then((data) => {
           if (data) {
             setProducts(data);
             setIsLoading(false);
@@ -98,7 +107,7 @@ export const ProductList: FC = () => {
     } else {
       const queryString = search.get('q');
       if (queryString) {
-        fetchSearchResults(queryString, sortByNameAndPrice, filterByColor, filterBySize).then((data) => {
+        fetchSearchResults(queryString, sortByNameAndPrice, filterByColor, filterBySize, filterByPrice).then((data) => {
           if (data) {
             setProducts(data);
             setIsLoading(false);
@@ -112,22 +121,23 @@ export const ProductList: FC = () => {
         setErrorCategory(false);
       }
     };
-  }, [name, sortByNameAndPrice, filterByColor, errorCategory, search, filterBySize]);
+  }, [name, sortByNameAndPrice, filterByColor, errorCategory, search, filterBySize, filterByPrice]);
 
   if (errorCategory) {
     return <NotFoundPage />;
   }
-  console.log('productlist Render');
+
   return (
     <div className={styles.products__wrapper}>
+      <Breadcrumbs />
       <Filter
         handleSort={handleSort}
         handleFilterColor={handleFilterColor}
         handleSearch={handleSearch}
         handleFilterSize={handleFilterSize}
+        handleFilterPrice={handleFilterPrice}
       />
       <section className={styles['product-list']}>
-        {/* {products.length === 0 && isLoading && <p>not found</p>} */}
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : products.map((product) => <ProductItem key={product.id} product={product} />)}
