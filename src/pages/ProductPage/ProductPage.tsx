@@ -129,7 +129,7 @@ export const ProductPage = () => {
           </div>
 
           <p className={styles.description}>{description?.en}</p>
-          <Select className='' placeholder='Choose size' value={size} options={size} />
+          <Select placeholder='Choose size' options={size} />
         </div>
       )}
     </section>
