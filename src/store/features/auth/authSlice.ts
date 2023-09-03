@@ -4,7 +4,8 @@ import { removeTokenFromStorage } from '@helpers/TokenStorage';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
-import { checkLogin, login } from './authApi';
+import { login } from './authApi';
+import { getCustomer, updateCustomer } from './profileApi';
 import { signup } from './signupApi';
 
 export interface AuthState {
@@ -30,6 +31,7 @@ export const authSlice = createSlice({
       api.changeToAnonymousFlow();
       state.isLoggedIn = false;
       state.customer = null;
+      state.errorMessage = '';
     },
     clearError: (state) => {
       state.errorMessage = '';
@@ -58,7 +60,6 @@ export const authSlice = createSlice({
         state.errorMessage = '';
       })
       .addCase(signup.fulfilled, (state) => {
-        state.isLoggedIn = true;
         state.loading = false;
       })
       .addCase(signup.rejected, (state, action) => {
@@ -66,21 +67,24 @@ export const authSlice = createSlice({
         if (action.payload) {
           state.errorMessage = action.payload;
         }
-      })
+      });
 
-      .addCase(checkLogin.pending, (state) => {
-        state.loading = true;
+    builder
+      .addCase(getCustomer.pending, (state) => {
         state.errorMessage = '';
       })
-      .addCase(checkLogin.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(getCustomer.fulfilled, (state, action) => {
+        state.customer = action.payload;
       })
-      .addCase(checkLogin.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(getCustomer.rejected, (state, action) => {
         if (action.payload) {
           state.errorMessage = action.payload;
         }
       });
+
+    builder.addCase(updateCustomer.fulfilled, (state, action) => {
+      state.customer = action.payload;
+    });
   },
 });
 

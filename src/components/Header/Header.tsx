@@ -8,14 +8,13 @@ import { ReactComponent as Logout } from '@assets/img/logout.svg';
 import { ReactComponent as User } from '@assets/img/user.svg';
 import { MobileMenu } from '@components/MobileMenu/MobileMenu';
 import { Navbar } from '@components/Navbar/Navbar';
-import { logout, selectAuth } from '@store/features/auth/authSlice';
+import { logout } from '@store/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// import { Navbar } from '../Navbar/Navbar';
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
-  const { isLoggedIn } = useAppSelector(selectAuth);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {

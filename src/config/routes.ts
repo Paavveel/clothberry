@@ -1,6 +1,6 @@
 export enum AppRoutes {
   ROOT = '/',
-  PROFILE = '/customer',
+  PROFILE = '/profile',
   CART = '/cart',
   SIGNIN = '/signin',
   SIGNUP = '/signup',

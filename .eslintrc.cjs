@@ -54,6 +54,8 @@ module.exports = {
     'no-return-assign': 0,
     'react/no-array-index-key': 0,
     'no-nested-ternary': 0,
+    'import/no-cycle': 'off',
+    'react/require-default-props': 'off',
   },
   settings: {
     'import/resolver': {

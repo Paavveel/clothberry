@@ -11,8 +11,10 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   loading?: boolean;
+  disabled?: boolean;
   primary?: boolean;
   secondary?: boolean;
+  danger?: boolean;
 }
 
 export const Button: FC<PropsWithChildren<ButtonProps>> = ({
@@ -21,8 +23,10 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   type,
   className,
   loading,
+  disabled,
   primary,
   secondary,
+  danger,
 }) => {
   return (
     <button
@@ -31,8 +35,9 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       className={cn(styles.button, className, {
         [styles['button-primary']]: primary,
         [styles['button-secondary']]: secondary,
+        [styles['button-danger']]: danger,
       })}
-      disabled={loading}
+      disabled={disabled || loading}
     >
       {loading && <div className={styles.loading} />}
       {children}
@@ -46,4 +51,6 @@ Button.defaultProps = {
   className: '',
   onClick: undefined,
   loading: false,
+  disabled: false,
+  danger: false,
 };

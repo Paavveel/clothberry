@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import cn from 'classnames';
+
 import styles from './Checkbox.module.css';
 
 interface CheckboxProps {
@@ -7,11 +9,12 @@ interface CheckboxProps {
   htmlFor: string;
   onChange: (event: React.FormEvent) => void;
   value: boolean;
+  className?: string;
 }
 
-export const Checkbox: FC<CheckboxProps> = ({ title, htmlFor, onChange, value, ...props }) => {
+export const Checkbox: FC<CheckboxProps> = ({ title, htmlFor, className, onChange, value, ...props }) => {
   return (
-    <label className={styles['mcui-checkbox']} htmlFor={htmlFor} {...props}>
+    <label className={cn(className, styles['mcui-checkbox'])} htmlFor={htmlFor} {...props}>
       <input type='checkbox' id={htmlFor} onChange={onChange} checked={value} />
       <div>
         <svg className={styles['mcui-check']} viewBox='-2 -2 35 35' aria-hidden='true'>
@@ -22,4 +25,8 @@ export const Checkbox: FC<CheckboxProps> = ({ title, htmlFor, onChange, value, .
       <p className={styles.title}>{title}</p>
     </label>
   );
+};
+
+Checkbox.defaultProps = {
+  className: '',
 };
