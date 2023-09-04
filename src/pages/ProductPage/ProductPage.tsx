@@ -34,6 +34,7 @@ export const ProductPage = () => {
   const [data, setData] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const { state } = useLocation();
+  const { productId } = state;
   const swiperRef = useRef<SwiperRef>();
 
   const arrImage: string[] = [];
@@ -59,18 +60,19 @@ export const ProductPage = () => {
         response = await api.request.productProjections().withId({ ID: id }).get().execute();
         return response.body;
       } catch (error) {
-        console.error('Error fetching product:', error);
         return false;
       } finally {
         setLoading(false);
       }
     };
-    getProduct(state.id).then((response) => {
-      if (response) {
-        setData(response);
-      }
-    });
-  }, [state.id]);
+    if (productId) {
+      getProduct(productId).then((response) => {
+        if (response) {
+          setData(response);
+        }
+      });
+    }
+  }, [productId]);
 
   return (
     <div>

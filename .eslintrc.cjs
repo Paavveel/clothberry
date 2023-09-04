@@ -56,6 +56,7 @@ module.exports = {
     'no-nested-ternary': 0,
     'import/no-cycle': 'off',
     'react/require-default-props': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     'import/resolver': {

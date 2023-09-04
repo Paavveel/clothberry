@@ -10,13 +10,13 @@ export const Breadcrumbs: FC = () => {
 
   const crumbs = location.pathname
     .split('/')
-    .filter((crumb) => crumb !== '')
-    .map((crumb) => {
+    .filter((crumb) => crumb !== '' && crumb !== 'item')
+    .map((crumb, index, array) => {
       currentLink += `/${crumb}`;
 
       return (
         <div className={styles.crumb} key={crumb}>
-          <Link to={currentLink}>{crumb}</Link>
+          {index !== array.length - 1 ? <Link to={currentLink}>{crumb}</Link> : <span>{crumb}</span>}
         </div>
       );
     });

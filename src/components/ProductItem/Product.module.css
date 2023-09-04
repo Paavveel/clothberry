@@ -110,11 +110,7 @@
   font-weight: 500;
   font-size: 14px;
   text-align: left;
-  padding: 0 15px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  padding: 7px 15px;
   line-height: 1.3rem;
 }
 

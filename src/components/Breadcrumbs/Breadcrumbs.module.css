@@ -19,7 +19,6 @@
 
 .crumb a {
   color: var(--color-black);
-  transition: 0.3s;
 }
 
 .crumb a:hover {
@@ -35,8 +34,9 @@
   font-weight: bold;
 }
 
-.crumb:last-child a {
+.crumb:last-child span {
   font-weight: bold;
+  pointer-events: none;
 }
 
 .crumb:last-child a:hover {
