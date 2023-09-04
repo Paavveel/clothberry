@@ -89,7 +89,11 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
           </div>
         </Link>
       </div>
-      <p className={`${styles.product__description}`}>{description?.en}</p>
+      <p className={`${styles.product__description}`}>
+        {description?.en.length && description?.en.length > 110
+          ? `${description?.en.slice(0, 110)}...`
+          : description?.en}
+      </p>
       <p className={styles.product__title}>
         <span>{name.en}</span>
       </p>

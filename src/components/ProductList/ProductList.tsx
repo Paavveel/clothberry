@@ -168,7 +168,7 @@ export const ProductList: FC = () => {
       />
       <Breadcrumbs />
       <section className={styles['product-list']}>
-        {!isLoading && !products.length && <p>Products not found</p>}
+        {!isLoading && !products.length && <p className={styles.not__found__product}>Products not found</p>}
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : products.map((product) => <ProductItem key={product.id} product={product} />)}
