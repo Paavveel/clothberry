@@ -7,7 +7,7 @@
 
 @media (width <= 767px) {
   .nav {
-    width: auto;
+    display: none;
   }
 }
 

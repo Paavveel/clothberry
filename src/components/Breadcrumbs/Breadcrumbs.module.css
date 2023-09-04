@@ -1,12 +1,16 @@
 .breadcrumbs {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   background-color: var(--color-gray-light);
   width: max-content;
   padding: 5px 10px;
   border-radius: 5px;
-  height: 35px;
   column-gap: 20px;
+
+  @media (width <= 767px) {
+    width: 100%;
+  }
 }
 
 .crumb {

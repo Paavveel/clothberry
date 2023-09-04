@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { toastOptions } from 'config/toastOptions';
 
 import { AppWrapper } from '@components/AppWrapper';
+import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 
 export const Layout: FC = () => {
@@ -15,6 +16,7 @@ export const Layout: FC = () => {
         <main className='main'>
           <Outlet />
         </main>
+        <Footer />
       </AppWrapper>
       <Toaster position='bottom-right' toastOptions={toastOptions} />
     </div>
