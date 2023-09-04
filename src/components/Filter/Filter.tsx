@@ -6,7 +6,7 @@ import chroma from 'chroma-js';
 import classNames from 'classnames';
 
 import styles from './Filter.module.css';
-import { ColorOption, Option, colorOptions, optionsPrice, optionsSize, sortBy } from './data';
+import { ColorOption, Option, colorOptions, optionsBrand, optionsPrice, optionsSize, sortBy } from './data';
 
 const dot = (color = 'transparent') => ({
   alignItems: 'center',
@@ -55,6 +55,7 @@ interface FilterProps {
   handleFilterSize: (option: Option | null) => void;
   handleFilterColor: (option: ColorOption | null) => void;
   handleFilterPrice: (option: Option | null) => void;
+  handleFilterBrand: (option: Option | null) => void;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -64,6 +65,7 @@ export const Filter: FC<FilterProps> = ({
   handleSearch,
   handleFilterSize,
   handleFilterPrice,
+  handleFilterBrand,
 }) => {
   const [show, setShow] = useState(false);
   const [search] = useSearchParams();
@@ -124,7 +126,14 @@ export const Filter: FC<FilterProps> = ({
             isClearable
             onChange={(e) => handleFilterPrice(e)}
           />
-          <Select isSearchable={false} placeholder='by brand' isClearable className={styles.select} />
+          <Select
+            isSearchable={false}
+            placeholder='by brand'
+            isClearable
+            className={styles.select}
+            options={optionsBrand}
+            onChange={(e) => handleFilterBrand(e)}
+          />
         </div>
 
         <div className={styles['search-wrapper']}>

@@ -1,6 +1,6 @@
 import { api } from './client';
 
-export const getAllProducts = async (sortBy: string, color: string, size: string, price: string) => {
+export const getAllProducts = async (sortBy: string, color: string, size: string, price: string, brand: string) => {
   try {
     const response = await api.request
       .productProjections()
@@ -11,6 +11,7 @@ export const getAllProducts = async (sortBy: string, color: string, size: string
             `${color !== '' ? `variants.attributes.color.key:"${color}"` : ''}`,
             `${size !== '' ? `variants.attributes.size.key:"${size}"` : ''}`,
             `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
+            `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
         },
@@ -27,7 +28,8 @@ export const getProductsByCategoryId = async (
   sortBy: string,
   color: string,
   size: string,
-  price: string
+  price: string,
+  brand: string
 ) => {
   let response;
   try {
@@ -41,6 +43,7 @@ export const getProductsByCategoryId = async (
             `${color !== '' ? `variants.attributes.color.key:"${color}"` : ''}`,
             `${size !== '' ? `variants.attributes.size.key:"${size}"` : ''}`,
             `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
+            `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
           limit: 100,
@@ -62,7 +65,14 @@ export const getCategoryBySlug = async (slug: string) => {
   }
 };
 
-export const fetchSearchResults = async (query: string, sortBy: string, color: string, size: string, price: string) => {
+export const fetchSearchResults = async (
+  query: string,
+  sortBy: string,
+  color: string,
+  size: string,
+  price: string,
+  brand: string
+) => {
   let response;
   try {
     response = await api.request
@@ -74,6 +84,7 @@ export const fetchSearchResults = async (query: string, sortBy: string, color: s
             `${color !== '' ? `variants.attributes.color.key:"${color}"` : ''}`,
             `${size !== '' ? `variants.attributes.size.key:"${size}"` : ''}`,
             `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
+            `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           'text.en': query,
           fuzzy: true,

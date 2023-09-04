@@ -38,6 +38,13 @@ export const optionsPrice: Option[] = [
   { value: '10000 to 20000', label: '100 to 200 USD' },
 ];
 
+export const optionsBrand: Option[] = [
+  { value: 'acquarama', label: 'Acquarama' },
+  { value: 'bonfanti', label: 'Bonfanti' },
+  { value: 'gum', label: 'Gum' },
+  { value: 'liujo', label: 'Liu Jo' },
+];
+
 export const sortBy: Option[] = [
   { value: 'price asc', label: 'Price: Low to High' },
   { value: 'price desc', label: 'Price: High to Low' },

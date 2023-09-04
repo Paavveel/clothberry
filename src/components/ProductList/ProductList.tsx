@@ -23,6 +23,7 @@ export const ProductList: FC = () => {
   const [filterByColor, setFilterByColor] = useState('');
   const [filterBySize, setFilterBySize] = useState('');
   const [filterByPrice, setFilterByPrice] = useState('');
+  const [filterByBrand, setFilterByBrand] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useSearchParams();
   const navigate = useNavigate();
@@ -60,6 +61,14 @@ export const ProductList: FC = () => {
     }
   };
 
+  const handleFilterBrand = (option: Option | null) => {
+    if (option) {
+      setFilterByBrand(option.value);
+    } else {
+      setFilterByBrand('');
+    }
+  };
+
   const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     if (text.length === 0) {
@@ -78,7 +87,7 @@ export const ProductList: FC = () => {
   useEffect(() => {
     async function fetchRequest() {
       if (location.pathname === '/product-list-page') {
-        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice).then((data) => {
+        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice, filterByBrand).then((data) => {
           if (data) {
             setProducts(data);
             setIsLoading(false);
@@ -93,7 +102,8 @@ export const ProductList: FC = () => {
           sortByNameAndPrice,
           filterByColor,
           filterBySize,
-          filterByPrice
+          filterByPrice,
+          filterByBrand
         );
         if (productsByCategory) {
           setProducts(productsByCategory);
@@ -108,7 +118,14 @@ export const ProductList: FC = () => {
     } else {
       const queryString = search.get('q');
       if (queryString) {
-        fetchSearchResults(queryString, sortByNameAndPrice, filterByColor, filterBySize, filterByPrice).then((data) => {
+        fetchSearchResults(
+          queryString,
+          sortByNameAndPrice,
+          filterByColor,
+          filterBySize,
+          filterByPrice,
+          filterByBrand
+        ).then((data) => {
           if (data) {
             setProducts(data);
             setIsLoading(false);
@@ -132,6 +149,7 @@ export const ProductList: FC = () => {
     search,
     filterBySize,
     filterByPrice,
+    filterByBrand,
   ]);
 
   if (errorCategory) {
@@ -146,6 +164,7 @@ export const ProductList: FC = () => {
         handleSearch={handleSearch}
         handleFilterSize={handleFilterSize}
         handleFilterPrice={handleFilterPrice}
+        handleFilterBrand={handleFilterBrand}
       />
       <Breadcrumbs />
       <section className={styles['product-list']}>
