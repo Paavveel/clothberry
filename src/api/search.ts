@@ -18,7 +18,6 @@ export const getAllProducts = async (sortBy: string, color: string, size: string
       .execute();
     return response.body.results;
   } catch (error) {
-    console.error('Error fetching category:', error);
     return false;
   }
 };
@@ -44,12 +43,12 @@ export const getProductsByCategoryId = async (
             `${price !== '' ? `variants.price.centAmount:range(${price})` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
+          limit: 100,
         },
       })
       .execute();
     return response.body.results;
   } catch (error) {
-    console.error('Error fetching product:', error);
     return false;
   }
 };
@@ -59,7 +58,6 @@ export const getCategoryBySlug = async (slug: string) => {
     response = await api.request.categories().withKey({ key: slug }).get().execute();
     return response.body.id;
   } catch (error) {
-    console.error('Error fetching category:', error);
     return false;
   }
 };
@@ -85,7 +83,6 @@ export const fetchSearchResults = async (query: string, sortBy: string, color: s
       .execute();
     return response.body.results;
   } catch (error) {
-    console.error('Error fetching category:', error);
     return false;
   }
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
@@ -46,18 +47,31 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/:category/:name?',
+        path: ':category',
         element: <ProductList />,
         errorElement: <NotFoundPage />,
       },
       {
-        path: '/:category/:name?/:id',
+        path: ':category/item/:id',
         element: <ProductPage />,
+        errorElement: <NotFoundPage />,
       },
+      {
+        path: ':category/:subcategory',
+        element: <ProductList />,
+        errorElement: <NotFoundPage />,
+      },
+      {
+        path: ':category/:subcategory/:id',
+        element: <ProductPage />,
+        errorElement: <NotFoundPage />,
+      },
+
       {
         path: '/product-list-page',
         element: <ProductList />,
       },
+
       {
         path: CART,
         element: <h1>CART</h1>,

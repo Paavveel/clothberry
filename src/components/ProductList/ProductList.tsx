@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { debounce } from 'lodash';
 
@@ -15,7 +16,7 @@ import { NotFoundPage } from '@pages/NotFoundPage';
 import styles from './ProductList.module.css';
 
 export const ProductList: FC = () => {
-  const { name } = useParams();
+  const { category, subcategory } = useParams();
   const [products, setProducts] = useState<ProductProjection[]>([]);
   const [errorCategory, setErrorCategory] = useState(false);
   const [sortByNameAndPrice, setSortByNameAndPrice] = useState('');
@@ -25,6 +26,7 @@ export const ProductList: FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSort = (option: Option | null) => {
     if (option) {
@@ -73,33 +75,32 @@ export const ProductList: FC = () => {
     }
     navigate(`/product-list-page?${search}`);
   }, 400);
-
   useEffect(() => {
     async function fetchRequest() {
-      if (name) {
-        const categoryId = await getCategoryBySlug(name);
-        if (categoryId) {
-          const productsByCategory = await getProductsByCategoryId(
-            categoryId,
-            sortByNameAndPrice,
-            filterByColor,
-            filterBySize,
-            filterByPrice
-          );
-          if (productsByCategory) {
-            setProducts(productsByCategory);
-            setIsLoading(false);
-          }
-        } else {
-          setErrorCategory(true);
-        }
-      } else {
+      if (location.pathname === '/product-list-page') {
         getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice).then((data) => {
           if (data) {
             setProducts(data);
             setIsLoading(false);
           }
         });
+        return;
+      }
+      const categoryId = await getCategoryBySlug(subcategory || category!);
+      if (categoryId) {
+        const productsByCategory = await getProductsByCategoryId(
+          categoryId,
+          sortByNameAndPrice,
+          filterByColor,
+          filterBySize,
+          filterByPrice
+        );
+        if (productsByCategory) {
+          setProducts(productsByCategory);
+          setIsLoading(false);
+        }
+      } else {
+        setErrorCategory(true);
       }
     }
     if (!search.get('q')) {
@@ -121,7 +122,17 @@ export const ProductList: FC = () => {
         setErrorCategory(false);
       }
     };
-  }, [name, sortByNameAndPrice, filterByColor, errorCategory, search, filterBySize, filterByPrice]);
+  }, [
+    location,
+    category,
+    subcategory,
+    sortByNameAndPrice,
+    filterByColor,
+    errorCategory,
+    search,
+    filterBySize,
+    filterByPrice,
+  ]);
 
   if (errorCategory) {
     return <NotFoundPage />;
@@ -138,6 +149,7 @@ export const ProductList: FC = () => {
       />
       <Breadcrumbs />
       <section className={styles['product-list']}>
+        {!isLoading && !products.length && <p>Products not found</p>}
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : products.map((product) => <ProductItem key={product.id} product={product} />)}
