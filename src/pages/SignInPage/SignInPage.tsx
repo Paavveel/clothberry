@@ -48,6 +48,7 @@ export const SignInPage: FC = () => {
   return (
     <Form title='Log in to your account' onSubmit={handleSubmit(handleLogin)}>
       <Input<FormSignIn>
+        id='signin-email'
         type='text'
         placeholder='Email *'
         label='username'
@@ -60,6 +61,7 @@ export const SignInPage: FC = () => {
         }}
       />
       <Input<FormSignIn>
+        id='signin-password'
         type='password'
         placeholder='Password *'
         label='password'

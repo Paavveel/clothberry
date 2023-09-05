@@ -1,3 +1,5 @@
+import { countries } from 'config/countries';
+
 import { emailValidator, validateName, validatePassword, validatePostCode } from './Validators';
 
 describe('validatePassword', () => {
@@ -32,67 +34,60 @@ describe('validatePassword', () => {
   });
 });
 
-const options = [
-  { value: 'DE', label: 'Germany' },
-  { value: 'AT', label: 'Austria' },
-  { value: 'US', label: 'United States' },
-  { value: 'NL', label: 'Netherlands' },
-];
-
 describe('validatePostCode', () => {
   it('returns an error message for an invalid postal code in Germany', () => {
-    const result = validatePostCode('123456', options[0]);
-    expect(result).toBe('⚠ Invalid postal code for Germany');
+    const result = validatePostCode('123456', countries[0].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[0].value}`);
   });
 
   it('returns an error message for a valid postal code in Germany with wrong format', () => {
-    const result = validatePostCode('1234', options[0]);
-    expect(result).toBe('⚠ Invalid postal code for Germany');
+    const result = validatePostCode('1234', countries[0].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[0].value}`);
   });
 
   it('returns undefined for a valid postal code in Germany', () => {
-    const result = validatePostCode('12345', options[0]);
+    const result = validatePostCode('12345', countries[0].value);
     expect(result).toBeUndefined();
   });
 
   it('returns an error message for an invalid postal code in Austria', () => {
-    const result = validatePostCode('12345', options[1]);
-    expect(result).toBe('⚠ Invalid postal code for Austria');
+    const result = validatePostCode('12345', countries[1].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[1].value}`);
   });
 
   it('returns an error message for an invalid postal code in the United States', () => {
-    const result = validatePostCode('123', options[2]);
-    expect(result).toBe('⚠ Invalid postal code for United States');
+    const result = validatePostCode('123', countries[2].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[2].value}`);
   });
 
   it('returns undefined for a valid postal code in the United States', () => {
-    const result = validatePostCode('12345', options[2]);
+    const result = validatePostCode('12345', countries[2].value);
     expect(result).toBeUndefined();
   });
 
   it('returns an error message for an invalid postal code in the Netherlands', () => {
-    const result = validatePostCode('123', options[3]);
-    expect(result).toBe('⚠ Invalid postal code for Netherlands');
+    const result = validatePostCode('123', countries[3].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[3].value}`);
   });
 
   it('returns undefined for a valid postal code in the Netherlands', () => {
-    const result = validatePostCode('1234 AB', options[3]);
+    const result = validatePostCode('1234 AB', countries[3].value);
     expect(result).toBeUndefined();
   });
 
   it('returns an error message for an invalid postal code in Germany', () => {
-    const result = validatePostCode('1234567890', options[0]);
-    expect(result).toBe('⚠ Invalid postal code for Germany');
+    const result = validatePostCode('1234567890', countries[0].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[0].value}`);
   });
 
   it('returns an error message for an invalid postal code in Austria', () => {
-    const result = validatePostCode('1234567', options[1]);
-    expect(result).toBe('⚠ Invalid postal code for Austria');
+    const result = validatePostCode('1234567', countries[1].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[1].value}`);
   });
 
   it('returns an error message for an invalid postal code in the Netherlands', () => {
-    const result = validatePostCode('12 AB', options[3]);
-    expect(result).toBe('⚠ Invalid postal code for Netherlands');
+    const result = validatePostCode('12 AB', countries[3].value);
+    expect(result).toBe(`⚠ Invalid postal code for ${countries[3].value}`);
   });
 });
 

@@ -7,6 +7,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Input } from './Input';
 
 describe('Input component', () => {
+  const mockId = 'testId';
   it('renders the component with provided props', () => {
     const mockRegister = vi.fn();
     const mockOptions = { minLength: 3 }; // Example options
@@ -16,6 +17,7 @@ describe('Input component', () => {
 
     render(
       <Input
+        id={mockId}
         label={mockLabel}
         placeholder={mockPlaceholder}
         type='text'
@@ -37,6 +39,7 @@ describe('Input component', () => {
 
     render(
       <Input
+        id={mockId}
         label={mockLabel}
         placeholder={mockPlaceholder}
         type='email'
@@ -60,6 +63,7 @@ describe('Input component', () => {
 
     render(
       <Input
+        id={mockId}
         label={mockLabel}
         placeholder={mockPlaceholder}
         type='email'

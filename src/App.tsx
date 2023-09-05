@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
 
+import { ProductList } from '@components/ProductList/ProductList';
 import { Layout } from '@layout/Layout';
 import { HomePage } from '@pages/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage';
+import { ProductPage } from '@pages/ProductPage';
+import { ProfilePage } from '@pages/ProfilePage';
 import { SignInPage } from '@pages/SignInPage';
 import { SignUpPage } from '@pages/SignUpPage';
 import { CheckAuth } from '@store/features/auth/CheckAuth';
@@ -38,10 +42,36 @@ const router = createBrowserRouter([
         path: PROFILE,
         element: (
           <RequireAuth>
-            <h1>Profile</h1>
+            <ProfilePage />
           </RequireAuth>
         ),
       },
+      {
+        path: ':category',
+        element: <ProductList />,
+        errorElement: <NotFoundPage />,
+      },
+      {
+        path: ':category/item/:id',
+        element: <ProductPage />,
+        errorElement: <NotFoundPage />,
+      },
+      {
+        path: ':category/:subcategory',
+        element: <ProductList />,
+        errorElement: <NotFoundPage />,
+      },
+      {
+        path: ':category/:subcategory/:id',
+        element: <ProductPage />,
+        errorElement: <NotFoundPage />,
+      },
+
+      {
+        path: '/product-list-page',
+        element: <ProductList />,
+      },
+
       {
         path: CART,
         element: <h1>CART</h1>,
