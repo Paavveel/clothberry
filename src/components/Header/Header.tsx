@@ -31,7 +31,7 @@ export const Header: FC = () => {
       </div>
 
       <div className={styles['nav-btns']}>
-        <Link to={AppRoutes.CART} area-label='cart'>
+        <Link to={AppRoutes.BASKET} area-label='cart'>
           <Basket className={styles['header-icon']} />
         </Link>
         <Link to={AppRoutes.PROFILE} area-label='profile'>
