@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
@@ -9,6 +9,7 @@ import { ReactComponent as User } from '@assets/img/user.svg';
 import { MobileMenu } from '@components/MobileMenu/MobileMenu';
 import { Navbar } from '@components/Navbar/Navbar';
 import { logout } from '@store/features/auth/authSlice';
+import { checkCart } from '@store/features/cart/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Header.module.css';
@@ -20,6 +21,11 @@ export const Header: FC = () => {
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  useEffect(() => {
+    dispatch(checkCart());
+  }, [dispatch]);
+
   return (
     <header className={styles.header}>
       <Navbar />

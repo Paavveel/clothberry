@@ -17,12 +17,11 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(() => isLoggedIn);
 
   useEffect(() => {
     const requestForAuth = async () => {
       try {
-        setLoading(true);
         const result = await dispatch(checkLogin()).unwrap();
 
         if (!result.active) {
@@ -34,7 +33,6 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
         setLoading(false);
       }
     };
-
     if (isLoggedIn) {
       requestForAuth();
     }
