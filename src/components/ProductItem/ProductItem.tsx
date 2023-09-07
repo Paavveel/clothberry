@@ -23,7 +23,6 @@ interface Product {
     images?: Image[];
     prices?: Price[];
   };
-  slug: LocalizedString;
 }
 
 interface ProductCardProps {
@@ -31,8 +30,7 @@ interface ProductCardProps {
 }
 
 export const ProductItem: FC<ProductCardProps> = ({ product }) => {
-  const { name, description, masterVariant, slug, id } = product;
-  const { en: currentSlug } = slug;
+  const { name, description, masterVariant, id } = product;
   const { images, prices } = masterVariant;
   const price = prices ? prices[0].value.centAmount / 100 : 0;
   const discount = prices ? prices[0].discounted?.value.centAmount : null;
@@ -43,9 +41,9 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
   const cardVersion = useAppSelector((state) => state.cart.cart?.version);
   let productPath;
   if (subcategory) {
-    productPath = `/${category}/${subcategory}/${currentSlug}`;
+    productPath = `/${category}/${subcategory}/${id}`;
   } else {
-    productPath = `/${category}/item/${currentSlug}`;
+    productPath = `/${category}/item/${id}`;
   }
 
   return (
