@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { Image, Price } from '@commercetools/platform-sdk';
-import { updateCart } from '@store/features/cart/cartApi';
+import { createCart, updateCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Product.module.css';
@@ -37,8 +37,8 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
   const code = prices ? prices[0].value.currencyCode : '';
   const { category, subcategory } = useParams();
   const dispatch = useAppDispatch();
-  const cardId = useAppSelector((state) => state.cart.cart?.id);
-  const cardVersion = useAppSelector((state) => state.cart.cart?.version);
+  const cardId = useAppSelector((state) => state.auth.cart?.id);
+  const cardVersion = useAppSelector((state) => state.auth.cart?.version);
   let productPath;
   if (subcategory) {
     productPath = `/${category}/${subcategory}/${id}`;
@@ -91,6 +91,8 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
                     },
                   })
                 );
+              } else {
+                await dispatch(createCart({ currency: 'USD', lineItems: [{ productId: id }] }));
               }
             } catch (error) {}
           }}

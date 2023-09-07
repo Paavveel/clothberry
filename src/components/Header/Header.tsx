@@ -9,7 +9,7 @@ import { ReactComponent as User } from '@assets/img/user.svg';
 import { MobileMenu } from '@components/MobileMenu/MobileMenu';
 import { Navbar } from '@components/Navbar/Navbar';
 import { logout } from '@store/features/auth/authSlice';
-import { checkCart } from '@store/features/cart/cartApi';
+import { checkCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Header.module.css';

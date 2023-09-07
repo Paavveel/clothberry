@@ -1,25 +1,27 @@
 import { api } from '@api/client';
-import { Customer } from '@commercetools/platform-sdk';
+import { CustomerSignInResult } from '@commercetools/platform-sdk';
 import { UserAuthOptions } from '@commercetools/sdk-client-v2';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { checkCart } from '../cart/cartApi';
-
 type CheckLoginResponseType = { active: boolean };
 
-export const login = createAsyncThunk<Customer, UserAuthOptions, { rejectValue: string }>(
+export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { rejectValue: string }>(
   'auth/login',
-  async ({ username, password }, { rejectWithValue, dispatch }) => {
+  async ({ username, password }, { rejectWithValue }) => {
     try {
       api.changeToPasswordFlow({ username, password });
       const result = await api.request
         .login()
-        .post({ body: { email: username, password } })
+        .post({
+          body: {
+            email: username,
+            password,
+            anonymousId: api.anonymousID,
+          },
+        })
         .execute();
 
-      await dispatch(checkCart());
-
-      return result.body.customer;
+      return result.body;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
