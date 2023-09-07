@@ -1,6 +1,7 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
+import cn from 'classnames';
 import { AppRoutes } from 'config/routes';
 
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
@@ -9,22 +10,18 @@ import { ReactComponent as User } from '@assets/img/user.svg';
 import { MobileMenu } from '@components/MobileMenu/MobileMenu';
 import { Navbar } from '@components/Navbar/Navbar';
 import { logout } from '@store/features/auth/authSlice';
-import { checkCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const totalInCart = useAppSelector((state) => state.auth.cart?.totalLineItemQuantity);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
   };
-
-  useEffect(() => {
-    dispatch(checkCart());
-  }, [dispatch]);
 
   return (
     <header className={styles.header}>
@@ -37,10 +34,11 @@ export const Header: FC = () => {
       </div>
 
       <div className={styles['nav-btns']}>
-        <Link to={AppRoutes.CART} area-label='cart'>
+        <Link to={AppRoutes.CART} className={cn(styles['nav-link'], styles['cart-link'])} area-label='cart'>
           <Basket className={styles['header-icon']} />
+          <span className={styles['basket-count-mark']}>{totalInCart ?? 0}</span>
         </Link>
-        <Link to={AppRoutes.PROFILE} area-label='profile'>
+        <Link to={AppRoutes.PROFILE} className={cn(styles['nav-link'])} area-label='profile'>
           <User className={styles['header-icon']} />
         </Link>
         {isLoggedIn && (
