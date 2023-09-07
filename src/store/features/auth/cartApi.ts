@@ -6,13 +6,13 @@ export const checkCart = createAsyncThunk<Cart, void, { rejectValue: string }>(
   'cart/checkCart',
   async (_, { rejectWithValue }) => {
     try {
-      const result = await api.request.me().carts().get().execute();
-      return result.body.results[0];
+      const result = await api.request.me().activeCart().get().execute();
+      return result.body;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
-      return rejectWithValue('Error with update');
+      return rejectWithValue('Error with check cart');
     }
   }
 );
@@ -27,26 +27,25 @@ export const createCart = createAsyncThunk<Cart, MyCartDraft, { rejectValue: str
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
-      return rejectWithValue('Error with update');
+      return rejectWithValue('Error with create cart');
     }
   }
 );
 
-export type UpdateCartData = { cardId: string; body: MyCartUpdate };
+export type UpdateCartData = { cartId: string; body: MyCartUpdate };
 
 export const updateCart = createAsyncThunk<Cart, UpdateCartData, { rejectValue: string }>(
   'cart/updateCart',
   async (data, { rejectWithValue }) => {
-    const { cardId, body } = data;
-    console.log(data);
+    const { cartId, body } = data;
     try {
-      const result = await api.request.me().carts().withId({ ID: cardId }).post({ body }).execute();
+      const result = await api.request.me().carts().withId({ ID: cartId }).post({ body }).execute();
       return result.body;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
-      return rejectWithValue('Error with update');
+      return rejectWithValue('Error with update cart');
     }
   }
 );

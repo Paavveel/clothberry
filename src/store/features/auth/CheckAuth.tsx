@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { checkLogin } from './authApi';
 import { logout } from './authSlice';
+import { checkCart } from './cartApi';
 
 interface CheckAuthProps {
   children: JSX.Element;
@@ -27,6 +28,8 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
         if (!result.active) {
           dispatch(logout());
           navigate(AppRoutes.ROOT, { replace: true });
+        } else {
+          await dispatch(checkCart());
         }
       } catch (error) {
       } finally {

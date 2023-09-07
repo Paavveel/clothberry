@@ -3,11 +3,13 @@ import { CustomerSignInResult } from '@commercetools/platform-sdk';
 import { UserAuthOptions } from '@commercetools/sdk-client-v2';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { createCart } from './cartApi';
+
 type CheckLoginResponseType = { active: boolean };
 
 export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { rejectValue: string }>(
   'auth/login',
-  async ({ username, password }, { rejectWithValue }) => {
+  async ({ username, password }, { rejectWithValue, dispatch }) => {
     try {
       api.changeToPasswordFlow({ username, password });
       const result = await api.request
@@ -20,6 +22,10 @@ export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { r
           },
         })
         .execute();
+
+      if (!result.body.cart) {
+        await dispatch(createCart({ currency: 'USD' }));
+      }
 
       return result.body;
     } catch (error) {

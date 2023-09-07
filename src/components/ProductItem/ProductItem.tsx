@@ -37,8 +37,8 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
   const code = prices ? prices[0].value.currencyCode : '';
   const { category, subcategory } = useParams();
   const dispatch = useAppDispatch();
-  const cardId = useAppSelector((state) => state.auth.cart?.id);
-  const cardVersion = useAppSelector((state) => state.auth.cart?.version);
+  const cartId = useAppSelector((state) => state.auth.cart?.id);
+  const cartVersion = useAppSelector((state) => state.auth.cart?.version);
   let productPath;
   if (subcategory) {
     productPath = `/${category}/${subcategory}/${id}`;
@@ -81,12 +81,12 @@ export const ProductItem: FC<ProductCardProps> = ({ product }) => {
           type='button'
           onClick={async () => {
             try {
-              if (cardId && cardVersion) {
+              if (cartId && cartVersion) {
                 await dispatch(
                   updateCart({
-                    cardId,
+                    cartId,
                     body: {
-                      version: cardVersion,
+                      version: cartVersion,
                       actions: [{ action: 'addLineItem', productId: id }],
                     },
                   })

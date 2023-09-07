@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
 import { login } from './authApi';
+import { checkCart, createCart, updateCart } from './cartApi';
 import { getCustomer, updateCustomer } from './profileApi';
 import { signup } from './signupApi';
 
@@ -33,6 +34,7 @@ export const authSlice = createSlice({
       api.changeToAnonymousFlow();
       state.isLoggedIn = false;
       state.customer = null;
+      state.cart = null;
       state.errorMessage = '';
     },
     clearError: (state) => {
@@ -89,6 +91,18 @@ export const authSlice = createSlice({
 
     builder.addCase(updateCustomer.fulfilled, (state, action) => {
       state.customer = action.payload;
+    });
+
+    builder.addCase(checkCart.fulfilled, (state, action) => {
+      state.cart = action.payload;
+    });
+
+    builder.addCase(createCart.fulfilled, (state, action) => {
+      state.cart = action.payload;
+    });
+
+    builder.addCase(updateCart.fulfilled, (state, action) => {
+      state.cart = action.payload;
     });
   },
 });
