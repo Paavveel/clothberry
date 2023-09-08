@@ -8,7 +8,10 @@ import classNames from 'classnames';
 
 import { ReactComponent as Arrow } from '@assets/img/arrow.svg';
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
+import { ReactComponent as Minus } from '@assets/img/minus.svg';
+import { ReactComponent as Plus } from '@assets/img/plus.svg';
 import { ProductProjection } from '@commercetools/platform-sdk';
+import { Loader } from '@components/Loader';
 import { createCart, updateCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -46,7 +49,7 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
       })?.sku) ||
     product.masterVariant.sku;
 
-  const isVariantExistInCart = lineItems?.some((item) => item.variant.sku === variantSku);
+  const lineItem = lineItems?.find((item) => item.variant.sku === variantSku);
 
   const handleAddToCart = async () => {
     try {
@@ -71,8 +74,29 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
     }
   };
 
+  const handleDeleteFromCart = async () => {
+    try {
+      setLoading(true);
+      if (cartId && cartVersion) {
+        await dispatch(
+          updateCart({
+            cartId,
+            body: {
+              version: cartVersion,
+              actions: [{ action: 'removeLineItem', lineItemId: lineItem?.id }],
+            },
+          })
+        ).unwrap();
+      }
+    } catch (error) {
+      toast.error('Error with add to cart');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className={styles.product__item}>
+    <div className={classNames(styles.product__item, { [styles.product__item_loading]: loading })}>
       <div className={styles['product__item--cover']}>
         <LazyLoadImage
           src={images && images.length > 0 ? images[0].url : ''}
@@ -101,17 +125,22 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
             )}
           </div>
         </div>
-        {!isVariantExistInCart && (
-          <button className={styles.bag} type='button' disabled={loading} onClick={handleAddToCart}>
+        {!loading && (
+          <button className={styles.bag} type='button' onClick={lineItem ? handleDeleteFromCart : handleAddToCart}>
             <Basket />
+            {lineItem ? <Minus className={styles.bag__minus} /> : <Plus className={styles.bag__plus} />}
           </button>
         )}
-        <Link to={productPath} className={styles['more-btn']} state={{ productId: product.id }}>
-          <span>Подробнее</span>
-          <div className={styles.icon}>
-            <Arrow />
-          </div>
-        </Link>
+        {!loading ? (
+          <Link to={productPath} className={styles['more-btn']} state={{ productId: product.id }}>
+            <span>Подробнее</span>
+            <div className={styles.icon}>
+              <Arrow />
+            </div>
+          </Link>
+        ) : (
+          <Loader className={styles.product__loader} />
+        )}
       </div>
       <p className={`${styles.product__description}`}>
         {description?.en.length && description?.en.length > 110
