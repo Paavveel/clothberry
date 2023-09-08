@@ -12,6 +12,14 @@
   width: 100%;
 }
 
+.logo {
+  position: relative;
+  z-index: 2;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
