@@ -49,3 +49,21 @@ export const updateCart = createAsyncThunk<Cart, UpdateCartData, { rejectValue: 
     }
   }
 );
+
+export type DeleteCartData = { cartId: string; version: MyCartUpdate['version'] };
+
+export const deleteCart = createAsyncThunk<Cart, DeleteCartData, { rejectValue: string }>(
+  'cart/deleteCart',
+  async (data, { rejectWithValue }) => {
+    const { cartId, version } = data;
+    try {
+      const result = await api.request.me().carts().withId({ ID: cartId }).delete({ queryArgs: { version } }).execute();
+      return result.body;
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error with create cart');
+    }
+  }
+);

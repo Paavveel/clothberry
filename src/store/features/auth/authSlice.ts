@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
 import { login } from './authApi';
-import { checkCart, createCart, updateCart } from './cartApi';
+import { checkCart, createCart, deleteCart, updateCart } from './cartApi';
 import { getCustomer, updateCustomer } from './profileApi';
 import { signup } from './signupApi';
 
@@ -103,6 +103,10 @@ export const authSlice = createSlice({
 
     builder.addCase(updateCart.fulfilled, (state, action) => {
       state.cart = action.payload;
+    });
+
+    builder.addCase(deleteCart.fulfilled, (state) => {
+      state.cart = null;
     });
   },
 });
