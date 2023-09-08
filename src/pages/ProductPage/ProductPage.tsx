@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
@@ -33,8 +33,7 @@ interface Product {
 export const ProductPage = () => {
   const [data, setData] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const { state } = useLocation();
-  const { productId } = state;
+  const { id } = useParams();
   const swiperRef = useRef<SwiperRef>();
 
   const arrImage: string[] = [];
@@ -65,14 +64,14 @@ export const ProductPage = () => {
         setLoading(false);
       }
     };
-    if (productId) {
-      getProduct(productId).then((response) => {
+    if (id) {
+      getProduct(id).then((response) => {
         if (response) {
           setData(response);
         }
       });
     }
-  }, [productId]);
+  }, [id]);
 
   return (
     <div>

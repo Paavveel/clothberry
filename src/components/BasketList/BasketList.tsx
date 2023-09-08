@@ -21,14 +21,19 @@ export const BasketList: FC = () => {
         <BasketItem title='Nike Air VaporMax 2023 Flyknit' price={801} />
       </div>
       <div className={styles.basket__order}>
-        <h2>Итого</h2>
+        <h2>Total Price</h2>
         <p className={styles.basket__order__price}>
-          Сумма
-          <div className={styles.basket__order__dotted} />
+          Amount
+          <span className={styles.basket__order__dotted} />
           36829р
         </p>
+        <input type='text' className={styles.basket__order__promocode__input} placeholder='Promocode' maxLength={15} />
+        <Button type='button' className={styles.apply__promocode__button} secondary>
+          Apply code
+        </Button>
+
         <Button type='button' className={styles.buy} primary>
-          Оформить заказ
+          Сheckout
         </Button>
       </div>
     </div>
