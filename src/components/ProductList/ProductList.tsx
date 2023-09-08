@@ -171,7 +171,7 @@ export const ProductList: FC = () => {
         {!isLoading && !products.length && <p className={styles.not__found__product}>Products not found</p>}
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : products.map((product) => <ProductItem key={product.id} product={product} />)}
+          : products.map((product) => <ProductItem key={product.id} product={product} filterSize={filterBySize} />)}
 
         {isLoading && <Skeleton />}
       </section>
