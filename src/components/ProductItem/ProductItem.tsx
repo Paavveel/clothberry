@@ -21,7 +21,6 @@ interface ProductCardProps {
   product: ProductProjection;
   filterSize: string;
 }
-
 export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
   const { name, description, masterVariant, id } = product;
   const { images, prices } = masterVariant;
