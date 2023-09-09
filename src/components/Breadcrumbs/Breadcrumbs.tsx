@@ -1,9 +1,15 @@
 import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { LocalizedString } from '@commercetools/platform-sdk';
+
 import styles from './Breadcrumbs.module.css';
 
-export const Breadcrumbs: FC = () => {
+interface BreadcrumbsProps {
+  productDetail?: LocalizedString;
+}
+
+export const Breadcrumbs: FC<BreadcrumbsProps> = ({ productDetail }) => {
   const location = useLocation();
 
   let currentLink = '';
@@ -16,7 +22,11 @@ export const Breadcrumbs: FC = () => {
 
       return (
         <div className={styles.crumb} key={crumb}>
-          {index !== array.length - 1 ? <Link to={currentLink}>{crumb}</Link> : <span>{crumb}</span>}
+          {index !== array.length - 1 ? (
+            <Link to={currentLink}>{crumb}</Link>
+          ) : (
+            <span>{productDetail?.en.toLowerCase() ?? crumb}</span>
+          )}
         </div>
       );
     });
