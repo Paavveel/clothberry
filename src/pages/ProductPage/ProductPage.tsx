@@ -75,7 +75,7 @@ export const ProductPage = () => {
 
   return (
     <div>
-      <Breadcrumbs />
+      {!loading && <Breadcrumbs productDetail={data ? data.name : undefined} />}
       <section className={styles.product}>
         {loading && <Loader pageLoader />}
         <div className={styles.img}>
