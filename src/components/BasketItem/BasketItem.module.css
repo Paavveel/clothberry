@@ -56,8 +56,47 @@
   position: relative;
   width: 15px;
   height: 15px;
-  background-color: blue;
-  border-radius: 999px;
+  border-radius: 50%;
+}
+
+.multicolored {
+  background: linear-gradient(red, yellow, blue, orange);
+}
+
+.blue {
+  background-color: #0052cc;
+}
+
+.black {
+  background-color: #000;
+}
+
+.red {
+  background-color: #ff5630;
+}
+
+.orange {
+  background-color: #ff8b00;
+}
+
+.yellow {
+  background-color: #ffc400;
+}
+
+.green {
+  background-color: #36b37e;
+}
+
+.silver {
+  background-color: #666;
+}
+
+.grey {
+  background-color: #898282;
+}
+
+.white {
+  background-color: white;
 }
 
 .attributes__color .circle::before {
@@ -66,7 +105,7 @@
   width: 23px;
   height: 23px;
   border: 1px solid var(--color-gray-secondary);
-  border-radius: 999px;
+  border-radius: 50%;
   top: -4px;
   right: -4px;
 }
@@ -76,12 +115,50 @@
   width: 20%;
 }
 
-.button__control {
-  padding: 0 7px;
+.remove svg {
+  stroke: var(--color-gray-secondary);
+  transition: all 0.3s;
 }
 
-.quantity .monitor {
+.button__control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
   border: 1px solid var(--color-gray-secondary);
+  background-color: transparent;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.3s;
+}
+
+.button__control svg {
+  fill: var(--color-black);
+  transition: all 0.3s;
+}
+
+.button__control:hover {
+  background-color: var(--color-gray-secondary);
+}
+
+.button__control:active {
+  background-color: var(--color-gray-primary);
+}
+
+.button__control:hover svg {
+  scale: 1.1;
+}
+
+.button__control:active svg {
+  scale: 1;
+}
+
+.monitor {
+  text-align: center;
+  min-width: 50px;
+  border: 1px solid var(--color-gray-secondary);
+  border-left: none;
+  border-right: none;
   padding: 12px;
 }
 
@@ -90,16 +167,17 @@
   height: 20px;
   border: none;
   background-color: transparent;
+  padding: 0;
   cursor: pointer;
-}
-
-.remove svg {
-  stroke: var(--color-gray-secondary);
-  transition: 0.3s;
 }
 
 .remove:hover svg {
   stroke: var(--color-red);
+  scale: 1.1;
+}
+
+.remove:active svg {
+  scale: 1;
 }
 
 @media (width <= 863px) {
@@ -122,6 +200,14 @@
   .item__info__inner__wrapper {
     width: 50%;
   }
+
+  .monitor {
+    min-width: 30px;
+  }
+
+  .quantity {
+    width: auto;
+  }
 }
 
 @media (width <= 596px) {
@@ -132,7 +218,6 @@
 
   .item__info__inner__wrapper {
     width: 100%;
-    justify-content: flex-start;
     margin-top: 10px;
     column-gap: 20px;
     align-items: center;
@@ -152,24 +237,12 @@
     font-size: 14px;
   }
 
-  .price {
-    display: none;
-  }
-
   .amount {
     width: auto;
   }
 
-  .button__control {
-    padding: 10px 17px;
-  }
-
   .quantity .monitor {
     padding: 16px;
-  }
-
-  .quantity {
-    width: auto;
   }
 
   .remove {
@@ -195,10 +268,6 @@
 
   .attributes {
     font-size: 11px;
-  }
-
-  .button__control {
-    padding: 8px 14px;
   }
 
   .quantity .monitor {
