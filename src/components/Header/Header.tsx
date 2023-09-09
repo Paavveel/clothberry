@@ -34,7 +34,7 @@ export const Header: FC = () => {
       </div>
 
       <div className={styles['nav-btns']}>
-        <Link to={AppRoutes.CART} className={cn(styles['nav-link'], styles['cart-link'])} area-label='cart'>
+        <Link to={AppRoutes.BASKET} className={cn(styles['nav-link'], styles['cart-link'])} area-label='cart'>
           <Basket className={styles['header-icon']} />
           <span className={styles['basket-count-mark']}>{totalInCart ?? 0}</span>
         </Link>
