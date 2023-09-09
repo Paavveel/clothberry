@@ -79,9 +79,15 @@
   border: none;
 }
 
-@media (width <= 876px) {
+@media (width <= 985px) {
   .logo-wrapper {
     width: 70%;
+  }
+}
+
+@media (width <= 850px) {
+  .logo-wrapper {
+    width: 50%;
   }
 }
 

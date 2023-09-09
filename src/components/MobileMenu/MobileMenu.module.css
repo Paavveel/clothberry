@@ -58,10 +58,12 @@
 .nav {
   position: fixed;
   z-index: 800;
-  inset: 0;
-  height: max-content;
+  height: auto;
+  overflow: auto;
   width: max-content;
   top: 7rem;
+  left: 0;
+  bottom: 0;
   transform: translateX(-1000px);
   background-color: #fff;
   flex-direction: column;
