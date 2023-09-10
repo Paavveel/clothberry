@@ -24,14 +24,29 @@
   padding-right: 10px;
 }
 
-.item__info__title,
-.price {
+.item__info__title {
   font-weight: 600;
   font-size: 14px;
 }
 
-.price {
+.prices,
+.amount,
+.monitor {
+  font-weight: 600;
+  font-size: 1.7rem;
+}
+
+.prices {
   width: 20%;
+}
+
+.price__discounted {
+  display: inline-block;
+  margin-left: 10px;
+  color: var(--color-gray-secondary);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-black);
+  text-decoration-thickness: 1.5px;
 }
 
 .amount {

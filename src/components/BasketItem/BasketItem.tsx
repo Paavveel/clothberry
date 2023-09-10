@@ -74,7 +74,12 @@ export const BasketItem = memo(function BasketItem({ item, handleUpdateItem, han
         </div>
       </div>
       <div className={styles.item__info__inner__wrapper}>
-        <span className={styles.price}>{price.value.centAmount / 100}$</span>
+        <div className={styles.prices}>
+          {price.discounted && <span className={styles.price}>{price.discounted.value.centAmount / 100}$</span>}
+          <span className={cn(styles.price, { [styles.price__discounted]: !!price.discounted })}>
+            {price.value.centAmount / 100}$
+          </span>
+        </div>
         <div className={styles.quantity}>
           <button
             type='button'

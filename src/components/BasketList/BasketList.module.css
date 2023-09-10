@@ -127,6 +127,10 @@
   .product__header {
     width: 50%;
   }
+
+  .quantity__header {
+    width: auto;
+  }
 }
 
 @media (width <= 608px) {
