@@ -1,8 +1,10 @@
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { LineItem } from '@commercetools/platform-sdk';
 import { BasketItem } from '@components/BasketItem/BasketItem';
-import { updateCart } from '@store/features/auth/cartApi';
+import { Modal } from '@components/Modal/Modal';
+import { deleteCart, updateCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { Button } from '..';
@@ -13,6 +15,7 @@ interface BasketListProps {
 }
 
 export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const cart = useAppSelector((state) => state.auth.cart);
   const dispatch = useAppDispatch();
 
@@ -48,6 +51,16 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
     },
     [cart, dispatch]
   );
+
+  const handleClearCart = async () => {
+    try {
+      if (cart) {
+        await dispatch(deleteCart({ cartId: cart.id, version: cart.version })).unwrap();
+      }
+    } catch (error) {
+      toast.error('Error with clear cart');
+    }
+  };
   return (
     <div className={styles.basket__wrapper}>
       <div className={styles.basket__table}>
@@ -88,7 +101,22 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
         <Button type='button' className={styles.buy} primary>
           Сheckout
         </Button>
+        <Button className={styles.clear} type='button' danger onClick={() => setIsOpenModal(true)}>
+          Clear Shopping Cart
+        </Button>
       </div>
+
+      <Modal className={styles.cart__modal} open={isOpenModal} onClose={() => setIsOpenModal(false)}>
+        <h3 className={styles.modal__title}>Are you shore? All items will be deleted from the Cart.</h3>
+        <div className={styles.modal__controls}>
+          <Button className={styles.modal__confirm} type='button' danger onClick={handleClearCart}>
+            Delete
+          </Button>
+          <Button className={styles.modal__close} type='button' secondary onClick={() => setIsOpenModal(false)}>
+            Close
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };
