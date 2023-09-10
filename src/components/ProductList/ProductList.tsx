@@ -79,7 +79,7 @@ export const ProductList: FC = () => {
       if (location.pathname === '/product-list-page') {
         getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice, filterByBrand).then((data) => {
           if (data) {
-            setProducts(data);
+            setProducts(data.results);
             setIsLoading(false);
           }
         });
@@ -96,7 +96,7 @@ export const ProductList: FC = () => {
           filterByBrand
         );
         if (productsByCategory) {
-          setProducts(productsByCategory);
+          setProducts(productsByCategory.results);
           setIsLoading(false);
         }
       } else {
@@ -117,7 +117,7 @@ export const ProductList: FC = () => {
           filterByBrand
         ).then((data) => {
           if (data) {
-            setProducts(data);
+            setProducts(data.results);
             setIsLoading(false);
           }
         });
