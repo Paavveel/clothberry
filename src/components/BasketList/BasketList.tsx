@@ -1,5 +1,6 @@
 import { FC, useCallback } from 'react';
 
+import { LineItem } from '@commercetools/platform-sdk';
 import { BasketItem } from '@components/BasketItem/BasketItem';
 import { updateCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
@@ -7,9 +8,12 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { Button } from '..';
 import styles from './BasketList.module.css';
 
-export const BasketList: FC = () => {
+interface BasketListProps {
+  lineItems: LineItem[];
+}
+
+export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
   const cart = useAppSelector((state) => state.auth.cart);
-  const lineItems = useAppSelector((state) => state.auth.cart?.lineItems);
   const dispatch = useAppDispatch();
 
   const handleUpdateItem = useCallback(
@@ -53,15 +57,14 @@ export const BasketList: FC = () => {
           <span className={styles.quantity__header}>Quantity</span>
           <span className={styles.amount__header}>Amount Payable</span>
         </div>
-        {lineItems &&
-          lineItems.map((item) => (
-            <BasketItem
-              key={item.id}
-              item={item}
-              handleUpdateItem={handleUpdateItem}
-              handleDeleteItem={handleDeleteItem}
-            />
-          ))}
+        {lineItems.map((item) => (
+          <BasketItem
+            key={item.id}
+            item={item}
+            handleUpdateItem={handleUpdateItem}
+            handleDeleteItem={handleDeleteItem}
+          />
+        ))}
       </div>
       <div className={styles.basket__order}>
         <h2>Total Price</h2>
