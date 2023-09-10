@@ -4,6 +4,7 @@ export enum AppRoutes {
   CART = '/cart',
   SIGNIN = '/signin',
   SIGNUP = '/signup',
+  ABOUT = '/about',
 }
 
 export type Menu = {
