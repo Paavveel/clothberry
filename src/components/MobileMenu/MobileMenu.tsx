@@ -65,6 +65,9 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
               )}
             </li>
           ))}
+          <Link to='/about' className={styles.menu__items}>
+            About
+          </Link>
         </ul>
       </nav>
       <div className={active ? styles.overlay : ''} />

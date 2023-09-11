@@ -13,7 +13,7 @@ The Clothberry ecommerce project aims to build a robust online store with Commer
 - [x] Filtering and search
 - [x] Enhance product pages
 - [ ] Build shopping cart with promo codes
-- [ ] Create about us page
+- [x] Create about us page
 - [x] Improve routing
 
 The focus is on iterative development, adding new features and enhancements each sprint. Key priorities are smooth CommerceTools integration and robust front-end implementation.

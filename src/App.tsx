@@ -5,6 +5,7 @@ import { AppRoutes } from 'config/routes';
 
 import { ProductList } from '@components/ProductList/ProductList';
 import { Layout } from '@layout/Layout';
+import { AboutPage } from '@pages/AboutPage/AboutPage';
 import { Basket } from '@pages/BasketPage/Basket';
 import { HomePage } from '@pages/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage';
@@ -15,7 +16,7 @@ import { SignUpPage } from '@pages/SignUpPage';
 import { CheckAuth } from '@store/features/auth/CheckAuth';
 import { RequireAuth } from '@store/features/auth/RequireAuth';
 
-const { ROOT, SIGNUP, SIGNIN, PROFILE, BASKET } = AppRoutes;
+const { ROOT, SIGNUP, SIGNIN, PROFILE, BASKET, ABOUT } = AppRoutes;
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: SIGNIN,
         element: <SignInPage />,
+      },
+      {
+        path: ABOUT,
+        element: <AboutPage />,
       },
       {
         path: PROFILE,
