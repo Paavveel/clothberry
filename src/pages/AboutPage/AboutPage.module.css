@@ -76,3 +76,16 @@
     grid-row: 4 / 5;
   }
 }
+
+.school {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.about {
+  margin-top: 0;
+}
