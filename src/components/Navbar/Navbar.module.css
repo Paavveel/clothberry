@@ -42,17 +42,6 @@
   text-decoration: none;
 }
 
-.menu__items button {
-  display: flex;
-  align-items: center;
-  color: inherit;
-  font-size: inherit;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  width: 100%;
-}
-
 .dropdown {
   position: absolute;
   right: 0;
