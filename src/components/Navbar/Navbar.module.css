@@ -63,13 +63,13 @@
   display: block;
 }
 
-.menu__items > a,
-.menu__items button {
+.menu > a,
+.menu__items > a {
   text-align: left;
   padding: 0.7rem 1rem;
 }
 
-.menu__items a:hover,
-.menu__items button:hover {
+.menu > a:hover,
+.menu__items a:hover {
   background-color: #f2f2f2;
 }
