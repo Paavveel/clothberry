@@ -16,6 +16,9 @@ export const Navbar: FC = () => {
         {menuItems.map((menu, index) => {
           return <MenuItems items={menu} key={index} />;
         })}
+        <Link to='/about' className={styles.menu__items}>
+          About
+        </Link>
       </ul>
     </nav>
   );

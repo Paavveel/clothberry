@@ -3,9 +3,11 @@
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  border-radius: 2.5rem;
 
   @media (width < 1175px) {
     margin: 0 -3rem;
+    border-radius: 0;
   }
 }
 
