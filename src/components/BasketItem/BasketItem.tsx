@@ -17,9 +17,10 @@ interface BasketItemProps {
 }
 
 export const BasketItem = memo(function BasketItem({ item, handleUpdateItem, handleDeleteItem }: BasketItemProps) {
-  const { id, name, price, quantity, variant, totalPrice } = item;
+  const { id, name, price, quantity, variant, totalPrice, discountedPricePerQuantity } = item;
   const size = variant.attributes?.find((attr) => attr.name === 'size');
   const color = variant.attributes?.find((attr) => attr.name === 'color');
+  const discountedPrice = discountedPricePerQuantity.at(0);
   const [loading, setLoading] = useState(false);
 
   const changeQuantity = async (quantity: number) => {
@@ -75,8 +76,14 @@ export const BasketItem = memo(function BasketItem({ item, handleUpdateItem, han
       </div>
       <div className={styles.item__info__inner__wrapper}>
         <div className={styles.prices}>
-          {price.discounted && <span className={styles.price}>{price.discounted.value.centAmount / 100}$</span>}
-          <span className={cn(styles.price, { [styles.price__discounted]: !!price.discounted })}>
+          {!!discountedPrice && (
+            <span className={styles.price}>{discountedPrice.discountedPrice.value.centAmount / 100}$</span>
+          )}
+          {!discountedPrice && !!price.discounted && (
+            <span className={styles.price}>{price.discounted.value.centAmount / 100}$</span>
+          )}
+
+          <span className={cn(styles.price, { [styles.price__discounted]: !!price.discounted || !!discountedPrice })}>
             {price.value.centAmount / 100}$
           </span>
         </div>

@@ -16,6 +16,7 @@ interface BasketListProps {
 
 export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [promocode, setPromocode] = useState('');
   const cart = useAppSelector((state) => state.auth.cart);
   const dispatch = useAppDispatch();
 
@@ -61,6 +62,31 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
       toast.error('Error with clear cart');
     }
   };
+
+  const handlePromocode = async () => {
+    if (!promocode.length) {
+      toast.error('Please, type a promo code');
+      return;
+    }
+    try {
+      if (cart) {
+        await dispatch(
+          updateCart({
+            cartId: cart.id,
+            body: {
+              version: cart.version,
+              actions: [{ action: 'addDiscountCode', code: promocode }],
+            },
+          })
+        ).unwrap();
+        toast.success('Promo code is activated');
+        setPromocode('');
+      }
+    } catch (error) {
+      toast.error('Invalid promo code');
+    }
+  };
+
   return (
     <div className={styles.basket__wrapper}>
       <div className={styles.basket__table}>
@@ -92,8 +118,10 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
             className={styles.basket__order__promocode__input}
             placeholder='Promocode'
             maxLength={15}
+            value={promocode}
+            onChange={(e) => setPromocode(e.target.value)}
           />
-          <Button type='button' className={styles.apply__promocode__button} secondary>
+          <Button type='button' className={styles.apply__promocode__button} secondary onClick={handlePromocode}>
             Apply code
           </Button>
         </div>
