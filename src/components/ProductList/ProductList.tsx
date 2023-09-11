@@ -15,6 +15,8 @@ import { NotFoundPage } from '@pages/NotFoundPage';
 
 import styles from './ProductList.module.css';
 
+type FilterType = 'color' | 'size' | 'brand' | 'price';
+
 export const ProductList: FC = () => {
   const { category, subcategory } = useParams();
   const [products, setProducts] = useState<ProductProjection[]>([]);
@@ -37,35 +39,23 @@ export const ProductList: FC = () => {
     }
   };
 
-  const handleFilterColor = (option: ColorOption | null) => {
-    if (option) {
-      setFilterByColor(option.value);
-    } else {
-      setFilterByColor('');
-    }
-  };
+  const handleFilter = (option: ColorOption | Option | null, type: FilterType): void => {
+    switch (type) {
+      case 'color':
+        option ? setFilterByColor(option.value) : setFilterByColor('');
+        break;
+      case 'size':
+        option ? setFilterBySize(option.value) : setFilterBySize('');
+        break;
+      case 'price':
+        option ? setFilterByPrice(option.value) : setFilterByPrice('');
+        break;
+      case 'brand':
+        option ? setFilterByBrand(option.value) : setFilterByBrand('');
+        break;
 
-  const handleFilterSize = (option: Option | null) => {
-    if (option) {
-      setFilterBySize(option.value);
-    } else {
-      setFilterBySize('');
-    }
-  };
-
-  const handleFilterPrice = (option: Option | null) => {
-    if (option) {
-      setFilterByPrice(option.value);
-    } else {
-      setFilterByPrice('');
-    }
-  };
-
-  const handleFilterBrand = (option: Option | null) => {
-    if (option) {
-      setFilterByBrand(option.value);
-    } else {
-      setFilterByBrand('');
+      default:
+        throw new Error('Invalid property type');
     }
   };
 
@@ -158,20 +148,13 @@ export const ProductList: FC = () => {
 
   return (
     <div className={styles.products__wrapper}>
-      <Filter
-        handleSort={handleSort}
-        handleFilterColor={handleFilterColor}
-        handleSearch={handleSearch}
-        handleFilterSize={handleFilterSize}
-        handleFilterPrice={handleFilterPrice}
-        handleFilterBrand={handleFilterBrand}
-      />
+      <Filter handleSort={handleSort} handleSearch={handleSearch} handleFilter={handleFilter} />
       <Breadcrumbs />
       <section className={styles['product-list']}>
         {!isLoading && !products.length && <p className={styles.not__found__product}>Products not found</p>}
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : products.map((product) => <ProductItem key={product.id} product={product} />)}
+          : products.map((product) => <ProductItem key={product.id} product={product} filterSize={filterBySize} />)}
 
         {isLoading && <Skeleton />}
       </section>

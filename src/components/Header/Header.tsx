@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
+import cn from 'classnames';
 import { AppRoutes } from 'config/routes';
 
 import { ReactComponent as Basket } from '@assets/img/basket.svg';
@@ -15,11 +16,13 @@ import styles from './Header.module.css';
 
 export const Header: FC = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const totalInCart = useAppSelector((state) => state.auth.cart?.totalLineItemQuantity);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
   };
+
   return (
     <header className={styles.header}>
       <Navbar />
@@ -31,10 +34,11 @@ export const Header: FC = () => {
       </div>
 
       <div className={styles['nav-btns']}>
-        <Link to={AppRoutes.CART} area-label='cart'>
+        <Link to={AppRoutes.BASKET} className={cn(styles['nav-link'], styles['cart-link'])} area-label='cart'>
           <Basket className={styles['header-icon']} />
+          <span className={styles['basket-count-mark']}>{totalInCart ?? 0}</span>
         </Link>
-        <Link to={AppRoutes.PROFILE} area-label='profile'>
+        <Link to={AppRoutes.PROFILE} className={cn(styles['nav-link'])} area-label='profile'>
           <User className={styles['header-icon']} />
         </Link>
         {isLoggedIn && (
