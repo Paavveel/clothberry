@@ -2,6 +2,8 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 
 import { api } from './client';
 
+export const LIMIT = 6;
+
 export type ProductsResponse = {
   results: ProductProjection[];
   total?: number;
@@ -13,7 +15,8 @@ export const getAllProducts = async (
   color: string,
   size: string,
   price: string,
-  brand: string
+  brand: string,
+  page: number
 ): Promise<ProductsResponse | undefined> => {
   try {
     const response = await api.request
@@ -28,7 +31,8 @@ export const getAllProducts = async (
             `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
-          limit: 6,
+          limit: LIMIT,
+          offset: page * LIMIT,
         },
       })
       .execute();
@@ -48,7 +52,8 @@ export const getProductsByCategoryId = async (
   color: string,
   size: string,
   price: string,
-  brand: string
+  brand: string,
+  page: number
 ): Promise<ProductsResponse | undefined> => {
   let response;
   try {
@@ -65,6 +70,8 @@ export const getProductsByCategoryId = async (
             `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
+          limit: LIMIT,
+          offset: page * LIMIT,
         },
       })
       .execute();
@@ -93,7 +100,8 @@ export const fetchSearchResults = async (
   color: string,
   size: string,
   price: string,
-  brand: string
+  brand: string,
+  page: number
 ): Promise<ProductsResponse | undefined> => {
   let response;
   try {
@@ -111,7 +119,8 @@ export const fetchSearchResults = async (
           'text.en': query,
           fuzzy: true,
           sort: [`${sortBy !== '' ? sortBy : ''}`],
-          limit: 6,
+          limit: LIMIT,
+          offset: page * LIMIT,
         },
       })
       .execute();

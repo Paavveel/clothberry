@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -17,11 +17,13 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './Product.module.css';
 
+export type Ref = HTMLDivElement;
+
 interface ProductCardProps {
   product: ProductProjection;
   filterSize: string;
 }
-export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
+export const ProductItem = forwardRef<Ref, ProductCardProps>(function ProductItem({ product, filterSize }, ref) {
   const { name, description, masterVariant, id } = product;
   const { images, prices } = masterVariant;
   const price = prices ? prices[0].value.centAmount / 100 : 0;
@@ -95,7 +97,7 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
   };
 
   return (
-    <div className={classNames(styles.product__item, { [styles.product__item_loading]: loading })}>
+    <div ref={ref} className={classNames(styles.product__item, { [styles.product__item_loading]: loading })}>
       <div className={styles['product__item--cover']}>
         <LazyLoadImage
           src={images && images.length > 0 ? images[0].url : ''}
@@ -151,4 +153,4 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
       </p>
     </div>
   );
-};
+});

@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { debounce } from 'lodash';
 
-import { fetchSearchResults, getAllProducts, getCategoryBySlug, getProductsByCategoryId } from '@api/search';
+import { LIMIT, fetchSearchResults, getAllProducts, getCategoryBySlug, getProductsByCategoryId } from '@api/search';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Filter } from '@components/Filter/Filter';
@@ -28,18 +28,24 @@ export const ProductList: FC = () => {
   const [filterByBrand, setFilterByBrand] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useSearchParams();
+  const [page, setPage] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSort = (option: Option | null) => {
+  const [ref, inView] = useInView({
+    threshold: 0.5,
+  });
+
+  const handleSort = useCallback((option: Option | null) => {
     if (option) {
       setSortByNameAndPrice(option.value);
     } else {
       setSortByNameAndPrice('');
     }
-  };
+    setPage(0);
+  }, []);
 
-  const handleFilter = (option: ColorOption | Option | null, type: FilterType): void => {
+  const handleFilter = useCallback((option: ColorOption | Option | null, type: FilterType): void => {
     switch (type) {
       case 'color':
         option ? setFilterByColor(option.value) : setFilterByColor('');
@@ -57,32 +63,46 @@ export const ProductList: FC = () => {
       default:
         throw new Error('Invalid property type');
     }
-  };
+    setPage(0);
+  }, []);
 
-  const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    if (text.length === 0) {
-      search.delete('q');
-      setSearch(search, {
-        replace: true,
-      });
-    } else {
-      search.set('q', text);
-      setSearch(search, {
-        replace: true,
-      });
-    }
-    navigate(`/product-list-page?${search}`);
-  }, 400);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleSearch = useCallback(
+    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+      const text = e.target.value;
+      if (text.length === 0) {
+        search.delete('q');
+        setSearch(search, {
+          replace: true,
+        });
+      } else {
+        search.set('q', text);
+        setSearch(search, {
+          replace: true,
+        });
+      }
+      setPage(0);
+      navigate(`/product-list-page?${search}`);
+    }, 400),
+
+    [navigate, search, setSearch]
+  );
+
   useEffect(() => {
     async function fetchRequest() {
       if (location.pathname === '/product-list-page') {
-        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice, filterByBrand).then((data) => {
-          if (data) {
-            setProducts(data.results);
-            setIsLoading(false);
+        getAllProducts(sortByNameAndPrice, filterByColor, filterBySize, filterByPrice, filterByBrand, page).then(
+          (data) => {
+            if (data) {
+              if (page === 0) {
+                setProducts(data.results);
+              } else {
+                setProducts((prev) => [...prev, ...data.results]);
+              }
+              setIsLoading(false);
+            }
           }
-        });
+        );
         return;
       }
       const categoryId = await getCategoryBySlug(subcategory || category!);
@@ -93,10 +113,15 @@ export const ProductList: FC = () => {
           filterByColor,
           filterBySize,
           filterByPrice,
-          filterByBrand
+          filterByBrand,
+          page
         );
         if (productsByCategory) {
-          setProducts(productsByCategory.results);
+          if (page === 0) {
+            setProducts(productsByCategory.results);
+          } else {
+            setProducts((prev) => [...prev, ...productsByCategory.results]);
+          }
           setIsLoading(false);
         }
       } else {
@@ -104,23 +129,32 @@ export const ProductList: FC = () => {
       }
     }
     if (!search.get('q')) {
-      fetchRequest();
+      if (page < LIMIT) {
+        fetchRequest();
+      }
     } else {
       const queryString = search.get('q');
       if (queryString) {
-        fetchSearchResults(
-          queryString,
-          sortByNameAndPrice,
-          filterByColor,
-          filterBySize,
-          filterByPrice,
-          filterByBrand
-        ).then((data) => {
-          if (data) {
-            setProducts(data.results);
-            setIsLoading(false);
-          }
-        });
+        if (page < LIMIT) {
+          fetchSearchResults(
+            queryString,
+            sortByNameAndPrice,
+            filterByColor,
+            filterBySize,
+            filterByPrice,
+            filterByBrand,
+            page
+          ).then((data) => {
+            if (data) {
+              if (page === 0) {
+                setProducts(data.results);
+              } else {
+                setProducts((prev) => [...prev, ...data.results]);
+              }
+              setIsLoading(false);
+            }
+          });
+        }
       }
     }
 
@@ -140,7 +174,18 @@ export const ProductList: FC = () => {
     filterBySize,
     filterByPrice,
     filterByBrand,
+    page,
   ]);
+
+  useEffect(() => {
+    if (inView) {
+      setPage((prev) => prev + 1);
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [category, subcategory]);
 
   if (errorCategory) {
     return <NotFoundPage />;
@@ -154,7 +199,13 @@ export const ProductList: FC = () => {
         {!isLoading && !products.length && <p className={styles.not__found__product}>Products not found</p>}
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : products.map((product) => <ProductItem key={product.id} product={product} filterSize={filterBySize} />)}
+          : products.map((product, index, array) =>
+              index === array.length - 1 ? (
+                <ProductItem key={product.id} product={product} filterSize={filterBySize} ref={ref} />
+              ) : (
+                <ProductItem key={product.id} product={product} filterSize={filterBySize} />
+              )
+            )}
 
         {isLoading && <Skeleton />}
       </section>
