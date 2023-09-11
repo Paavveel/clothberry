@@ -18,8 +18,9 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [promocode, setPromocode] = useState('');
   const cart = useAppSelector((state) => state.auth.cart);
+  const totalPrice = useAppSelector((state) => state.auth.cart?.totalPrice);
   const dispatch = useAppDispatch();
-
+  const totalPriceWithoutDiscount = lineItems.reduce((acc, cur) => acc + cur.quantity * cur.price.value.centAmount, 0);
   const handleUpdateItem = useCallback(
     async (lineItemId: string, quantity: number) => {
       if (cart) {
@@ -108,9 +109,10 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
       <div className={styles.basket__order}>
         <h2>Total Price</h2>
         <p className={styles.basket__order__price}>
-          Amount
-          <span className={styles.basket__order__dotted} />
-          {cart ? cart.totalPrice.centAmount / 100 : 0}$
+          <span className={styles.total__price}>{totalPrice ? totalPrice.centAmount / 100 : 0}$</span>
+          {totalPrice && totalPriceWithoutDiscount !== totalPrice.centAmount && (
+            <span className={styles.total__original}>{totalPriceWithoutDiscount / 100}$</span>
+          )}
         </p>
         <div className={styles.promo_wrapper}>
           <input
