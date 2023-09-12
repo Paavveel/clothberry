@@ -1,4 +1,5 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ export const ProductList: FC = () => {
   const [page, setPage] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const maxPage = useRef(1);
 
   const [ref, inView] = useInView({
     threshold: 0.5,
@@ -43,6 +45,7 @@ export const ProductList: FC = () => {
       setSortByNameAndPrice('');
     }
     setPage(0);
+    maxPage.current = 1;
   }, []);
 
   const handleFilter = useCallback((option: ColorOption | Option | null, type: FilterType): void => {
@@ -64,6 +67,7 @@ export const ProductList: FC = () => {
         throw new Error('Invalid property type');
     }
     setPage(0);
+    maxPage.current = 1;
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,6 +86,7 @@ export const ProductList: FC = () => {
         });
       }
       setPage(0);
+      maxPage.current = 0;
       navigate(`/product-list-page?${search}`);
     }, 400),
 
@@ -96,6 +101,9 @@ export const ProductList: FC = () => {
             if (data) {
               if (page === 0) {
                 setProducts(data.results);
+                if (data.total) {
+                  maxPage.current = Math.ceil(data.total / LIMIT);
+                }
               } else {
                 setProducts((prev) => [...prev, ...data.results]);
               }
@@ -119,6 +127,9 @@ export const ProductList: FC = () => {
         if (productsByCategory) {
           if (page === 0) {
             setProducts(productsByCategory.results);
+            if (productsByCategory.total) {
+              maxPage.current = Math.ceil(productsByCategory.total / LIMIT);
+            }
           } else {
             setProducts((prev) => [...prev, ...productsByCategory.results]);
           }
@@ -129,13 +140,13 @@ export const ProductList: FC = () => {
       }
     }
     if (!search.get('q')) {
-      if (page < LIMIT) {
+      if (page < maxPage.current) {
         fetchRequest();
       }
     } else {
       const queryString = search.get('q');
       if (queryString) {
-        if (page < LIMIT) {
+        if (page < maxPage.current) {
           fetchSearchResults(
             queryString,
             sortByNameAndPrice,
@@ -148,6 +159,9 @@ export const ProductList: FC = () => {
             if (data) {
               if (page === 0) {
                 setProducts(data.results);
+                if (data.total) {
+                  maxPage.current = Math.ceil(data.total / LIMIT);
+                }
               } else {
                 setProducts((prev) => [...prev, ...data.results]);
               }
