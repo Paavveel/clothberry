@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
@@ -18,6 +19,8 @@ import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Button } from '@components/Button';
 import { Fancybox } from '@components/Fancybox/Fancybox';
 import { Loader } from '@components/Loader';
+import { createCart, updateCart } from '@store/features/auth/cartApi';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './ProductPage.module.css';
 
@@ -28,6 +31,7 @@ interface Product {
   masterVariant: {
     images?: Image[];
     prices?: Price[];
+    sku?: string;
   };
 }
 
@@ -35,6 +39,9 @@ export const ProductPage = () => {
   const [data, setData] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const cartId = useAppSelector((state) => state.auth.cart?.id);
+  const cartVersion = useAppSelector((state) => state.auth.cart?.version);
   const swiperRef = useRef<SwiperRef>();
 
   const arrImage: string[] = [];
@@ -51,6 +58,29 @@ export const ProductPage = () => {
     style: 'currency',
     currency: code,
   }).format(price);
+
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+      if (cartId && cartVersion) {
+        await dispatch(
+          updateCart({
+            cartId,
+            body: {
+              version: cartVersion,
+              actions: [{ action: 'addLineItem', sku: masterVariant?.sku }],
+            },
+          })
+        ).unwrap();
+      } else {
+        await dispatch(createCart({ currency: 'USD', lineItems: [{ sku: masterVariant?.sku }] })).unwrap();
+      }
+    } catch (error) {
+      toast.error('Error with add to cart');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const getProduct = async (id: string) => {
@@ -137,7 +167,7 @@ export const ProductPage = () => {
 
             <p className={styles.description}>{description?.en}</p>
             <Select placeholder='Choose size' options={size} />
-            <Button type='button' className={styles.button} primary>
+            <Button type='button' className={styles.button} primary onClick={handleAddToCart}>
               Add to Cart
             </Button>
           </div>
