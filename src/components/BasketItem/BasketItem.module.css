@@ -170,6 +170,7 @@
 }
 
 .remove {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   border: none;
@@ -194,6 +195,12 @@
 
   .attributes {
     font-size: 12px;
+  }
+
+  .prices,
+  .amount,
+  .monitor {
+    font-size: 1.5rem;
   }
 
   .price {
@@ -252,17 +259,16 @@
     padding: 16px;
   }
 
-  .remove {
-    width: 35px;
-    height: 35px;
-  }
-
   .remove svg {
     width: 100%;
   }
 }
 
 @media (width <= 472px) {
+  .basket__table__item {
+    gap: 1rem;
+  }
+
   .item__info img {
     width: 65px;
     height: 65px;
@@ -274,7 +280,14 @@
   }
 
   .attributes {
+    margin-top: 1rem;
     font-size: 11px;
+  }
+
+  .prices,
+  .amount,
+  .monitor {
+    font-size: 1.1rem;
   }
 
   .quantity .monitor {
