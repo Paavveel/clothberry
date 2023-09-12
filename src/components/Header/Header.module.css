@@ -97,13 +97,19 @@
   border: none;
 }
 
-@media (width <= 930px) {
+@media (width <= 1040px) {
+  .logo-wrapper {
+    width: 70%;
+  }
+
   .logo {
     font-size: 17px;
   }
+}
 
+@media (width <= 930px) {
   .logo-wrapper {
-    width: 50%;
+    width: 40%;
   }
 }
 
