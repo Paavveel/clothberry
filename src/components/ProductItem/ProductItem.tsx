@@ -136,7 +136,7 @@ export const ProductItem = forwardRef<Ref, ProductCardProps>(function ProductIte
         )}
         {!loading ? (
           <Link to={productPath} className={styles['more-btn']}>
-            <span>Подробнее</span>
+            <span>Detail</span>
             <div className={styles.icon}>
               <Arrow />
             </div>
