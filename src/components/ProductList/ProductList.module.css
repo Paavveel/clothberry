@@ -15,3 +15,8 @@
   font-weight: 600;
   color: var(--color-gray-dark);
 }
+
+.observer {
+  height: 50px;
+  background: red;
+}

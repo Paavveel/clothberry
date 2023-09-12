@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 
@@ -57,7 +57,7 @@ interface FilterProps {
   handleFilter: (option: ColorOption | Option | null, type: FilterType) => void;
 }
 
-export const Filter: FC<FilterProps> = ({ handleSort, handleFilter, handleSearch }) => {
+export const Filter: FC<FilterProps> = memo(function Filter({ handleSort, handleFilter, handleSearch }) {
   const [show, setShow] = useState(false);
   const [search] = useSearchParams();
   const setFocus = useCallback(
@@ -156,4 +156,4 @@ export const Filter: FC<FilterProps> = ({ handleSort, handleFilter, handleSearch
       </div>
     </div>
   );
-};
+});
