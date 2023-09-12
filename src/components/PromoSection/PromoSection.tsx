@@ -42,6 +42,7 @@ export const PromoSection = memo(function PromoSection({ handlePromo, className,
         type='text'
         className={styles.basket__order__promo__input}
         placeholder='Promo code'
+        autoComplete='off'
       />
       <Button type='submit' className={styles.apply__promo__button} secondary disabled={loading}>
         Apply code
