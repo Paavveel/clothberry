@@ -34,10 +34,12 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
   const lineItems = useAppSelector((state) => state.auth.cart?.lineItems);
   const [loading, setLoading] = useState(false);
   let productPath;
-  if (subcategory) {
+  if (category && subcategory) {
     productPath = `/${category}/${subcategory}/${id}`;
-  } else {
+  } else if (category && !subcategory) {
     productPath = `/${category}/item/${id}`;
+  } else {
+    productPath = `item/${id}`;
   }
 
   const variantSku =
@@ -131,7 +133,7 @@ export const ProductItem: FC<ProductCardProps> = ({ product, filterSize }) => {
           </button>
         )}
         {!loading ? (
-          <Link to={productPath} className={styles['more-btn']} state={{ productId: product.id }}>
+          <Link to={productPath} className={styles['more-btn']}>
             <span>Подробнее</span>
             <div className={styles.icon}>
               <Arrow />

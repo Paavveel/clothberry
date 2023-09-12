@@ -75,10 +75,6 @@
 }
 
 @media (width <= 400px) {
-  .logo {
-    font-size: 17px;
-  }
-
   .nav-btns {
     column-gap: 1.5rem;
   }
@@ -101,13 +97,11 @@
   border: none;
 }
 
-@media (width <= 985px) {
-  .logo-wrapper {
-    width: 70%;
+@media (width <= 930px) {
+  .logo {
+    font-size: 17px;
   }
-}
 
-@media (width <= 850px) {
   .logo-wrapper {
     width: 50%;
   }

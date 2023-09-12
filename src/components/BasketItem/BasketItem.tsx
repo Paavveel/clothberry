@@ -1,52 +1,116 @@
-import { FC } from 'react';
+import { memo, useState } from 'react';
+import toast from 'react-hot-toast';
 
-import { Button } from '..';
+import cn from 'classnames';
+
+import { ReactComponent as Minus } from '@assets/img/minus.svg';
+import { ReactComponent as Plus } from '@assets/img/plus.svg';
+import { ReactComponent as TrashCan } from '@assets/img/trash-can.svg';
+import { LineItem } from '@commercetools/platform-sdk';
+
 import styles from './BasketItem.module.css';
 
 interface BasketItemProps {
-  title: string;
-  price: number;
+  item: LineItem;
+  handleUpdateItem: (lineItemId: string, quantity: number) => Promise<void>;
+  handleDeleteItem: (lineItemId: string) => Promise<void>;
 }
 
-export const BasketItem: FC<BasketItemProps> = ({ title, price }) => {
+export const BasketItem = memo(function BasketItem({ item, handleUpdateItem, handleDeleteItem }: BasketItemProps) {
+  const { id, name, price, quantity, variant, totalPrice, discountedPricePerQuantity } = item;
+  const size = variant.attributes?.find((attr) => attr.name === 'size');
+  const color = variant.attributes?.find((attr) => attr.name === 'color');
+  const discountedPrice = discountedPricePerQuantity.at(0);
+  const [loading, setLoading] = useState(false);
+
+  const changeQuantity = async (quantity: number) => {
+    try {
+      setLoading(true);
+      await handleUpdateItem(id, quantity);
+    } catch (error) {
+      toast.error('Error with update item');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteItem = async () => {
+    try {
+      setLoading(true);
+      await handleDeleteItem(id);
+    } catch (error) {
+      toast.error('Error with update item');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.basket__table__item}>
       <div className={styles.item__info}>
-        <img src='/nike.png' width={90} height={90} alt='nike' />
+        <img src={variant.images && variant.images.at(0)?.url} width={90} height={90} alt={name.en} />
         <div className={styles.item__info__text}>
-          <p className={styles.item__info__title}>{title}</p>
+          <p className={styles.item__info__title}>{name.en}</p>
           <div className={styles.attributes}>
             <div className={styles.attributes__color}>
-              <span>Цвет:</span>
-              <div className={styles.circle} />
+              <span>Color:</span>
+              <div
+                className={cn(styles.circle, {
+                  [styles.multicolored]: color?.value.label.en === 'multicolored',
+                  [styles.blue]: color?.value.label.en === 'blue',
+                  [styles.black]: color?.value.label.en === 'black',
+                  [styles.red]: color?.value.label.en === 'red',
+                  [styles.orange]: color?.value.label.en === 'orange',
+                  [styles.yellow]: color?.value.label.en === 'yellow',
+                  [styles.green]: color?.value.label.en === 'green',
+                  [styles.silver]: color?.value.label.en === 'silver',
+                  [styles.grey]: color?.value.label.en === 'grey',
+                  [styles.white]: color?.value.label.en === 'white',
+                })}
+                title={color?.value.label.en}
+              />
             </div>
-            <span>Размер: 42</span>
+            <span>Size: {size && size.value.label.en}</span>
           </div>
         </div>
       </div>
       <div className={styles.item__info__inner__wrapper}>
-        <span className={styles.price}>{price}$</span>
-        <div className={styles.quantity}>
-          <Button type='button' className={styles.button__control} secondary>
-            -
-          </Button>
-          <span className={styles.monitor}>1</span>
-          <Button type='button' className={styles.button__control} secondary>
-            +
-          </Button>
+        <div className={styles.prices}>
+          {!!discountedPrice && (
+            <span className={styles.price}>{discountedPrice.discountedPrice.value.centAmount / 100}$</span>
+          )}
+          {!discountedPrice && !!price.discounted && (
+            <span className={styles.price}>{price.discounted.value.centAmount / 100}$</span>
+          )}
+
+          <span className={cn(styles.price, { [styles.price__discounted]: !!price.discounted || !!discountedPrice })}>
+            {price.value.centAmount / 100}$
+          </span>
         </div>
-        <span className={styles.amount}>800$</span>
-        <button className={styles.remove}>
-          <svg width='18' height='20' viewBox='0 0 18 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <path
-              d='M1 5H17M2 5L3 17C3 17.5304 3.21071 18.0391 3.58579 18.4142C3.96086 18.7893 4.46957 19 5 19H13C13.5304 19 14.0391 18.7893 14.4142 18.4142C14.7893 18.0391 15 17.5304 15 17L16 5M6 5V2C6 1.73478 6.10536 1.48043 6.29289 1.29289C6.48043 1.10536 6.73478 1 7 1H11C11.2652 1 11.5196 1.10536 11.7071 1.29289C11.8946 1.48043 12 1.73478 12 2V5M7 10L11 14M11 10L7 14'
-              strokeWidth='1.7'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            />
-          </svg>
+        <div className={styles.quantity}>
+          <button
+            type='button'
+            className={styles.button__control}
+            disabled={loading}
+            onClick={() => changeQuantity(quantity - 1)}
+          >
+            <Minus />
+          </button>
+          <span className={styles.monitor}>{quantity}</span>
+          <button
+            type='button'
+            className={styles.button__control}
+            disabled={loading}
+            onClick={() => changeQuantity(quantity + 1)}
+          >
+            <Plus />
+          </button>
+        </div>
+        <span className={styles.amount}>{totalPrice.centAmount / 100}$</span>
+        <button className={styles.remove} disabled={loading} onClick={deleteItem}>
+          <TrashCan />
         </button>
       </div>
     </div>
   );
-};
+});

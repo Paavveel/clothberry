@@ -42,17 +42,6 @@
   text-decoration: none;
 }
 
-.menu__items button {
-  display: flex;
-  align-items: center;
-  color: inherit;
-  font-size: inherit;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  width: 100%;
-}
-
 .dropdown {
   position: absolute;
   right: 0;
@@ -74,13 +63,13 @@
   display: block;
 }
 
-.menu__items > a,
-.menu__items button {
+.menu > a,
+.menu__items > a {
   text-align: left;
   padding: 0.7rem 1rem;
 }
 
-.menu__items a:hover,
-.menu__items button:hover {
+.menu > a:hover,
+.menu__items a:hover {
   background-color: #f2f2f2;
 }
