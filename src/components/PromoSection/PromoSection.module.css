@@ -1,0 +1,33 @@
+.promo__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.basket__order__promo__input {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--color-black);
+}
+
+.basket__order__promo__input:focus {
+  outline: none;
+  border-bottom: 1px solid #000;
+}
+
+.apply__promo__button {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid var(--color-black);
+  text-transform: uppercase;
+  padding: 10px 0;
+  font-size: 12px;
+}
+
+@media (width <= 969px) {
+  .basket__order__promo__input {
+    max-width: 320px;
+  }
+}

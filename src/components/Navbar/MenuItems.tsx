@@ -58,10 +58,7 @@ export const MenuItems: FC<MenuItemsProps> = ({ items }) => {
     >
       {items.submenu && (
         <>
-          <Link to={items.url} aria-expanded={dropdown ? 'true' : 'false'}>
-            {items.title}
-          </Link>
-
+          <Link to={items.url}>{items.title} </Link>
           <Dropdown submenus={items.submenu} dropdown={dropdown} currentUrl={items.url} />
         </>
       )}

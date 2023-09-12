@@ -1,16 +1,18 @@
 import { FC } from 'react';
 
 import { BasketList } from '@components/BasketList/BasketList';
+import { EmptyCart } from '@components/EmptyCart/EmptyCart';
+import { useAppSelector } from '@store/hooks';
 
 import styles from './Basket.module.css';
 
-interface BasketProps {}
+export const Basket: FC = () => {
+  const lineItems = useAppSelector((state) => state.auth.cart?.lineItems);
 
-export const Basket: FC<BasketProps> = () => {
   return (
     <section className={styles.basket}>
       <h1>Shopping Cart</h1>
-      <BasketList />
+      {!lineItems?.length ? <EmptyCart /> : <BasketList lineItems={lineItems} />}
     </section>
   );
 };

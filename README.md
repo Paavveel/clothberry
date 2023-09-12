@@ -5,15 +5,15 @@ The Clothberry ecommerce project aims to build a robust online store with Commer
 ## Upcoming Goals:
 
 - [x] User login, registration, authentication
-- [ ] Main pages with input validation
+- [x] Main pages with available promo codes
 - [x] State management and routing
 - [x] Catalog browsing with API integration
 - [x] Detailed product pages with image galleries
 - [x] User profile editing
 - [x] Filtering and search
 - [x] Enhance product pages
-- [ ] Build shopping cart with promo codes
-- [ ] Create about us page
+- [x] Build shopping cart with promo codes
+- [x] Create about us page
 - [x] Improve routing
 
 The focus is on iterative development, adding new features and enhancements each sprint. Key priorities are smooth CommerceTools integration and robust front-end implementation.
