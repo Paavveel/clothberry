@@ -70,10 +70,16 @@
   grid-column: 2 / 2;
   grid-row: 3 / 3;
   margin-top: auto;
+  width: min-content;
+  transition: 0.3s;
 
   @media (width <= 480px) {
     grid-column: 1 / 1;
     grid-row: 4 / 5;
+  }
+
+  &:hover {
+    transform: scale(0.9);
   }
 }
 
