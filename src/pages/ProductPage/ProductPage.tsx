@@ -15,6 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { api } from '@api/client';
 import { Image, LocalizedString, Price } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
+import { Button } from '@components/Button';
 import { Fancybox } from '@components/Fancybox/Fancybox';
 import { Loader } from '@components/Loader';
 
@@ -136,6 +137,9 @@ export const ProductPage = () => {
 
             <p className={styles.description}>{description?.en}</p>
             <Select placeholder='Choose size' options={size} />
+            <Button type='button' className={styles.button} primary>
+              Add to Cart
+            </Button>
           </div>
         )}
       </section>
