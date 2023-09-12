@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, memo, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
@@ -8,9 +8,7 @@ import { useClickOutside } from '@hooks/useClickOutside';
 
 import styles from './MobileMenu.module.css';
 
-interface MobileMenuProps {}
-
-export const MobileMenu: FC<MobileMenuProps> = () => {
+export const MobileMenu: FC = memo(function MobileMenu() {
   const [active, setActive] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const handleActiveClass = () => {
@@ -73,4 +71,4 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
       <div className={active ? styles.overlay : ''} />
     </div>
   );
-};
+});

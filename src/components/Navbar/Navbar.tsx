@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { menuItems } from 'config/routes';
@@ -6,7 +6,7 @@ import { menuItems } from 'config/routes';
 import { MenuItems } from './MenuItems';
 import styles from './Navbar.module.css';
 
-export const Navbar: FC = () => {
+export const Navbar: FC = memo(function Navbar() {
   return (
     <nav className={styles.nav}>
       <ul className={styles.menu}>
@@ -22,4 +22,4 @@ export const Navbar: FC = () => {
       </ul>
     </nav>
   );
-};
+});
