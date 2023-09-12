@@ -36,7 +36,7 @@ export const AboutPage = () => {
         <div className={style['creator-img']}>
           <img className={style['creator-img-alexey']} src={dev2} alt='alexey' width='100%' height='100%' />
         </div>
-        <span className={style['creator-title']}>Alexey, right-hand Team-Leader</span>
+        <span className={style['creator-title']}>Alexey, right-hand Team Leader</span>
         <p className={style['creator-description']}>
           Alexey realized catalog page, registration page, basket page, write some tests and more useful things
         </p>
@@ -48,7 +48,7 @@ export const AboutPage = () => {
         <div className={style['creator-img']}>
           <img src={dev3} alt='vladimir' width='100%' height='100%' />
         </div>
-        <span className={style['creator-title']}>Vladimir, left-hand Team-Leader</span>
+        <span className={style['creator-title']}>Vladimir, left-hand Team Leader</span>
         <p className={style['creator-description']}>
           Vladimir realized product page, about page, main page and some useful things
         </p>
