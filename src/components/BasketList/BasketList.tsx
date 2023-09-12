@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { LineItem } from '@commercetools/platform-sdk';
 import { BasketItem } from '@components/BasketItem/BasketItem';
 import { Modal } from '@components/Modal/Modal';
+import { PromoSection } from '@components/PromoSection/PromoSection';
 import { deleteCart, updateCart } from '@store/features/auth/cartApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -16,7 +17,6 @@ interface BasketListProps {
 
 export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [promocode, setPromocode] = useState('');
   const cart = useAppSelector((state) => state.auth.cart);
   const totalPrice = useAppSelector((state) => state.auth.cart?.totalPrice);
   const dispatch = useAppDispatch();
@@ -64,29 +64,22 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
     }
   };
 
-  const handlePromocode = async () => {
-    if (!promocode.length) {
-      toast.error('Please, type a promo code');
-      return;
-    }
-    try {
+  const handlePromo = useCallback(
+    async (code: string) => {
       if (cart) {
         await dispatch(
           updateCart({
             cartId: cart.id,
             body: {
               version: cart.version,
-              actions: [{ action: 'addDiscountCode', code: promocode }],
+              actions: [{ action: 'addDiscountCode', code }],
             },
           })
         ).unwrap();
-        toast.success('Promo code is activated');
-        setPromocode('');
       }
-    } catch (error) {
-      toast.error('Invalid promo code');
-    }
-  };
+    },
+    [cart, dispatch]
+  );
 
   return (
     <div className={styles.basket__wrapper}>
@@ -114,19 +107,8 @@ export const BasketList: FC<BasketListProps> = ({ lineItems }) => {
             <span className={styles.total__original}>{totalPriceWithoutDiscount / 100}$</span>
           )}
         </p>
-        <div className={styles.promo_wrapper}>
-          <input
-            type='text'
-            className={styles.basket__order__promocode__input}
-            placeholder='Promocode'
-            maxLength={15}
-            value={promocode}
-            onChange={(e) => setPromocode(e.target.value)}
-          />
-          <Button type='button' className={styles.apply__promocode__button} secondary onClick={handlePromocode}>
-            Apply code
-          </Button>
-        </div>
+
+        <PromoSection className={styles.promo_wrapper} handlePromo={handlePromo} />
 
         <Button type='button' className={styles.buy} primary>
           Сheckout
