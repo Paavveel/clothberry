@@ -38,6 +38,7 @@ class CreateApi {
         },
         scopes: scopes.split(' '),
         fetch,
+        tokenCache: this.currentToken,
       })
       .withHttpMiddleware(httpMiddlewareOptions)
       .build();

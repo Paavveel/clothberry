@@ -1,6 +1,7 @@
 import { api } from '@api/client';
 import { CustomerSignInResult } from '@commercetools/platform-sdk';
 import { UserAuthOptions } from '@commercetools/sdk-client-v2';
+import { setTokenInStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { createCart } from './cartApi';
@@ -22,6 +23,8 @@ export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { r
           },
         })
         .execute();
+
+      setTokenInStorage(api.currentToken.tokenStore.token);
 
       if (!result.body.cart) {
         await dispatch(createCart({ currency: 'USD' }));

@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
 
+import { api } from '@api/client';
 import { Loader } from '@components/Loader';
+import { setAnonymousTokenInStorage } from '@helpers/TokenStorage';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import { checkLogin } from './authApi';
@@ -18,7 +20,7 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(() => isLoggedIn);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const requestForAuth = async () => {
@@ -36,8 +38,9 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
         setLoading(false);
       }
     };
-    if (isLoggedIn) {
-      requestForAuth();
+    requestForAuth();
+    if (!isLoggedIn) {
+      setAnonymousTokenInStorage(api.currentToken.tokenStore.token);
     }
   }, [dispatch, isLoggedIn, navigate]);
 

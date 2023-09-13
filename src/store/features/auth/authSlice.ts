@@ -1,6 +1,6 @@
 import { api } from '@api/client';
 import { Cart, Customer } from '@commercetools/platform-sdk';
-import { removeTokenFromStorage } from '@helpers/TokenStorage';
+import { getTokenFromStorage, removeAnonymousTokenFromStorage, removeTokenFromStorage } from '@helpers/TokenStorage';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
@@ -18,7 +18,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  isLoggedIn: Boolean(api.currentToken.tokenStore.token),
+  isLoggedIn: Boolean(getTokenFromStorage()),
   customer: null,
   cart: null,
   loading: false,
@@ -31,6 +31,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       removeTokenFromStorage();
+      removeAnonymousTokenFromStorage();
       api.changeToAnonymousFlow();
       state.isLoggedIn = false;
       state.customer = null;
