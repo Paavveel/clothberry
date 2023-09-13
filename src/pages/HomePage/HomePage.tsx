@@ -3,7 +3,7 @@ import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import Img1 from '@assets/images/main-img-1.png';
+import Img1 from '@assets/images/main-img-1.jpg';
 import Img2 from '@assets/images/main-img-2.jpg';
 import { CopyButton } from '@components/CopyButton/CopyButton';
 
@@ -23,10 +23,10 @@ export const HomePage = () => {
             className='mySwiper3'
           >
             <SwiperSlide>
-              <img src={Img1} alt='pic1' height='100%' width='100%' />
+              <img className={style.main__slider__img} src={Img1} alt='pic1' height='1920' width='1080' />
             </SwiperSlide>
             <SwiperSlide>
-              <img src={Img2} alt='pic2' height='100%' width='100%' />
+              <img className={style.main__slider__img} src={Img2} alt='pic2' height='1920' width='1080' />
             </SwiperSlide>
           </Swiper>
         </div>
