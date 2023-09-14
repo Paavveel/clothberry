@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoutes } from 'config/routes';
 
-import { api } from '@api/client';
 import { Loader } from '@components/Loader';
-import { setAnonymousTokenInStorage } from '@helpers/TokenStorage';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-import { checkLogin } from './authApi';
+import { checkToken } from './authApi';
 import { logout } from './authSlice';
 import { checkCart } from './cartApi';
+import { getCustomer } from './profileApi';
 
 interface CheckAuthProps {
   children: JSX.Element;
@@ -25,9 +24,11 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
   useEffect(() => {
     const requestForAuth = async () => {
       try {
-        const result = await dispatch(checkLogin()).unwrap();
+        await dispatch(getCustomer());
 
-        if (!result.active) {
+        const token = await dispatch(checkToken()).unwrap();
+
+        if (!token.active) {
           dispatch(logout());
           navigate(AppRoutes.ROOT, { replace: true });
         } else {
@@ -38,11 +39,9 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
         setLoading(false);
       }
     };
+
     requestForAuth();
-    if (!isLoggedIn) {
-      setAnonymousTokenInStorage(api.currentToken.tokenStore.token);
-    }
-  }, [dispatch, isLoggedIn, navigate]);
+  }, [dispatch, navigate, isLoggedIn]);
 
   if (loading) return <Loader pageLoader />;
 

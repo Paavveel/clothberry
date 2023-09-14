@@ -67,7 +67,12 @@ export const authSlice = createSlice({
         state.loading = true;
         state.errorMessage = '';
       })
-      .addCase(signup.fulfilled, (state) => {
+      .addCase(signup.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.customer = action.payload.customer;
+        if (action.payload.cart) {
+          state.cart = action.payload.cart;
+        }
         state.loading = false;
       })
       .addCase(signup.rejected, (state, action) => {
@@ -75,40 +80,31 @@ export const authSlice = createSlice({
         if (action.payload) {
           state.errorMessage = action.payload;
         }
-      });
-
-    builder
-      .addCase(getCustomer.pending, (state) => {
-        state.errorMessage = '';
       })
+
       .addCase(getCustomer.fulfilled, (state, action) => {
         state.customer = action.payload;
       })
-      .addCase(getCustomer.rejected, (state, action) => {
-        if (action.payload) {
-          state.errorMessage = action.payload;
-        }
+
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        state.customer = action.payload;
+      })
+
+      .addCase(checkCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+      })
+
+      .addCase(createCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+      })
+
+      .addCase(updateCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+      })
+
+      .addCase(deleteCart.fulfilled, (state) => {
+        state.cart = null;
       });
-
-    builder.addCase(updateCustomer.fulfilled, (state, action) => {
-      state.customer = action.payload;
-    });
-
-    builder.addCase(checkCart.fulfilled, (state, action) => {
-      state.cart = action.payload;
-    });
-
-    builder.addCase(createCart.fulfilled, (state, action) => {
-      state.cart = action.payload;
-    });
-
-    builder.addCase(updateCart.fulfilled, (state, action) => {
-      state.cart = action.payload;
-    });
-
-    builder.addCase(deleteCart.fulfilled, (state) => {
-      state.cart = null;
-    });
   },
 });
 

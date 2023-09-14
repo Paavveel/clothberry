@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ClientBuilder, HttpMiddlewareOptions, UserAuthOptions } from '@commercetools/sdk-client-v2';
 
@@ -22,8 +20,6 @@ class CreateApi {
 
   public currentToken = new AppTokenCache();
 
-  public anonymousID = uuidv4();
-
   public request = this.currentToken.tokenStore.token ? this.getExistingFlowApi() : this.getAnonymousFlowApi();
 
   private getAnonymousFlowApi() {
@@ -34,7 +30,6 @@ class CreateApi {
         credentials: {
           clientId,
           clientSecret,
-          anonymousId: this.anonymousID,
         },
         scopes: scopes.split(' '),
         fetch,
@@ -95,7 +90,7 @@ class CreateApi {
   }
 
   public changeToAnonymousFlow() {
-    this.anonymousID = uuidv4();
+    this.restoreTokenStore();
     this.request = this.getAnonymousFlowApi();
   }
 }

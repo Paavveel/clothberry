@@ -1,18 +1,24 @@
 import { api } from '@api/client';
 import { Customer, MyCustomerChangePassword, MyCustomerUpdate } from '@commercetools/platform-sdk';
+import { setAnonymousTokenInStorage, setTokenInStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { logout } from './authSlice';
 
 export const getCustomer = createAsyncThunk<Customer, void, { rejectValue: string }>(
   'auth/getCustomer',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       const result = await api.request.me().get().execute();
-
+      setTokenInStorage(api.currentToken.tokenStore.token);
       return result.body;
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout());
+        } else {
+          setAnonymousTokenInStorage(api.currentToken.tokenStore.token);
+        }
         return rejectWithValue(error.message);
       }
       return rejectWithValue('Unknown error');
@@ -60,7 +66,7 @@ export const changeCustomerPassword = createAsyncThunk<Customer, MyCustomerChang
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === 'invalid_token') {
-          dispatch(logout);
+          dispatch(logout());
         }
         return rejectWithValue(error.message);
       }

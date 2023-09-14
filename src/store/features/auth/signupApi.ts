@@ -1,18 +1,31 @@
 import { api } from '@api/client';
-import { Customer, CustomerDraft } from '@commercetools/platform-sdk';
+import { CustomerSignInResult, MyCustomerDraft } from '@commercetools/platform-sdk';
+import { removeAnonymousTokenFromStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const signup = createAsyncThunk<Customer, CustomerDraft, { rejectValue: string }>(
-  'register/signup',
-  async (currentCustomerDraft, { rejectWithValue }) => {
+import { createCart } from './cartApi';
+
+export const signup = createAsyncThunk<CustomerSignInResult, MyCustomerDraft, { rejectValue: string }>(
+  'auth/signup',
+  async (currentCustomerDraft, { rejectWithValue, dispatch }) => {
     try {
       const response = await api.request
-        .customers()
+        .me()
+        .signup()
         .post({
           body: currentCustomerDraft,
         })
         .execute();
-      return response.body.customer;
+
+      api.changeToPasswordFlow({ username: currentCustomerDraft.email, password: currentCustomerDraft.password });
+
+      removeAnonymousTokenFromStorage();
+
+      if (!response.body.cart) {
+        await dispatch(createCart({ currency: 'USD' }));
+      }
+
+      return response.body;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
