@@ -3,6 +3,7 @@ import { CustomerSignInResult, MyCustomerDraft } from '@commercetools/platform-s
 import { removeAnonymousTokenFromStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { logout } from './authSlice';
 import { createCart } from './cartApi';
 
 export const signup = createAsyncThunk<CustomerSignInResult, MyCustomerDraft, { rejectValue: string }>(
@@ -28,6 +29,9 @@ export const signup = createAsyncThunk<CustomerSignInResult, MyCustomerDraft, { 
       return response.body;
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout());
+        }
         return rejectWithValue(error.message);
       }
       return rejectWithValue('Unknown error');

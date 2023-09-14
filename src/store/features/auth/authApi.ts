@@ -4,6 +4,7 @@ import { UserAuthOptions } from '@commercetools/sdk-client-v2';
 import { removeAnonymousTokenFromStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { logout } from './authSlice';
 import { createCart } from './cartApi';
 
 type CheckLoginResponseType = { active: boolean };
@@ -33,6 +34,9 @@ export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { r
       return result.body;
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout());
+        }
         return rejectWithValue(error.message);
       }
       return rejectWithValue('Unknown error');
