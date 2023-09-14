@@ -63,7 +63,7 @@ export const MobileMenu: FC = memo(function MobileMenu() {
               )}
             </li>
           ))}
-          <Link to='/about' className={styles.menu__items}>
+          <Link to='/about' className={styles.menu__items} onClick={handleActiveClass}>
             About
           </Link>
         </ul>
