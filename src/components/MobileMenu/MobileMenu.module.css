@@ -61,7 +61,7 @@
   height: auto;
   overflow: auto;
   width: max-content;
-  top: 7rem;
+  top: 0;
   left: 0;
   bottom: 0;
   transform: translateX(-1000px);
@@ -69,7 +69,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 3.5rem;
+  padding: 10rem 3.5rem 3.5rem;
   display: flex;
   transition:
     transform 0.5s,
@@ -85,9 +85,18 @@
   list-style: none;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   padding: 2.5rem 0;
   gap: 1rem;
   margin: 0;
+}
+
+.menu__list li a {
+  border-bottom: 2px solid gray;
+}
+
+.menu__list a:first-child {
+  margin-bottom: 2rem;
 }
 
 .menu__list:first-child {
@@ -98,10 +107,6 @@
   font-size: 1.8rem;
 }
 
-.menu__list li a {
-  border-bottom: 2px solid gray;
-}
-
 .menu__list.menu__list__submenu li a {
   border-bottom: none;
 }
@@ -109,7 +114,7 @@
 .overlay {
   position: absolute;
   z-index: 3;
-  top: 7rem;
+  top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
