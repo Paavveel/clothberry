@@ -4,6 +4,7 @@ describe('authSlice', () => {
   const initialState: AuthState = {
     isLoggedIn: false,
     customer: null,
+    cart: null,
     loading: false,
     errorMessage: '',
   };
