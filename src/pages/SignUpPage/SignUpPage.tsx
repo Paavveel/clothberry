@@ -7,9 +7,7 @@ import classNames from 'classnames';
 import { countries } from 'config/countries';
 import { AppRoutes } from 'config/routes';
 
-import { api } from '@api/client';
 import { emailValidator, validateName, validatePassword, validatePostCode } from '@helpers/Validators';
-import { login } from '@store/features/auth/authApi';
 import { clearError } from '@store/features/auth/authSlice';
 import { signup } from '@store/features/auth/signupApi';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
@@ -86,8 +84,6 @@ export const SignUpPage: FC = () => {
 
     try {
       await dispatch(signup(customer)).unwrap();
-      api.changeToPasswordFlow({ username: data.email, password: data.password });
-      await dispatch(login({ username: data.email, password: data.password })).unwrap();
       navigate(AppRoutes.ROOT, { replace: true });
     } catch (error) {}
   };

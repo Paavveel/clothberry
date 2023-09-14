@@ -30,13 +30,13 @@ export const MenuItems: FC<MenuItemsProps> = ({ items }) => {
   }, [dropdown]);
 
   const onMouseEnter = () => {
-    if (window.innerWidth > 960) {
+    if (window.innerWidth >= 768) {
       setDropdown(true);
     }
   };
 
   const onMouseLeave = () => {
-    if (window.innerWidth > 960) {
+    if (window.innerWidth >= 768) {
       setDropdown(false);
     }
   };

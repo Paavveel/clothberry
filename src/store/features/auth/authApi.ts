@@ -1,8 +1,10 @@
 import { api } from '@api/client';
 import { CustomerSignInResult } from '@commercetools/platform-sdk';
 import { UserAuthOptions } from '@commercetools/sdk-client-v2';
+import { removeAnonymousTokenFromStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { logout } from './authSlice';
 import { createCart } from './cartApi';
 
 type CheckLoginResponseType = { active: boolean };
@@ -11,18 +13,20 @@ export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { r
   'auth/login',
   async ({ username, password }, { rejectWithValue, dispatch }) => {
     try {
-      api.changeToPasswordFlow({ username, password });
       const result = await api.request
+        .me()
         .login()
         .post({
           body: {
             email: username,
             password,
-            anonymousId: api.anonymousID,
           },
         })
         .execute();
 
+      api.changeToPasswordFlow({ username, password });
+
+      removeAnonymousTokenFromStorage();
       if (!result.body.cart) {
         await dispatch(createCart({ currency: 'USD' }));
       }
@@ -30,6 +34,9 @@ export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { r
       return result.body;
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout());
+        }
         return rejectWithValue(error.message);
       }
       return rejectWithValue('Unknown error');
@@ -37,8 +44,8 @@ export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { r
   }
 );
 
-export const checkLogin = createAsyncThunk<CheckLoginResponseType, void, { rejectValue: string }>(
-  'auth/checkLogin',
+export const checkToken = createAsyncThunk<CheckLoginResponseType, void, { rejectValue: string }>(
+  'auth/checkToken',
   async (_, { rejectWithValue }) => {
     try {
       const credentials = btoa(`${import.meta.env.VITE_CTP_CLIENT_ID}:${import.meta.env.VITE_CTP_CLIENT_SECRET}`);

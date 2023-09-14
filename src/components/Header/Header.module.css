@@ -32,6 +32,14 @@
 }
 
 @media (width <= 1100px) {
+  .logo {
+    font-size: 17px;
+  }
+
+  .logo-wrapper {
+    width: 31%;
+  }
+
   .search-wrapper {
     display: none;
   }
@@ -75,6 +83,10 @@
 }
 
 @media (width <= 400px) {
+  .logo {
+    font-size: 13px;
+  }
+
   .nav-btns {
     column-gap: 1.5rem;
   }
@@ -95,16 +107,6 @@
   padding: 0;
   cursor: pointer;
   border: none;
-}
-
-@media (width <= 930px) {
-  .logo {
-    font-size: 17px;
-  }
-
-  .logo-wrapper {
-    width: 50%;
-  }
 }
 
 @media (width <= 767px) {
