@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 import classNames from 'classnames';
-import { size } from 'config/size';
 import { type Swiper as SwiperRef } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -13,72 +13,141 @@ import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { api } from '@api/client';
-import { Image, LocalizedString, Price } from '@commercetools/platform-sdk';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
+import { Button } from '@components/Button';
 import { Fancybox } from '@components/Fancybox/Fancybox';
 import { Loader } from '@components/Loader';
+import { createCart, updateCart } from '@store/features/auth/cartApi';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 import styles from './ProductPage.module.css';
-
-interface Product {
-  id: string;
-  name: LocalizedString;
-  description?: LocalizedString;
-  masterVariant: {
-    images?: Image[];
-    prices?: Price[];
-  };
-}
+import { OptionSize } from './types';
 
 export const ProductPage = () => {
-  const [data, setData] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { state } = useLocation();
-  const { productId } = state;
+  const [data, setData] = useState<ProductProjection | null>(null);
+  const [fetchingProduct, setFetchingProduct] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [selectSize, setSelectSize] = useState('');
+
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const cartId = useAppSelector((state) => state.auth.cart?.id);
+  const cartVersion = useAppSelector((state) => state.auth.cart?.version);
+  const lineItems = useAppSelector((state) => state.auth.cart?.lineItems);
   const swiperRef = useRef<SwiperRef>();
 
-  const arrImage: string[] = [];
-  const { name, description, masterVariant } = data || ({} as Product);
-  const { images, prices } = masterVariant || ({} as Product);
-  images?.forEach((item: Image) => {
-    arrImage.push(item.url);
-  });
-  const price = prices ? prices[0].value.centAmount / 100 : 0;
-  const discount = prices ? prices[0].discounted?.value.centAmount : 0;
-  const code = prices ? prices[0].value.currencyCode : 'EUR';
-  const country = prices ? prices[0].country : 'eu';
+  const price = data && data.masterVariant.prices ? data.masterVariant.prices[0].value.centAmount / 100 : 0;
+  const discount = data && data.masterVariant.prices ? data.masterVariant.prices[0].discounted?.value.centAmount : 0;
+  const code = data && data.masterVariant.prices ? data.masterVariant.prices[0].value.currencyCode : 'EUR';
+  const country = data && data.masterVariant.prices ? data.masterVariant.prices[0].country : 'eu';
   const correctPrice = new Intl.NumberFormat(country, {
     style: 'currency',
     currency: code,
   }).format(price);
 
+  const variantSku =
+    (selectSize &&
+      data &&
+      data.variants.find((variant) => {
+        const size = variant.attributes?.find((attr) => attr.name === 'size');
+        return size?.value.key === selectSize;
+      })?.sku) ||
+    data?.masterVariant.sku;
+
+  const lineItem = lineItems?.find((item) => item.variant.sku === variantSku);
+
+  const masterSize: string = useMemo(
+    () => data?.masterVariant.attributes?.find((attr) => attr.name === 'size')?.value.key || '',
+    [data]
+  );
+  const variantsSizes: string[] = useMemo(
+    () =>
+      data?.variants.map((variant) => {
+        const size = variant.attributes?.find((attr) => attr.name === 'size');
+        return size?.value.key;
+      }) || [],
+    [data]
+  );
+
+  const sizes: OptionSize[] = useMemo(
+    () =>
+      [masterSize, ...variantsSizes].map((size) => ({
+        value: size,
+        label: size.toUpperCase(),
+      })),
+    [masterSize, variantsSizes]
+  );
+
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+      if (cartId && cartVersion) {
+        await dispatch(
+          updateCart({
+            cartId,
+            body: {
+              version: cartVersion,
+              actions: [{ action: 'addLineItem', sku: variantSku }],
+            },
+          })
+        ).unwrap();
+      } else {
+        await dispatch(createCart({ currency: 'USD', lineItems: [{ sku: variantSku }] })).unwrap();
+      }
+    } catch (error) {
+      toast.error('Error with add to cart');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteFromCart = async () => {
+    try {
+      setLoading(true);
+      if (cartId && cartVersion) {
+        await dispatch(
+          updateCart({
+            cartId,
+            body: {
+              version: cartVersion,
+              actions: [{ action: 'removeLineItem', lineItemId: lineItem?.id }],
+            },
+          })
+        ).unwrap();
+      }
+    } catch (error) {
+      toast.error('Error with remove from cart');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const getProduct = async (id: string) => {
-      let response;
       try {
-        setLoading(true);
-        response = await api.request.productProjections().withId({ ID: id }).get().execute();
-        return response.body;
+        const response = await api.request.productProjections().withId({ ID: id }).get().execute();
+        setData(response.body);
       } catch (error) {
-        return false;
+        setError(true);
+        toast.error('Error with fetch product');
       } finally {
-        setLoading(false);
+        setFetchingProduct(false);
       }
     };
-    if (productId) {
-      getProduct(productId).then((response) => {
-        if (response) {
-          setData(response);
-        }
-      });
+    if (id) {
+      getProduct(id);
     }
-  }, [productId]);
+  }, [id]);
+
+  if (fetchingProduct) return <Loader pageLoader />;
+  if (error) return null;
 
   return (
-    <div>
-      <Breadcrumbs />
+    <>
+      <Breadcrumbs productDetail={data ? data.name : undefined} />
       <section className={styles.product}>
-        {loading && <Loader pageLoader />}
         <div className={styles.img}>
           <Fancybox
             options={{
@@ -94,10 +163,10 @@ export const ProductPage = () => {
               modules={[Navigation, Thumbs, Pagination]}
               className='mySwiper2'
             >
-              {arrImage.map((arrImage, index) => (
-                <SwiperSlide key={arrImage} virtualIndex={index}>
-                  <a data-fancybox='gallery' href={arrImage}>
-                    <img src={arrImage} alt={`картинка ${index}`} width='100%' height='100%' />
+              {data?.masterVariant.images?.map(({ url }, index) => (
+                <SwiperSlide key={url} virtualIndex={index}>
+                  <a data-fancybox='gallery' href={url}>
+                    <img src={url} alt={`product ${index}`} width='100%' height='100%' />
                   </a>
                 </SwiperSlide>
               ))}
@@ -106,40 +175,58 @@ export const ProductPage = () => {
               onSwiper={(swiper) => {
                 swiperRef.current = swiper;
               }}
-              slidesPerView={arrImage.length}
+              slidesPerView={data?.masterVariant.images?.length}
               modules={[Thumbs]}
               className='mySwiper'
             >
-              {arrImage.map((arrImage, index) => (
-                <SwiperSlide key={arrImage} virtualIndex={index}>
-                  <img src={arrImage} alt={`картинка ${index}`} width='70px' height='70px' />
+              {data?.masterVariant.images?.map(({ url }, index) => (
+                <SwiperSlide key={url} virtualIndex={index}>
+                  <img src={url} alt={`product ${index}`} width='70' height='70' />
                 </SwiperSlide>
               ))}
             </Swiper>
           </Fancybox>
         </div>
-        {!loading && (
-          <div className={styles.content}>
-            <h1 className={styles.title}>{name?.en}</h1>
-            <div
-              className={classNames(styles.price__current, {
-                [styles.price__discount]: discount,
-              })}
-            >
-              <span>{`${correctPrice} ${code}`}</span>
-              {discount && (
-                <span>
-                  {discount / 100}&nbsp;
-                  {code}
-                </span>
-              )}
-            </div>
-
-            <p className={styles.description}>{description?.en}</p>
-            <Select placeholder='Choose size' options={size} />
+        <div className={styles.content}>
+          <h1 className={styles.title}>{data?.name?.en}</h1>
+          <div
+            className={classNames(styles.price__current, {
+              [styles.price__discount]: discount,
+            })}
+          >
+            <span>{`${correctPrice}`}</span>
+            {discount && (
+              <span>
+                {discount / 100}&nbsp;
+                {code}
+              </span>
+            )}
           </div>
-        )}
+
+          <p className={styles.description}>{data?.description?.en}</p>
+          <Select
+            placeholder='Choose the size'
+            options={sizes}
+            defaultValue={sizes[0]}
+            value={sizes.find((c) => c.value === selectSize)}
+            onChange={(value) => {
+              if (value) {
+                setSelectSize(value.value);
+              }
+            }}
+          />
+          <Button
+            type='button'
+            className={styles.button}
+            primary={!lineItem}
+            secondary={!!lineItem}
+            onClick={lineItem ? handleDeleteFromCart : handleAddToCart}
+            loading={loading}
+          >
+            {lineItem ? 'Remove from cart' : 'Add to Cart'}
+          </Button>
+        </div>
       </section>
-    </div>
+    </>
   );
 };

@@ -1,23 +1,26 @@
 import { api } from '@api/client';
-import { Customer } from '@commercetools/platform-sdk';
-import { removeTokenFromStorage } from '@helpers/TokenStorage';
+import { Cart, Customer } from '@commercetools/platform-sdk';
+import { getTokenFromStorage, removeAnonymousTokenFromStorage, removeTokenFromStorage } from '@helpers/TokenStorage';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/store';
 
 import { login } from './authApi';
+import { checkCart, createCart, deleteCart, updateCart } from './cartApi';
 import { getCustomer, updateCustomer } from './profileApi';
 import { signup } from './signupApi';
 
 export interface AuthState {
   isLoggedIn: boolean;
   customer: Customer | null;
+  cart: Cart | null;
   loading: boolean;
   errorMessage: string;
 }
 
 const initialState: AuthState = {
-  isLoggedIn: Boolean(api.currentToken.tokenStore.token),
+  isLoggedIn: Boolean(getTokenFromStorage()),
   customer: null,
+  cart: null,
   loading: false,
   errorMessage: '',
 };
@@ -28,9 +31,11 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       removeTokenFromStorage();
+      removeAnonymousTokenFromStorage();
       api.changeToAnonymousFlow();
       state.isLoggedIn = false;
       state.customer = null;
+      state.cart = null;
       state.errorMessage = '';
     },
     clearError: (state) => {
@@ -45,7 +50,10 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoggedIn = true;
-        state.customer = action.payload;
+        state.customer = action.payload.customer;
+        if (action.payload.cart) {
+          state.cart = action.payload.cart;
+        }
         state.loading = false;
       })
       .addCase(login.rejected, (state, action) => {
@@ -59,7 +67,12 @@ export const authSlice = createSlice({
         state.loading = true;
         state.errorMessage = '';
       })
-      .addCase(signup.fulfilled, (state) => {
+      .addCase(signup.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.customer = action.payload.customer;
+        if (action.payload.cart) {
+          state.cart = action.payload.cart;
+        }
         state.loading = false;
       })
       .addCase(signup.rejected, (state, action) => {
@@ -67,24 +80,31 @@ export const authSlice = createSlice({
         if (action.payload) {
           state.errorMessage = action.payload;
         }
-      });
-
-    builder
-      .addCase(getCustomer.pending, (state) => {
-        state.errorMessage = '';
       })
+
       .addCase(getCustomer.fulfilled, (state, action) => {
         state.customer = action.payload;
       })
-      .addCase(getCustomer.rejected, (state, action) => {
-        if (action.payload) {
-          state.errorMessage = action.payload;
-        }
-      });
 
-    builder.addCase(updateCustomer.fulfilled, (state, action) => {
-      state.customer = action.payload;
-    });
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        state.customer = action.payload;
+      })
+
+      .addCase(checkCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+      })
+
+      .addCase(createCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+      })
+
+      .addCase(updateCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+      })
+
+      .addCase(deleteCart.fulfilled, (state) => {
+        state.cart = null;
+      });
   },
 });
 

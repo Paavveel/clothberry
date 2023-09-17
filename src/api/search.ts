@@ -1,6 +1,23 @@
+import { ProductProjection } from '@commercetools/platform-sdk';
+
 import { api } from './client';
 
-export const getAllProducts = async (sortBy: string, color: string, size: string, price: string, brand: string) => {
+export const LIMIT = 6;
+
+export type ProductsResponse = {
+  results: ProductProjection[];
+  total?: number;
+  count: number;
+};
+
+export const getAllProducts = async (
+  sortBy: string,
+  color: string,
+  size: string,
+  price: string,
+  brand: string,
+  page: number
+): Promise<ProductsResponse | undefined> => {
   try {
     const response = await api.request
       .productProjections()
@@ -14,12 +31,18 @@ export const getAllProducts = async (sortBy: string, color: string, size: string
             `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
+          limit: LIMIT,
+          offset: page * LIMIT,
         },
       })
       .execute();
-    return response.body.results;
-  } catch (error) {
-    return false;
+    return {
+      results: response.body.results,
+      total: response.body.total,
+      count: response.body.count,
+    };
+  } catch {
+    return undefined;
   }
 };
 
@@ -29,8 +52,9 @@ export const getProductsByCategoryId = async (
   color: string,
   size: string,
   price: string,
-  brand: string
-) => {
+  brand: string,
+  page: number
+): Promise<ProductsResponse | undefined> => {
   let response;
   try {
     response = await api.request
@@ -46,13 +70,18 @@ export const getProductsByCategoryId = async (
             `${brand !== '' ? `variants.attributes.brand.key:"${brand}"` : ''}`,
           ],
           sort: [`${sortBy !== '' ? sortBy : ''}`],
-          limit: 100,
+          limit: LIMIT,
+          offset: page * LIMIT,
         },
       })
       .execute();
-    return response.body.results;
-  } catch (error) {
-    return false;
+    return {
+      results: response.body.results,
+      total: response.body.total,
+      count: response.body.count,
+    };
+  } catch {
+    return undefined;
   }
 };
 export const getCategoryBySlug = async (slug: string) => {
@@ -71,8 +100,9 @@ export const fetchSearchResults = async (
   color: string,
   size: string,
   price: string,
-  brand: string
-) => {
+  brand: string,
+  page: number
+): Promise<ProductsResponse | undefined> => {
   let response;
   try {
     response = await api.request
@@ -89,11 +119,17 @@ export const fetchSearchResults = async (
           'text.en': query,
           fuzzy: true,
           sort: [`${sortBy !== '' ? sortBy : ''}`],
+          limit: LIMIT,
+          offset: page * LIMIT,
         },
       })
       .execute();
-    return response.body.results;
-  } catch (error) {
-    return false;
+    return {
+      results: response.body.results,
+      total: response.body.total,
+      count: response.body.count,
+    };
+  } catch {
+    return undefined;
   }
 };

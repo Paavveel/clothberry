@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 
@@ -50,23 +50,14 @@ const colourStyles: StylesConfig<ColorOption> = {
   singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
 };
 
+type FilterType = 'color' | 'size' | 'brand' | 'price';
 interface FilterProps {
   handleSort: (option: Option | null) => void;
-  handleFilterSize: (option: Option | null) => void;
-  handleFilterColor: (option: ColorOption | null) => void;
-  handleFilterPrice: (option: Option | null) => void;
-  handleFilterBrand: (option: Option | null) => void;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFilter: (option: ColorOption | Option | null, type: FilterType) => void;
 }
 
-export const Filter: FC<FilterProps> = ({
-  handleSort,
-  handleFilterColor,
-  handleSearch,
-  handleFilterSize,
-  handleFilterPrice,
-  handleFilterBrand,
-}) => {
+export const Filter: FC<FilterProps> = memo(function Filter({ handleSort, handleFilter, handleSearch }) {
   const [show, setShow] = useState(false);
   const [search] = useSearchParams();
   const setFocus = useCallback(
@@ -108,7 +99,7 @@ export const Filter: FC<FilterProps> = ({
             options={colorOptions}
             styles={colourStyles}
             isClearable
-            onChange={(e) => handleFilterColor(e as SingleValue<ColorOption>)}
+            onChange={(e) => handleFilter(e as SingleValue<ColorOption>, 'color')}
           />
           <Select
             isSearchable={false}
@@ -116,7 +107,7 @@ export const Filter: FC<FilterProps> = ({
             options={optionsSize}
             placeholder='by size'
             isClearable
-            onChange={(e) => handleFilterSize(e)}
+            onChange={(e) => handleFilter(e, 'size')}
           />
           <Select
             isSearchable={false}
@@ -124,7 +115,7 @@ export const Filter: FC<FilterProps> = ({
             placeholder='by price'
             options={optionsPrice}
             isClearable
-            onChange={(e) => handleFilterPrice(e)}
+            onChange={(e) => handleFilter(e, 'price')}
           />
           <Select
             isSearchable={false}
@@ -132,7 +123,7 @@ export const Filter: FC<FilterProps> = ({
             isClearable
             className={styles.select}
             options={optionsBrand}
-            onChange={(e) => handleFilterBrand(e)}
+            onChange={(e) => handleFilter(e, 'brand')}
           />
         </div>
 
@@ -165,4 +156,4 @@ export const Filter: FC<FilterProps> = ({
       </div>
     </div>
   );
-};
+});

@@ -1,23 +1,42 @@
 import { api } from '@api/client';
-import { Customer } from '@commercetools/platform-sdk';
+import { CustomerSignInResult } from '@commercetools/platform-sdk';
 import { UserAuthOptions } from '@commercetools/sdk-client-v2';
+import { removeAnonymousTokenFromStorage } from '@helpers/TokenStorage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
+import { logout } from './authSlice';
+import { createCart } from './cartApi';
 
 type CheckLoginResponseType = { active: boolean };
 
-export const login = createAsyncThunk<Customer, UserAuthOptions, { rejectValue: string }>(
+export const login = createAsyncThunk<CustomerSignInResult, UserAuthOptions, { rejectValue: string }>(
   'auth/login',
-  async ({ username, password }, { rejectWithValue }) => {
+  async ({ username, password }, { rejectWithValue, dispatch }) => {
     try {
-      api.changeToPasswordFlow({ username, password });
       const result = await api.request
+        .me()
         .login()
-        .post({ body: { email: username, password } })
+        .post({
+          body: {
+            email: username,
+            password,
+          },
+        })
         .execute();
 
-      return result.body.customer;
+      api.changeToPasswordFlow({ username, password });
+
+      removeAnonymousTokenFromStorage();
+      if (!result.body.cart) {
+        await dispatch(createCart({ currency: 'USD' }));
+      }
+
+      return result.body;
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message === 'invalid_token') {
+          dispatch(logout());
+        }
         return rejectWithValue(error.message);
       }
       return rejectWithValue('Unknown error');
@@ -25,8 +44,8 @@ export const login = createAsyncThunk<Customer, UserAuthOptions, { rejectValue: 
   }
 );
 
-export const checkLogin = createAsyncThunk<CheckLoginResponseType, void, { rejectValue: string }>(
-  'auth/checkLogin',
+export const checkToken = createAsyncThunk<CheckLoginResponseType, void, { rejectValue: string }>(
+  'auth/checkToken',
   async (_, { rejectWithValue }) => {
     try {
       const credentials = btoa(`${import.meta.env.VITE_CTP_CLIENT_ID}:${import.meta.env.VITE_CTP_CLIENT_SECRET}`);

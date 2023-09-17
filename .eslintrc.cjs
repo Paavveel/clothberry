@@ -57,6 +57,8 @@ module.exports = {
     'import/no-cycle': 'off',
     'react/require-default-props': 'off',
     'import/no-extraneous-dependencies': 'off',
+    '@typescript-eslint/no-unused-expressions': 'off',
+    'react/prop-types': 'off',
   },
   settings: {
     'import/resolver': {

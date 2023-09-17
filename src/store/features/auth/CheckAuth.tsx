@@ -6,8 +6,10 @@ import { AppRoutes } from 'config/routes';
 import { Loader } from '@components/Loader';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-import { checkLogin } from './authApi';
+import { checkToken } from './authApi';
 import { logout } from './authSlice';
+import { checkCart } from './cartApi';
+import { getCustomer } from './profileApi';
 
 interface CheckAuthProps {
   children: JSX.Element;
@@ -17,17 +19,20 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const requestForAuth = async () => {
       try {
-        setLoading(true);
-        const result = await dispatch(checkLogin()).unwrap();
+        await dispatch(getCustomer());
 
-        if (!result.active) {
+        const token = await dispatch(checkToken()).unwrap();
+
+        if (!token.active) {
           dispatch(logout());
           navigate(AppRoutes.ROOT, { replace: true });
+        } else {
+          await dispatch(checkCart());
         }
       } catch (error) {
       } finally {
@@ -35,10 +40,8 @@ export const CheckAuth: FC<PropsWithChildren<CheckAuthProps>> = ({ children }) =
       }
     };
 
-    if (isLoggedIn) {
-      requestForAuth();
-    }
-  }, [dispatch, isLoggedIn, navigate]);
+    requestForAuth();
+  }, [dispatch, navigate, isLoggedIn]);
 
   if (loading) return <Loader pageLoader />;
 

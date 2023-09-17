@@ -1,0 +1,296 @@
+.basket__table__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--color-gray-secondary);
+}
+
+.item__info__inner__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+}
+
+.item__info {
+  width: 40%;
+  display: flex;
+  gap: 15px;
+}
+
+.item__info__text,
+.attributes {
+  padding-right: 10px;
+}
+
+.item__info__title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.prices,
+.amount,
+.monitor {
+  font-weight: 600;
+  font-size: 1.7rem;
+}
+
+.prices {
+  width: 20%;
+}
+
+.price__discounted {
+  display: inline-block;
+  margin-left: 10px;
+  color: var(--color-gray-secondary);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-black);
+  text-decoration-thickness: 1.5px;
+}
+
+.amount {
+  width: 18%;
+}
+
+.attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.attributes__color {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.attributes__color .circle {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.multicolored {
+  background: linear-gradient(red, yellow, blue, orange);
+}
+
+.blue {
+  background-color: #0052cc;
+}
+
+.black {
+  background-color: #000;
+}
+
+.red {
+  background-color: #ff5630;
+}
+
+.orange {
+  background-color: #ff8b00;
+}
+
+.yellow {
+  background-color: #ffc400;
+}
+
+.green {
+  background-color: #36b37e;
+}
+
+.silver {
+  background-color: #666;
+}
+
+.grey {
+  background-color: #898282;
+}
+
+.white {
+  background-color: white;
+}
+
+.attributes__color .circle::before {
+  content: "";
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  border: 1px solid var(--color-gray-secondary);
+  border-radius: 50%;
+  top: -4px;
+  right: -4px;
+}
+
+.quantity {
+  display: flex;
+  width: 20%;
+}
+
+.remove svg {
+  stroke: var(--color-gray-secondary);
+  transition: all 0.3s;
+}
+
+.button__control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  border: 1px solid var(--color-gray-secondary);
+  background-color: transparent;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.3s;
+}
+
+.button__control svg {
+  fill: var(--color-black);
+  transition: all 0.3s;
+}
+
+.button__control:hover {
+  background-color: var(--color-gray-secondary);
+}
+
+.button__control:active {
+  background-color: var(--color-gray-primary);
+}
+
+.monitor {
+  text-align: center;
+  min-width: 50px;
+  border: 1px solid var(--color-gray-secondary);
+  border-left: none;
+  border-right: none;
+  padding: 12px;
+}
+
+.remove {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.remove:hover svg {
+  stroke: var(--color-red);
+  scale: 1.1;
+}
+
+.remove:active svg {
+  scale: 1;
+}
+
+@media (width <= 863px) {
+  .item__info__title {
+    font-size: 12px;
+  }
+
+  .attributes {
+    font-size: 12px;
+  }
+
+  .prices,
+  .amount,
+  .monitor {
+    font-size: 1.5rem;
+  }
+
+  .price {
+    width: 10%;
+  }
+
+  .item__info {
+    width: 50%;
+  }
+
+  .item__info__inner__wrapper {
+    width: 50%;
+  }
+
+  .monitor {
+    min-width: 30px;
+  }
+
+  .quantity {
+    width: auto;
+  }
+}
+
+@media (width <= 596px) {
+  .basket__table__item {
+    flex-direction: column;
+    border: 1px solid var(--color-gray-secondary);
+  }
+
+  .item__info__inner__wrapper {
+    width: 100%;
+    margin-top: 10px;
+    column-gap: 20px;
+    align-items: center;
+  }
+
+  .item__info {
+    width: 100%;
+  }
+
+  .item__info__title {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+  }
+
+  .attributes {
+    font-size: 14px;
+  }
+
+  .amount {
+    width: auto;
+  }
+
+  .quantity .monitor {
+    padding: 16px;
+  }
+
+  .remove svg {
+    width: 100%;
+  }
+}
+
+@media (width <= 472px) {
+  .basket__table__item {
+    gap: 1rem;
+  }
+
+  .item__info img {
+    width: 65px;
+    height: 65px;
+  }
+
+  .item__info__title {
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .attributes {
+    margin-top: 1rem;
+    font-size: 11px;
+  }
+
+  .prices,
+  .amount,
+  .monitor {
+    font-size: 1.1rem;
+  }
+
+  .quantity .monitor {
+    padding: 13px;
+  }
+}

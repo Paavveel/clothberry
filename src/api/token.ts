@@ -1,10 +1,10 @@
 import { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
-import { getTokenFromStorage, setTokenInStorage } from '@helpers/TokenStorage';
+import { getAnonymousTokenFromStorage, getTokenFromStorage } from '@helpers/TokenStorage';
 
 export class AppTokenCache implements TokenCache {
   public tokenStore: TokenStore = {
     expirationTime: 0,
-    token: getTokenFromStorage() ?? '',
+    token: getTokenFromStorage() || getAnonymousTokenFromStorage() || '',
     refreshToken: '',
   };
 
@@ -14,6 +14,5 @@ export class AppTokenCache implements TokenCache {
 
   set(cache: TokenStore) {
     this.tokenStore = cache;
-    setTokenInStorage(this.tokenStore.token);
   }
 }

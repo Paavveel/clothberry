@@ -1,22 +1,18 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, memo, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { menuItems } from 'config/routes';
 
-import { useClickOutside } from '@hooks/useClickOutside';
-
 import styles from './MobileMenu.module.css';
 
-interface MobileMenuProps {}
-
-export const MobileMenu: FC<MobileMenuProps> = () => {
+export const MobileMenu: FC = memo(function MobileMenu() {
   const [active, setActive] = useState(false);
-  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuRef = useRef<HTMLElement | null>(null);
+
   const handleActiveClass = () => {
     setActive((active) => !active);
   };
-  useClickOutside(mobileMenuRef, () => setActive(false));
 
   useEffect(() => {
     if (active) {
@@ -26,7 +22,7 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
     }
   }, [active]);
   return (
-    <div className={styles.mobile__menu} ref={mobileMenuRef}>
+    <div className={styles.mobile__menu}>
       <button
         className={classNames(styles.burger, {
           [styles.open]: active,
@@ -39,6 +35,7 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
         <span> </span>
       </button>
       <nav
+        ref={mobileMenuRef}
         className={classNames(styles.nav, {
           [styles.show]: active,
         })}
@@ -65,9 +62,12 @@ export const MobileMenu: FC<MobileMenuProps> = () => {
               )}
             </li>
           ))}
+          <Link to='/about' className={styles.menu__items} onClick={handleActiveClass}>
+            About
+          </Link>
         </ul>
       </nav>
-      <div className={active ? styles.overlay : ''} />
+      <div className={active ? styles.overlay : ''} onClick={handleActiveClass} aria-hidden='true' />
     </div>
   );
-};
+});
