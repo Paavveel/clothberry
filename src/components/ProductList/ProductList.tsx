@@ -86,7 +86,7 @@ export const ProductList: FC = () => {
         });
       }
       setPage(0);
-      maxPage.current = 0;
+      maxPage.current = 1;
       navigate(`/product-list-page?${search}`);
     }, 400),
 
