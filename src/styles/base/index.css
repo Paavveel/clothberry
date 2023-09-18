@@ -1,0 +1,163 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap");
+@import url("../vendors/normalize.css");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+ul {
+  padding: 0.5rem;
+}
+
+html {
+  font-size: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--color-gray-primary);
+}
+
+html,
+body,
+.app,
+#root {
+  height: 100%;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--color-black);
+  border-radius: 20px;
+}
+
+body {
+  font-family:
+    Montserrat,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-size: 1.6rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.app.container {
+  max-width: 1175px;
+  margin: 0 auto;
+}
+
+.validate-error__text {
+  display: inline-block;
+  padding-top: 0.2rem;
+  color: var(--color-red);
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.validate-error__field__input {
+  border-bottom-color: var(--color-red);
+}
+
+.validate-error__select {
+  border: 0.1rem solid var(--color-red);
+  border-radius: inherit;
+  border-radius: 0.6rem;
+}
+
+@media (hover: none) {
+  * {
+    cursor: default;
+  }
+}
+
+.mySwiper2 {
+  margin-left: 8rem;
+  position: relative;
+  z-index: 2;
+}
+
+.mySwiper .swiper-wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  width: auto;
+}
+
+.mySwiper {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 7rem;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 13px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgb(45 45 45 / 69%);
+  filter: drop-shadow(1px 0 0 var(--color-white)) drop-shadow(0 0 1px var(--color-white));
+}
+
+.swiper-pagination {
+  display: none;
+}
+
+.swiper-slide.swiper-slide-visible.swiper-slide-thumb-active img {
+  border: 1.5px solid var(--color-gray-primary);
+}
+
+@media (width <= 767px) {
+  .mySwiper {
+    display: none;
+  }
+
+  .mySwiper2 {
+    margin: 0 -3rem 2rem;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none;
+  }
+
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background: var(--color-white);
+    opacity: 1;
+    border: 2px solid var(--color-gray-primary);
+  }
+
+  .swiper-pagination-bullet {
+    background: var(--color-white);
+    opacity: 0.5;
+    border: 2px solid var(--color-gray-primary);
+  }
+
+  .swiper-pagination {
+    display: block;
+  }
+}

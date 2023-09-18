@@ -1,0 +1,88 @@
+.address-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 37rem;
+  min-height: 54rem;
+  border-radius: 1rem;
+  padding: 4rem 3rem;
+  box-shadow:
+    rgb(60 64 67 / 30%) 0 1px 2px 0,
+    rgb(60 64 67 / 15%) 0 1px 3px 1px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.country {
+  text-align: left;
+  margin-bottom: 2.6rem;
+}
+
+.input_title {
+  font-size: 1.2rem;
+  line-height: 2.1rem;
+  letter-spacing: 0.03em;
+  color: var(--color-gray-dark);
+  font-weight: 400;
+  margin: 0 0 0.2rem;
+}
+
+.default-address-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-white);
+  border-radius: 0 1rem;
+  background-color: var(--color-black-secondary);
+  padding: 1rem;
+  cursor: default;
+}
+
+.address-default-checkbox p {
+  font-size: 1.4rem;
+}
+
+.address-buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.address-card-button {
+  display: inline-block;
+  width: 10rem;
+  height: 4rem;
+  padding: 0;
+}
+
+.address-loader {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 2;
+}
+
+.address-card-loading {
+  opacity: 0.5;
+}
+
+@media (width <= 480px) {
+  .address-card {
+    min-height: 52rem;
+  }
+
+  .input_title {
+    line-height: 1.5rem;
+  }
+
+  .address-card-button {
+    width: 9rem;
+  }
+
+  .address-default-checkbox p {
+    font-size: 1.2rem;
+  }
+}

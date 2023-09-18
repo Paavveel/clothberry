@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["testing-library__jest-dom"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "src",
+    "paths": {
+      "@styles/*": ["styles/*"],
+      "@constants/*": ["constants/*"],
+      "@components/*": ["components/*"],
+      "@core/*": ["core/*"],
+      "@layout/*": ["layout/*"],
+      "@screens/*": ["screens/*"],
+      "@api/*": ["api/*"],
+      "@helpers/*": ["helpers/*"],
+      "@hooks/*": ["hooks/*"],
+      "@pages/*": ["pages/*"],
+      "@store/*": ["store/*"],
+      "@types/*": ["types/*"]
+    }
+  },
+  "include": ["src", ".eslintrc.cjs"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

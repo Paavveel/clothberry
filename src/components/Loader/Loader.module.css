@@ -1,0 +1,25 @@
+.loader {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 0.3rem solid transparent;
+  border-top-color: var(--color-black);
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0turn);
+  }
+
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+}

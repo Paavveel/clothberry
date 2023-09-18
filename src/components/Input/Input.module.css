@@ -1,0 +1,60 @@
+@import url("@styles/variables/variables.css");
+
+.input_wrapper {
+  position: relative;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+
+  --p-top: 1.2rem;
+}
+
+.password_wrapper {
+  position: relative;
+}
+
+.password_wrapper input {
+  padding-right: 5rem;
+}
+
+.password {
+  position: absolute;
+  top: calc(var(--p-top) + 0.7rem);
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.field {
+  letter-spacing: 0.03em;
+  outline: 0;
+  border: none;
+  border-bottom: 0.1rem solid var(--color-gray-primary);
+  padding: var(--p-top);
+  margin-bottom: 2.6rem;
+  width: 100%;
+}
+
+.field::placeholder {
+  color: var(--color-gray-primary);
+}
+
+.input_wrapper small {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.8rem;
+}
+
+.visually-hidden {
+  position: fixed;
+  transform: scale(0);
+}
+
+@media (width <= 480px) {
+  .input_wrapper small {
+    bottom: 0;
+  }
+}

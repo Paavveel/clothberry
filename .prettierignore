@@ -1,0 +1,7 @@
+dist
+node_modules
+.husky
+.lintstagedrc
+public
+.gitkeep
+package-lock.json
